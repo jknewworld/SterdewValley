@@ -8,6 +8,7 @@ import com.P.model.Maps.Farm;
 import com.P.model.Maps.Position;
 import com.P.model.Objects.Inventory;
 import com.P.model.Objects.Tool;
+import com.P.model.Pair;
 import com.P.model.enums.Ingredients;
 import com.P.model.enums.Recipe;
 import com.P.model.enums.ToolLevel;
@@ -15,13 +16,19 @@ import com.P.model.enums.ToolType;
 import com.P.model.Objects.Shop;
 import com.P.model.Objects.ShippingBin;
 import com.P.model.Objects.Trade;
+import com.P.model.item.ItemDescriptionId;
+import com.P.model.item.TileDescriptionId;
+import dev.morphia.annotations.Embedded;
+import dev.morphia.annotations.Transient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
-//@Embedded
+@Embedded
 public class Player {
-    //    @Transient
+    @Transient
     private User user;
     private Farm farm;
     private int farmingSkill = 0;
@@ -54,11 +61,19 @@ public class Player {
     private double usedEnergyInTurn;
     private Position lastPosition;
 
+    // Graphic Part
+    private Map<ItemDescriptionId, Pair<Integer, Integer>> inventoryForMap;
+    private Pair<Float, Float> playerPosition;
+    private Stack<Integer> freeIndexes;
+    private final Integer maxInventorySize = 9;
+    private int selectedSlot = -1;
+    private int movingDirection = 0;
+
 
     public Player(User user) {
         this.user = user;
         this.energy = 200;
-       this.inventory = initializeInventory();
+        this.inventory = initializeInventory();
         this.refrigerator = initilizeRef();
         this.id = user.getId();
         this.position = new Position(0, 0);
@@ -79,7 +94,120 @@ public class Player {
         this.tradeList = new ArrayList<>();
         this.tradeHistory = new ArrayList<>();
         this.lastPosition = new Position(0, 0);
+
+
+        // Graphic edit
+        inventoryForMap = new HashMap<>();
+        freeIndexes = new Stack<>();
+        for (int i = maxInventorySize - 1; i >= 0; i--) {
+            freeIndexes.push(i);
+        }
+        playerPosition = new Pair<>(3f, 3f);
+
+        addItem(ItemDescriptionId.HOE, 1);
+        addItem(ItemDescriptionId.SCYTHE, 1);
+        addItem(ItemDescriptionId.WATERING_CAN, 1);
+        addItem(ItemDescriptionId.CARROT_SEED, 5);
     }
+
+    // Graphic edit (we mark end)
+    public void addItem(ItemDescriptionId itemId, int count) {
+        Pair<Integer, Integer> pair = inventoryForMap.getOrDefault(itemId, new Pair<>(0, freeIndexes.pop()));
+        pair.first = pair.first + count;
+        inventoryForMap.put(itemId, pair);
+    }
+
+    public void useActiveItem(float worldX, float worldY) {
+        // Implement item usage logic
+    }
+
+    public Pair<Float, Float> getPlayerPosition() {
+        return playerPosition;
+    }
+
+    private float speed = 2f;
+    private float vx = 0, vy = 0;
+
+    public void setVelocity(float vx, float vy) {
+        this.vx = vx;
+        this.vy = vy;
+    }
+
+    public void update(float delta, TileDescriptionId[][] tiles) {
+        tryMove(vx * delta, vy * delta, tiles);
+    }
+
+    public boolean tryMove(float dx, float dy, TileDescriptionId[][] tiles) {
+        int newX = (int) (playerPosition.first + dx);
+        int newY = (int) (playerPosition.second + dy);
+
+        if (newX < 0 || newX >= tiles.length || newY < 0 || newY >= tiles[0].length) return false;
+
+        if (tiles[newX][newY] != TileDescriptionId.WATER) {
+            playerPosition.first += dx;
+            playerPosition.second += dy;
+            return true;
+        }
+        return false;
+    }
+
+    public Map<ItemDescriptionId, Pair<Integer, Integer>> getInventoryForMap() {
+        return inventoryForMap;
+    }
+
+    public void setSelectedSlot(int selectedSlot) {
+        this.selectedSlot = selectedSlot;
+    }
+
+    public ItemDescriptionId getSelectedItem() {
+        return inventoryForMap.entrySet().stream().filter(
+            entry -> entry.getValue().second == selectedSlot
+        ).map(Map.Entry::getKey).findFirst().orElse(null);
+    }
+
+    public int getMovingDirection() {
+        return movingDirection;
+    }
+
+    public void setMovingDirection(int direction) {
+        this.movingDirection = direction;
+    }
+
+    public int getMaxInventorySize() {
+        return maxInventorySize;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public int getSelectedSlot() {
+        return selectedSlot;
+    }
+
+    public void useSelectedItem() {
+        ItemDescriptionId selectedItem = getSelectedItem();
+        if (selectedItem == ItemDescriptionId.CARROT_SEED) {
+            reduceItem();
+        }
+    }
+
+    private void reduceItem() {
+        Pair<Integer, Integer> pair = inventoryForMap.getOrDefault(ItemDescriptionId.CARROT_SEED, null);
+        if (pair == null) {
+            return;
+        }
+        pair.first = pair.first - 1;
+        if (pair.first == 0) {
+            inventoryForMap.remove(ItemDescriptionId.CARROT_SEED);
+            freeIndexes.push(pair.second);
+        } else {
+            inventoryForMap.put(ItemDescriptionId.CARROT_SEED, pair);
+        }
+    }
+
+
+    // This is the enddddddddddddddddddddddddddddddddddddddddddddddddddd
 
     public Position getLastPosition() {
         return lastPosition;
@@ -395,8 +523,8 @@ public class Player {
         this.usedEnergyInTurn = usedEnergyInTurn;
     }
 
-    private static Inventory initilizeRef(){
-        Inventory ref=new Inventory();
+    private static Inventory initilizeRef() {
+        Inventory ref = new Inventory();
         ref.getIngredients().put(Ingredients.MILK, 4);
         return ref;
     }

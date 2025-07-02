@@ -4,6 +4,7 @@ import com.P.Main;
 import com.P.controller.MainMenuController;
 import com.P.controller.ProfileController;
 import com.P.controller.RegisterController;
+import com.P.controller.TurnController;
 import com.P.model.Authorization;
 import com.P.model.GameAssetManager;
 import com.badlogic.gdx.Gdx;
@@ -94,6 +95,14 @@ public class MainView implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Main.getMain().getScreen().dispose();
                 Main.getMain().setScreen(new ProfileView(new ProfileController(), GameAssetManager.getGameAssetManager().getSkin()));
+            }
+        });
+
+        gameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new PreGameView(new TurnController(), GameAssetManager.getGameAssetManager().getSkin()));
             }
         });
 

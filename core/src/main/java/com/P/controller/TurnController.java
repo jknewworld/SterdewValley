@@ -10,6 +10,8 @@ import com.P.model.enums.GameMenuCommands;
 import com.P.model.enums.Menus;
 import com.P.view.AppView;
 import com.P.view.PlayGame;
+import com.P.view.PreGameView;
+import com.P.view.StartView;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,6 +19,11 @@ import java.util.stream.Collectors;
 public class TurnController extends ControllersController {
     public static boolean isWaitingForChoosingMap = false;
     public static String newUser = "Shayan1";
+    private PreGameView view;
+
+    public void setView(PreGameView view) {
+        this.view = view;
+    }
 
 //    public static Resualt handleNewGame(Command request) {
 //        String[] usernames = parseUsernames(request);

@@ -30,6 +30,7 @@ public class Main extends Game {
     public static ShaderProgram grayscaleShader;
     public static boolean grayscaleEnabled = false;
     private static String currentCursorPath = "";
+    public static final int TILE_SIZE = 160;
 
     @Override
     public void create() {
@@ -59,6 +60,7 @@ public class Main extends Game {
 
     @Override
     public void dispose() {
+        super.dispose();
         batch.dispose();
     }
 
