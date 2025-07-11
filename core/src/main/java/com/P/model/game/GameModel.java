@@ -2,7 +2,10 @@ package com.P.model.game;
 
 import com.P.Main;
 import com.P.model.Basics.App;
+import com.P.model.Basics.Game;
 import com.P.model.Basics.Player;
+import com.P.model.Basics.User;
+import com.P.model.Maps.Farm;
 import com.P.model.Pair;
 import com.P.model.item.GrowingCrop;
 import com.P.model.item.TileDescriptionId;
@@ -10,6 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,11 +25,25 @@ public class GameModel {
     private final int mapHeight;
     private OrthographicCamera camera; // Add camera field
 
+
     public GameModel(int mapWidth, int mapHeight) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
-        tiles = new TileDescriptionId[mapWidth][mapHeight];
+        //  tiles = new TileDescriptionId[mapWidth][mapHeight];
+        tiles = new TileDescriptionId[50][75];
         initializeTiles();
+
+//        User user = App.getLoggedInUser();
+//        Game game = user.getCurrentGame();
+//        Farm farm = game.getCurrentPlayer().getCurrentFarm(game);
+
+//        TileDescriptionId[][] tiles = new TileDescriptionId[50][75];
+//        User user = App.getLoggedInUser();
+//        Game game = user.getCurrentGame();
+//        Farm farm = game.getCurrentPlayer().getCurrentFarm(game);
+//        tiles=farm.getTiles();
+
+
         growingCrops = new HashMap<>();
         player = new Player(App.getLoggedInUser());// Check It
         camera = new OrthographicCamera();
@@ -34,15 +52,12 @@ public class GameModel {
     }
 
     private void initializeTiles() {
-        for (int i = 0; i < mapWidth; i++) {
-            for (int j = 0; j < mapHeight; j++) {
-                if (j < 2) {
-                    tiles[i][j] = TileDescriptionId.WATER;
-                } else {
-                    tiles[i][j] = TileDescriptionId.GRASS;
-                }
-            }
-        }
+        User user = App.getLoggedInUser();
+        Game game = user.getCurrentGame();
+        Farm farm = game.getCurrentPlayer().getCurrentFarm(game);
+        tiles = farm.getTiles();
+        System.out.println(user.getNickname());
+
     }
 
     public void update(float deltaTime) {
@@ -56,7 +71,7 @@ public class GameModel {
         float viewHalfWidth = camera.viewportWidth / 2;
         float viewHalfHeight = camera.viewportHeight / 2;
 
-        float border = Main.TILE_SIZE * 2; // 2-tile margin from edge
+        float border = Main.TILE_SIZE * 5; // 2-tile margin from edge
 
         // Horizontal movement
         if (playerX < camX - viewHalfWidth + border) {
@@ -74,6 +89,7 @@ public class GameModel {
 
         camX = Math.max(viewHalfWidth, Math.min(camX, mapWidth * Main.TILE_SIZE - viewHalfWidth));
         camY = Math.max(viewHalfHeight, Math.min(camY, mapHeight * Main.TILE_SIZE - viewHalfHeight));
+
 
         camera.position.set(camX, camY, 0);
         camera.update();

@@ -5,8 +5,9 @@ import com.P.controller.MainMenuController;
 import com.P.controller.ProfileController;
 import com.P.controller.RegisterController;
 import com.P.controller.TurnController;
-import com.P.model.Authorization;
+import com.P.model.Basics.App;
 import com.P.model.GameAssetManager;
+import com.P.view.PreGameView.PreGameView;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -48,6 +49,7 @@ public class MainView implements Screen {
         style.font = bigFont;
         style.fontColor = Color.NAVY;
         style.overFontColor = Color.YELLOW;
+        style.downFontColor = Color.GREEN;
         this.gameButton = new TextButton("Game Menu", style);
         this.logoutButton = new TextButton("Logout", style);
         this.profileButton = new TextButton("Profile Menu", style);

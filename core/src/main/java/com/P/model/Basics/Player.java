@@ -148,6 +148,7 @@ public class Player {
             playerPosition.second += dy;
             return true;
         }
+        System.out.println("Cannot move: Water tile!");
         return false;
     }
 
@@ -467,6 +468,10 @@ public class Player {
     public Farm getCurrentFarm(Game game) {
         return game.getFarmByNumber(currentFarm);
     }
+
+//    public Farm getFarm(){
+//        return farm;
+//    }
 
     public int getCurrentFarm() {
         return currentFarm;

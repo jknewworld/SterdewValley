@@ -30,7 +30,7 @@ public class Main extends Game {
     public static ShaderProgram grayscaleShader;
     public static boolean grayscaleEnabled = false;
     private static String currentCursorPath = "";
-    public static final int TILE_SIZE = 160;
+    public static final int TILE_SIZE = 100;
 
     @Override
     public void create() {

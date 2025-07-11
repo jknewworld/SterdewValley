@@ -11,15 +11,19 @@ import com.P.model.enums.Ingredients;
 import com.P.model.enums.ShopName;
 import com.P.model.enums.TreeName;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import com.P.model.item.TileDescriptionId;
 import dev.morphia.annotations.Embedded;
 import com.P.model.Objects.ShippingBin;
 
 @Embedded
 public class Farm {
+    private static TileDescriptionId[][] tiles = new TileDescriptionId[50][75];
+    private static TileDescriptionId[][] houseTile = new TileDescriptionId[4][4];
     private ArrayList<Tile> cells;
     private ArrayList<Building> buildings;
     private ArrayList<ShippingBin> shippingBins;
@@ -38,6 +42,8 @@ public class Farm {
         this.cells = cells;
         this.buildings = buildings;
         this.shippingBins = new ArrayList<>();
+        //tiles = new TileDescriptionId[50][75];
+
     }
 
     public void showFarm(int x, int y, int size, Game game) {
@@ -143,21 +149,27 @@ public class Farm {
         ArrayList<Building> farmBuildings = new ArrayList<>();
         makeEmptyCells(farmCells);
         addBuildings(farmBuildings, farmCells);
-        if (lakeModifier == 1)
+        System.out.println(lakeModifier);
+        if ((lakeModifier == 1))
             addOneLake(farmCells);
-        else
+        else if ((lakeModifier == 2))
             addTwoLakes(farmCells);
 
         for (Tile cell : farmCells) {
-            int randomNumber = (int) (Math.random() * 5);
+            int randomNumber = (int) (Math.random() * 8);
 
             if (cell.getObjectOnCell().type.equals(".") && randomNumber == 3) {
                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 cell.setObjectOnCell(new Plant(TreeName.AppleTree));
+                tiles[cell.getCoordinate().getY()][cell.getCoordinate().getX()] = TileDescriptionId.SUMMERTREE;
             } else if (cell.getObjectOnCell().type.equals(".") && randomNumber == 2) {
                 cell.setObjectOnCell(new Stone(Ingredients.STONE, "gray", "stone"));
+                tiles[cell.getCoordinate().getY()][cell.getCoordinate().getX()] = TileDescriptionId.STONE;
             } else if (cell.getObjectOnCell().type.equals(".") && randomNumber == 1) {
                 cell.setObjectOnCell(randomForagingCrop());
+            } else if (cell.getObjectOnCell().type.equals(".") && randomNumber == 4) {
+                cell.setObjectOnCell(randomForagingCrop());
+                tiles[cell.getCoordinate().getY()][cell.getCoordinate().getX()] = TileDescriptionId.WOOD;
             } else if (cell.getObjectOnCell().type.equals("Mine") && (randomNumber == 4 || randomNumber == 3) && isMineCell(cell)) {
                 cell.setObjectOnCell(randomForagingMineral());
             }
@@ -193,6 +205,7 @@ public class Farm {
             for (int i = 33; i < 41; i++) {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
                 cell.setObjectOnCell(new Water());
+                tiles[j][i] = TileDescriptionId.WATER;
             }
         }
     }
@@ -202,29 +215,32 @@ public class Farm {
             for (int i = 33; i < 41; i++) {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
                 cell.setObjectOnCell(new Water());
+                tiles[j][i] = TileDescriptionId.WATER;
             }
         }
-        for (int j = 34; j < 40; j++) {
-            for (int i = 42; i < 48; i++) {
+        for (int j = 21; j < 30; j++) {
+            for (int i = 21; i < 25; i++) {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
                 cell.setObjectOnCell(new Water());
+                tiles[j][i] = TileDescriptionId.WATER;
             }
         }
     }
 
 
     private static void makeEmptyCells(ArrayList<Tile> farmCells) {
-        for (int j = 0; j < 50; j++) {
-            for (int i = 0; i < 75; i++) {
+        for (int j = 0; j < tiles.length; j++) {
+            for (int i = 0; i < tiles[j].length; i++) {
                 Position coordinate = new Position(i, j);
                 farmCells.add(new Tile(new NothingInTile(), coordinate));
+                tiles[j][i] = TileDescriptionId.GRASS;
             }
         }
     }
 
     private static boolean isMineCell(Tile cell) {
         return cell.getCoordinate().getX() <= 9 && cell.getCoordinate().getX() >= 0 && cell.getCoordinate().getY() <= 11
-                && cell.getCoordinate().getY() >= 0;
+            && cell.getCoordinate().getY() >= 0;
     }
 
     private static void addBuildings(ArrayList<Building> farmBuildings, ArrayList<Tile> farmCells) {
@@ -236,11 +252,32 @@ public class Farm {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
                 cell.setObjectOnCell(new BuildingsForPaint(false, "Home"));
                 cottageCells.add(cell);
+                tiles[j][i] = TileDescriptionId.GRASS;// Chang It
             }
         }
+        tiles[4][64] = TileDescriptionId.HOUSE1;
+        tiles[5][64] = TileDescriptionId.HOUSE2;
+        tiles[6][64] = TileDescriptionId.HOUSE3;
+        tiles[7][64] = TileDescriptionId.HOUSE4;
 
-        for (int i = 22; i < 29; i++) {
-            for (int j = 3; j < 11; j++) {
+        tiles[4][63] = TileDescriptionId.HOUSE5;
+        tiles[5][63] = TileDescriptionId.HOUSE6;
+        tiles[6][63] = TileDescriptionId.HOUSE7;
+        tiles[7][63] = TileDescriptionId.HOUSE8;
+
+        tiles[4][62] = TileDescriptionId.HOUSE9;
+        tiles[5][62] = TileDescriptionId.HOUSE10;
+        tiles[6][62] = TileDescriptionId.HOUSE11;
+        tiles[7][62] = TileDescriptionId.HOUSE12;
+
+        tiles[4][61] = TileDescriptionId.HOUSE13;
+        tiles[5][61] = TileDescriptionId.HOUSE14;
+        tiles[6][61] = TileDescriptionId.HOUSE15;
+        tiles[7][61] = TileDescriptionId.HOUSE16;
+
+
+        for (int i = 22; i < 26; i++) {
+            for (int j = 3; j < 7; j++) {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
 
                 if (i != 22 && i != 28 && j != 3 && j != 10) {
@@ -249,14 +286,36 @@ public class Farm {
                     cell.setObjectOnCell(new BuildingsForPaint(false, "Wall"));
 
                 greenHouseCells.add(cell);
+                // tiles[j][i] = TileDescriptionId.SLOT;// Chang It
             }
         }
+
+        tiles[3][25] = TileDescriptionId.GREENHOUSE1;
+        tiles[4][25] = TileDescriptionId.GREENHOUSE2;
+        tiles[5][25] = TileDescriptionId.GREENHOUSE3;
+        tiles[6][25] = TileDescriptionId.GREENHOUSE4;
+
+        tiles[3][24] = TileDescriptionId.GREENHOUSE5;
+        tiles[4][24] = TileDescriptionId.GREENHOUSE6;
+        tiles[5][24] = TileDescriptionId.GREENHOUSE7;
+        tiles[6][24] = TileDescriptionId.GREENHOUSE8;
+
+        tiles[3][23] = TileDescriptionId.GREENHOUSE9;
+        tiles[4][23] = TileDescriptionId.GREENHOUSE10;
+        tiles[5][23] = TileDescriptionId.GREENHOUSE11;
+        tiles[6][23] = TileDescriptionId.GREENHOUSE12;
+
+        tiles[3][22] = TileDescriptionId.GREENHOUSE13;
+        tiles[4][22] = TileDescriptionId.GREENHOUSE14;
+        tiles[5][22] = TileDescriptionId.GREENHOUSE15;
+        tiles[6][22] = TileDescriptionId.GREENHOUSE16;
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 12; j++) {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
                 cell.setObjectOnCell(new BuildingsForPaint(true, "Mine"));
                 mineCells.add(cell);
+                tiles[j][i] = TileDescriptionId.SLOT;// Chang It
             }
         }
         farmBuildings.add(new Cottage(cottageCells));
@@ -511,5 +570,13 @@ public class Farm {
         addShop(farmBuildings, farmCells);
         return new Farm(farmCells, farmBuildings);
 
+    }
+
+    public TileDescriptionId getTile(Point point) {
+        return tiles[point.x][point.y];
+    }
+
+    public TileDescriptionId[][] getTiles() {
+        return tiles;
     }
 }
