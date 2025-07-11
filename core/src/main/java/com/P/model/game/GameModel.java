@@ -25,7 +25,7 @@ public class GameModel {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
         tiles = new TileDescriptionId[mapWidth][mapHeight];
-        initializeTiles();
+      //  initializeTiles();
         growingCrops = new HashMap<>();
         player = new Player(App.getLoggedInUser());// Check It
         camera = new OrthographicCamera();
@@ -33,17 +33,17 @@ public class GameModel {
         camera.position.set(player.getPlayerPosition().first, player.getPlayerPosition().second, 0);
     }
 
-    private void initializeTiles() {
-        for (int i = 0; i < mapWidth; i++) {
-            for (int j = 0; j < mapHeight; j++) {
-                if (j < 2) {
-                    tiles[i][j] = TileDescriptionId.WATER;
-                } else {
-                    tiles[i][j] = TileDescriptionId.GRASS;
-                }
-            }
-        }
-    }
+//    private void initializeTiles() {
+//        for (int i = 0; i < mapWidth; i++) {
+//            for (int j = 0; j < mapHeight; j++) {
+//                if (j < 2) {
+//                    tiles[i][j] = TileDescriptionId.WATER;
+//                } else {
+//                    tiles[i][j] = TileDescriptionId.GRASS;
+//                }
+//            }
+//        }
+//    }
 
     public void update(float deltaTime) {
         Pair<Float, Float> playerPos = player.getPlayerPosition();

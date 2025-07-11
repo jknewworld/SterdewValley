@@ -580,8 +580,8 @@ public class GameMenu implements AppMenu {
         Resualt response;
         Command request = new Command(input);
         request.body.put("mapNumber", GameMenuCommands.GAME_MAP.getGroup(input, "mapNumber"));
-        response = TurnController.handleMapSelection(request);
-        return response;
+      //  response = TurnController.handleMapSelection(request);
+        return new Resualt(true,"");
     }
 
     private static Resualt setCheatEnergyResponse(String input) {
@@ -597,8 +597,8 @@ public class GameMenu implements AppMenu {
         Resualt response;
         Command request = new Command(input);
         request.body.put("users", GameMenuCommands.GAME_NEW.getGroup(input, "users"));
-        response = TurnController.handleNewGame(request);
-        return response;
+       // response = TurnController.handleNewGame(request);
+        return new Resualt(true,"");
     }
 
     private static Resualt walkHome(String input) {

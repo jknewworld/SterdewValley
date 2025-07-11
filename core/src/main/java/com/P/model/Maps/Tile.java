@@ -12,9 +12,9 @@ public class Tile {
     private boolean isTilled;
     private Objectss object;
     private boolean isInsideBuilding;
-    private CraftingMachine machine=null;
-    private boolean speedFertility=false;
-    private boolean waterFertility=false;
+    private CraftingMachine machine = null;
+    private boolean speedFertility = false;
+    private boolean waterFertility = false;
 
     public int distance = 0;
     public double energy = 0;
@@ -22,7 +22,8 @@ public class Tile {
     public Tile prev = null;
     private Ingredients ingredients;
 
-    public Tile(){}
+    public Tile() {
+    }
 
     public Tile(Objects objectOnCell, Position coordinate) {
         this.objectOnCell = objectOnCell;

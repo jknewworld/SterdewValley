@@ -1,18 +1,21 @@
-package com.P.view;
+package com.P.view.PreGameView;
 
-import com.P.controller.StartController;
+import com.P.Main;
 import com.P.controller.TurnController;
+import com.P.model.GameAssetManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -44,7 +47,7 @@ public class PreGameView implements Screen {
         style.overFontColor = Color.BLUE;
         this.newGame = new TextButton("New Game", style);
         this.loadGame = new TextButton("Load Game", style);
-        this.thisGame = new TextButton("To See The Current Game", style);
+        this.thisGame = new TextButton("Current Game", style);
         this.exitGame = new TextButton("Exit & Delete Game", style);
 
         this.table = new Table();
@@ -75,6 +78,15 @@ public class PreGameView implements Screen {
         table.add(exitGame).width(350).height(45);
 
         stage.addActor(table);
+
+        newGame.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new NewGameView(controller, GameAssetManager.getGameAssetManager().getSkin()));
+            }
+        });
+
     }
 
     @Override

@@ -10,19 +10,23 @@ import com.P.model.enums.GameMenuCommands;
 import com.P.model.enums.Menus;
 import com.P.view.AppView;
 import com.P.view.PlayGame;
-import com.P.view.PreGameView;
-import com.P.view.StartView;
+import com.P.view.PreGameView.NewGameView;
+import com.P.view.PreGameView.PreGameView;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class TurnController extends ControllersController {
-    public static boolean isWaitingForChoosingMap = false;
+    public static boolean isWaitingForChoosingMap = true;
     public static String newUser = "Shayan1";
     private PreGameView view;
+    private NewGameView view2;
 
     public void setView(PreGameView view) {
         this.view = view;
+    }
+
+    public void setView(NewGameView view) {
+        this.view2 = view;
     }
 
 //    public static Resualt handleNewGame(Command request) {
@@ -70,12 +74,15 @@ public class TurnController extends ControllersController {
 //        return game;
 //    }
 
-    public static Resualt handleNewGame(Command request) {
-        String[] usernames = request.body.get("users").split("\\s+");
+    public Resualt handleNewGame() {
+        String[] usernames = new String[3];
+        usernames[0] = view2.getPlayer1().getText();
+        usernames[1] = view2.getPlayer2().getText();
+        usernames[2] = view2.getPlayer3().getText();
 
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Player(App.getLoggedInUser()));
-        for (int i = 1; i < usernames.length; i++) {
+        for (int i = 0; i < 3; i++) {
             String username = usernames[i];
             User user = UserRepo.findUserByUsername(username);
             if (user == null) {
@@ -96,8 +103,8 @@ public class TurnController extends ControllersController {
         }
         isWaitingForChoosingMap = true;
 
-        Farm farm = Farm.makeNPCFarm();
-        game.setFarm(farm);
+//        Farm farm = Farm.makeNPCFarm();
+//        game.setFarm(farm);
 
         return new Resualt(true, "The game has been made successfully. Awaiting each user's map choice...\n" +
                 "Use 'game map <map_number>' to pick map 1 or 2.");
@@ -148,19 +155,21 @@ public class TurnController extends ControllersController {
 //
 //        return new Resualt(true, responseString);
 //    }
-    public static Resualt handleMapSelection(Command request) {
+    int cheakNum = 0;
+    public Resualt handleMapSelection() {
         User user = App.getLoggedInUser();
         Game game = user.getCurrentGame();
         Player player = game.getCurrentPlayer();
-        int mapNumber = Integer.parseInt(request.body.get("mapNumber"));
+        int mapNumber = Integer.parseInt(view2.getMap1().getText());
         if (mapNumber != 1 && mapNumber != 2) {
             return new Resualt(false, "Invalid map number");
         }
         Farm farm = Farm.makeFarm(mapNumber);
+
         game.getMap().addFarm(farm);
         player.setFarm(farm);
         boolean check = game.cycleToNextPlayer();
-        if (check) {
+        if (check || (cheakNum==4)) {
             isWaitingForChoosingMap = false;
         }
         String responseString = player.getUser().getUsername() + " has chosen their farm.";
@@ -173,6 +182,7 @@ public class TurnController extends ControllersController {
            // GameRepo.saveGame(game, users);
         }
         user.setCurrentGame(game);
+        cheakNum ++;
         return new Resualt(true, responseString);
     }
 
@@ -181,7 +191,8 @@ public class TurnController extends ControllersController {
             //return new Resualt(false, "No saved game found. Maybe it escaped?");
             Command requestt = new Command("game new -u Sobhan1 Sobhan2 Sobhan3");
             requestt.body.put("users", GameMenuCommands.GAME_NEW.getGroup("game new -u Sobhan1 Sobhan2 Sobhan3", "users"));
-            handleNewGame(requestt);
+          //  handleNewGame(requestt);
+            // check it
 
         }
 
@@ -334,4 +345,5 @@ public class TurnController extends ControllersController {
 
         return new Resualt(true, responseString + "\n" );
     }
+
 }
