@@ -133,6 +133,8 @@ public class RegisterController extends ControllersController {
             username
         );
 
+        user.setPassword(password);
+
         setupSecurityQuestion(user);
 
         if (isTestEnvironment()) {
@@ -152,7 +154,7 @@ public class RegisterController extends ControllersController {
         return UserRepo.findUserByUsername(username) == null;
     }
 
-    private static Resualt handlePasswordLogic(String password, String passwordConfirm) {
+    public Resualt handlePasswordLogic(String password, String passwordConfirm) {
         if (password.equalsIgnoreCase("random")) {
             String newPassword = Authorization.createRandomPassword();
             return new Resualt(true, newPassword);

@@ -79,8 +79,6 @@ public class GameMenu implements Screen {
         gameMenuInputAdapter2 = new GameMenuInputAdapter(gameModel2, gameController);
         gameMenuInputAdapter3 = new GameMenuInputAdapter(gameModel3, gameController);
         gameMenuInputAdapter4 = new GameMenuInputAdapter(gameModel4, gameController);
-
-
     }
 
     @Override

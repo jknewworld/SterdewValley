@@ -56,6 +56,9 @@ public class GameAssetManager {
     // Snow
     public static final Texture SNOW = new Texture("game/tiles/snow.png");
 
+    // Storm
+    public static final TextureRegion[][] STORM = TextureRegion.split(new Texture("game/tiles/storm.png"), 192, 384);
+
 
     private GameAssetManager() {
 

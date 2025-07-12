@@ -7,7 +7,9 @@ import com.P.controller.StartController;
 import com.P.model.Authorization;
 import com.P.model.Basics.App;
 import com.P.model.Basics.Result;
+import com.P.model.Basics.User;
 import com.P.model.GameAssetManager;
+import com.P.model.Repo.UserRepo;
 import com.P.model.Resualt;
 import com.P.model.enums.SecurityQuestion;
 import com.badlogic.gdx.Gdx;
@@ -42,6 +44,7 @@ public class SignupView implements Screen {
     private TextButton loginButton;
     private TextButton randomPassButton;
     private TextButton backButton;
+    private TextButton SignupButton;
     private SelectBox<String> genderBox;
     public Table table;
     public Table SQustionTable;
@@ -58,6 +61,8 @@ public class SignupView implements Screen {
     public Table forgetTable;
     private TextField usernameForgetPassword;
     private TextButton forgetPasswordConfirm;
+    private TextButton newPassword;
+    private User user;
 
     private Label randomPassLabel;
 
@@ -100,10 +105,12 @@ public class SignupView implements Screen {
         this.loginButton = new TextButton("Login", style);
         this.randomPassButton = new TextButton("RandomPass", style);
         this.backButton = new TextButton("Back", style);
+        this.SignupButton = new TextButton("Signup", style);
         this.answerButton = new TextButton("Check", style);
         this.confrim = new TextButton("Confirm Login", style);
         this.mainMenuButton = new TextButton("Main Menu", style);
         this.forgetPasswordButton = new TextButton("Forget Password", style);
+        this.newPassword = new TextButton("New Password", style);
 
         TextButton.TextButtonStyle style2 = new TextButton.TextButtonStyle();
         style2.font = bigFont;
@@ -157,19 +164,22 @@ public class SignupView implements Screen {
 
         stage.addActor(table);
 
-        registerButton.setPosition(100, 100);
+        registerButton.setPosition(50, 100);
         stage.addActor(registerButton);
 
-        loginButton.setPosition(450, 100);
+        loginButton.setPosition(400, 100);
         stage.addActor(loginButton);
 
-        randomPassButton.setPosition(700, 100);
+        SignupButton.setPosition(630, 100);
+        stage.addActor(SignupButton);
+
+        randomPassButton.setPosition(880, 100);
         stage.addActor(randomPassButton);
 
-        mainMenuButton.setPosition(1200, 100);
+        mainMenuButton.setPosition(1300, 100);
         stage.addActor(mainMenuButton);
 
-        backButton.setPosition(1600, 100);
+        backButton.setPosition(1700, 100);
         stage.addActor(backButton);
 
         backButton.addListener(new ClickListener() {
@@ -192,7 +202,11 @@ public class SignupView implements Screen {
                 generator.dispose();
                 Label.LabelStyle style = new Label.LabelStyle();
                 style.font = bigFont;
-                style.fontColor = Color.BROWN;
+                if (registerMessage.isAccept()) {
+                    style.fontColor = Color.FOREST;
+                } else {
+                    style.fontColor = Color.RED;
+                }
                 message.setStyle(style);
                 if (registerMessage.isAccept()) {
                     SQustionTable.setFillParent(true);
@@ -213,6 +227,7 @@ public class SignupView implements Screen {
                     SQustionTable.row().pad(10, 0, 10, 0);
                     sQustionLabel.setFontScale(2);
                     sQustionLabel.setColor(Color.WHITE);
+                    style.fontColor = Color.BROWN;
                     sQustionLabel.setStyle(style);
                     SQustionTable.add(sQustionLabel).width(500).height(50);
 
@@ -280,6 +295,9 @@ public class SignupView implements Screen {
         forgetPasswordButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                table.clear();
+                SQustionTable.clear();
+
                 forgetStage = new Stage(new ScreenViewport());
                 Gdx.input.setInputProcessor(forgetStage);
 
@@ -290,6 +308,7 @@ public class SignupView implements Screen {
                 forgetTable.row().pad(10, 0, 10, 0);
                 forgetTable.setPosition(0, 0);
                 forgetTable.add(usernameForgetPassword).width(600).height(70);
+
 
                 forgetTable.row().pad(10, 0, 10, 0);
                 forgetTable.add(answer).width(600).height(70);
@@ -306,13 +325,15 @@ public class SignupView implements Screen {
                 style.font = bigFont;
                 style.fontColor = Color.BROWN;
                 message.setStyle(style);
-                forgetTable.row().pad(10, 0, 10, 0);
-                forgetTable.add(message).width(600).height(70);
-
-                forgetTable.row().pad(10, 0, 10, 0);
-                forgetTable.add(sQustionLabel).width(600).height(70);
-
+                sQustionLabel.setStyle(style);
+                randomPassLabel.setStyle(style);
+                message.setPosition(100, 200);
+                sQustionLabel.setPosition(100, 150);
+                randomPassLabel.setPosition(100, 300);
                 forgetStage.addActor(forgetTable);
+                forgetStage.addActor(message);
+                forgetStage.addActor(sQustionLabel);
+                forgetStage.addActor(randomPassLabel);
 
             }
         });
@@ -320,8 +341,52 @@ public class SignupView implements Screen {
         forgetPasswordConfirm.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                message.setText(controller.handleForgetPassword().getAnswer());
-                sQustionLabel.setText(controller.handleAnswer().getAnswer());
+                Resualt messageResualt = controller.handleForgetPassword();
+                Resualt sQustionLabelResualt = controller.handleAnswer();
+                message.setText(messageResualt.getAnswer());
+                sQustionLabel.setText(sQustionLabelResualt.getAnswer());
+                if(messageResualt.isAccept())
+                    user = UserRepo.findUserByUsername(getUsernameForgetPassword().getText());
+
+                if (messageResualt.isAccept() && sQustionLabelResualt.isAccept()) {
+                    forgetTable.clear();
+                    message.setText("");
+                    sQustionLabel.setText("");
+                    password.setPosition(600, 600);
+                    password.setWidth(500);
+                    password.setHeight(70);
+                    forgetStage.addActor(password);
+
+                    passwordConfirm.setPosition(600, 500);
+                    passwordConfirm.setWidth(500);
+                    passwordConfirm.setHeight(70);
+                    forgetStage.addActor(passwordConfirm);
+
+                    newPassword.setPosition(600, 400);
+                    randomPassButton.setPosition(600, 200);
+                    forgetStage.addActor(newPassword);
+                    forgetStage.addActor(randomPassButton);
+
+                }
+
+
+            }
+        });
+
+        newPassword.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Resualt check = controller.handlePasswordLogic(getPassword().getText(), getPasswordConfirm().getText());
+                sQustionLabel.setText(check.getAnswer());
+                if (check.isAccept()) {
+                    user.setHashedPassword(Authorization.hashPassword(getPassword().getText()));
+                    user.setPassword(getPassword().getText());
+                    UserRepo.saveUser(user);
+                    Main.getMain().getScreen().dispose();
+                    Main.getMain().setScreen(new SignupView(new RegisterController(), GameAssetManager.getGameAssetManager().getSkin()));
+                } else {
+                    forgetStage.addActor(sQustionLabel);
+                }
 
             }
         });
@@ -331,7 +396,7 @@ public class SignupView implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Resualt answer = controller.handleLogin();
                 message.setText(answer.getAnswer());
-                message.setPosition(550, 300);
+                message.setPosition(550, 250);
                 FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/IconStart.ttf"));
                 FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
                 parameter.size = 50;
@@ -339,7 +404,11 @@ public class SignupView implements Screen {
                 generator.dispose();
                 Label.LabelStyle style = new Label.LabelStyle();
                 style.font = bigFont;
-                style.fontColor = Color.BROWN;
+                if (answer.isAccept()) {
+                    style.fontColor = Color.FOREST;
+                } else {
+                    style.fontColor = Color.RED;
+                }
                 message.setStyle(style);
 
                 stage.addActor(message);
@@ -355,6 +424,16 @@ public class SignupView implements Screen {
 
             }
         });
+
+        SignupButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new SignupView(new RegisterController(), GameAssetManager.getGameAssetManager().getSkin()));
+
+            }
+        });
+
 
     }
 

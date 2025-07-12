@@ -148,6 +148,7 @@ public class Player {
         if (tiles[newX][newY] != TileDescriptionId.WATER) {
             playerPosition.first += dx;
             playerPosition.second += dy;
+            System.out.println(newX + " " + newY);
             return true;
         }
         System.out.println("Cannot move: Water tile!");

@@ -315,9 +315,10 @@ public class Farm {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
                 cell.setObjectOnCell(new BuildingsForPaint(true, "Mine"));
                 mineCells.add(cell);
-               // tiles[j][i] = TileDescriptionId.SLOT;// Chang It
+                //tiles[j][i] = TileDescriptionId.SLOT;// Chang It
             }
         }
+        tiles[3][3] = TileDescriptionId.SLOT;
         farmBuildings.add(new Cottage(cottageCells));
         farmBuildings.add(new GreenHouse(greenHouseCells));
         farmBuildings.add(new Mine(mineCells));
