@@ -53,8 +53,8 @@ public class Clock {
 //            this.weather = new Sprite(GameAsset.ClOCK_MANNERS[8]);
 //            return;
 //        }
-        String weather = game.getWeatherToday().string();
-        switch (weather) {
+        String weather2 = game.getWeatherToday().string();
+        switch (weather2) {
             case "Rain" -> this.weather = new Sprite(GameAssetManager.ClOCK_MANNERS[6]);
             case "Snow" -> this.weather = new Sprite(GameAssetManager.ClOCK_MANNERS[9]);
             case "Storm" -> this.weather = new Sprite(GameAssetManager.ClOCK_MANNERS[11]);

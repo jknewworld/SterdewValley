@@ -50,6 +50,9 @@ public class GameAssetManager {
     public static final Texture GOLDDISPLAY = new Texture("game/clock/golddisplay.png");
     public static final Texture WEDDINGDAYHEART = new Texture("game/clock/weddingclock.png");
 
+    // Rain
+    public static final TextureRegion[][] RAIN = TextureRegion.split(new Texture("game/tiles/rain.png"), 41, 130);
+
     private GameAssetManager() {
 
     }

@@ -315,7 +315,7 @@ public class Farm {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
                 cell.setObjectOnCell(new BuildingsForPaint(true, "Mine"));
                 mineCells.add(cell);
-                tiles[j][i] = TileDescriptionId.SLOT;// Chang It
+               // tiles[j][i] = TileDescriptionId.SLOT;// Chang It
             }
         }
         farmBuildings.add(new Cottage(cottageCells));

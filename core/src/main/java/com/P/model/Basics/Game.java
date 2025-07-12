@@ -53,6 +53,7 @@ public class Game {
 
             weatherToday = weatherTomorrow;
             determineWeatherTomorrow();
+            newDayBackgroundChecks();
 
         }
         if (date.getDayOfMonth() == 29) {

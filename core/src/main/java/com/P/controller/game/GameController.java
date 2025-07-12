@@ -4,6 +4,7 @@ package com.P.controller.game;
 import com.P.Main;
 import com.P.controller.TurnController;
 import com.P.model.Basics.App;
+import com.P.model.enums.Weather;
 import com.P.model.game.GameModel;
 import com.P.model.item.ItemDescriptionId;
 import com.P.model.item.TileDescriptionId;
@@ -60,6 +61,12 @@ public class GameController {
     public void update() {
         Sprite clock = App.getLoggedInUser().getCurrentGame().getClock().updateBatch(Main.getBatch());
         table.setPosition(clock.getX() + clock.getWidth()*0.3f, clock.getY()-table.getHeight());
+
+        switch (App.loggedInUser.getCurrentGame().getWeatherToday().string()) {
+          //  case Weather.SNOW -> handleSnowDrops();
+            case  "Rain" -> App.loggedInUser.getCurrentGame().getCurrentPlayer().getGameModel().handleRainDrops();
+           // case Weather.STORM -> handleStorms();
+        }
     }
 
 

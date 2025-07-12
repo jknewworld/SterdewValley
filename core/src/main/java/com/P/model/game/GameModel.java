@@ -5,17 +5,18 @@ import com.P.model.Basics.App;
 import com.P.model.Basics.Game;
 import com.P.model.Basics.Player;
 import com.P.model.Basics.User;
+import com.P.model.GameAssetManager;
 import com.P.model.Maps.Farm;
 import com.P.model.Pair;
 import com.P.model.item.GrowingCrop;
 import com.P.model.item.TileDescriptionId;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.Timer;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class GameModel {
     private TileDescriptionId[][] tiles;
@@ -24,6 +25,7 @@ public class GameModel {
     private final int mapWidth;
     private final int mapHeight;
     private static OrthographicCamera camera; // Add camera field
+    private ArrayList<SpriteMine> rainDrops = new ArrayList<>();
 
 
     public GameModel(int mapWidth, int mapHeight) {
@@ -164,5 +166,47 @@ public class GameModel {
 
     public int getMapWidth() {
         return mapWidth;
+    }
+
+    public void handleRainDrops() {
+        Random rand = new Random();
+        if (rand.nextInt(25) == 4) {
+            Sprite sprite = new Sprite(GameAssetManager.RAIN[0][0]);
+            sprite.setPosition(
+                camera.position.x - camera.viewportWidth / 2f + rand.nextFloat(camera.viewportWidth + 1),
+                camera.position.y + camera.viewportHeight / 2f
+            );
+            sprite.setScale(1.875f);
+            rainDrops.add(new SpriteMine(sprite));
+        }
+        for (SpriteMine rainDrop : rainDrops.stream().toList()) {
+            if (rand.nextInt(300) == 4) {
+                rainDrop.setMoving(false);
+                Pair<Float,Float> pair = new Pair<>(rainDrop.getSprite().getX(), rainDrop.getSprite().getY());
+                for (int i = 0; i < 10; i++) {
+                    int finalI = i;
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            rainDrop.setSprite(new Sprite(GameAssetManager.RAIN[0][finalI + 1]));
+                            rainDrop.getSprite().setPosition(pair.first, pair.second);
+                            rainDrop.getSprite().setScale(1.875f);
+                        }
+                    }, 0.3f * i + 0.1f);
+                }
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        rainDrops.remove(rainDrop);
+                    }
+                }, 3.1f);
+            } else if (rainDrop.getSprite().getY() + rainDrop.getSprite().getHeight() < camera.position.y - camera.viewportHeight / 2f - 20) {
+                rainDrops.remove(rainDrop);
+            } else if (rainDrop.isMoving()) {
+                rainDrop.getSprite().setY(rainDrop.getSprite().getY() - 1000 * Gdx.graphics.getDeltaTime());
+            }
+
+            rainDrop.getSprite().draw(Main.getBatch());
+        }
     }
 }

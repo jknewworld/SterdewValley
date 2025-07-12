@@ -320,6 +320,7 @@ public class TurnController extends ControllersController {
             if (playerIndex == numberOfPlayers - 1) {
                 game.setCurrentPlayer(game.getPlayers().getFirst());
                 game.hasTurnCycleFinished = true;
+                game.advanceTime();
             } else {
                 game.setCurrentPlayer(game.getPlayers().get(playerIndex + 1));
             }
