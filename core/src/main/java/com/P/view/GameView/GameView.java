@@ -1,6 +1,7 @@
 package com.P.view.GameView;
 
 import com.P.Main;
+import com.P.model.Basics.App;
 import com.P.model.Basics.Player;
 import com.P.model.Pair;
 import com.P.model.game.GameModel;
@@ -29,6 +30,16 @@ public class GameView {
     private GlyphLayout layout = new GlyphLayout();
     private TextureAtlas playerAtlas;
     private final ArrayList<Animation<TextureRegion>> playerAnimations = new ArrayList<>();
+    private TextureAtlas haleyAtlas;
+    private final ArrayList<Animation<TextureRegion>> haleyAnimations = new ArrayList<>();
+    private TextureAtlas leahAtlas;
+    private final ArrayList<Animation<TextureRegion>> leahAnimations = new ArrayList<>();
+    private TextureAtlas maruAtlas;
+    private final ArrayList<Animation<TextureRegion>> maruAnimations = new ArrayList<>();
+    private TextureAtlas sebastianAtlas;
+    private final ArrayList<Animation<TextureRegion>> sebastianAnimations = new ArrayList<>();
+    private TextureAtlas shaneAtlas;
+    private final ArrayList<Animation<TextureRegion>> shaneAnimations = new ArrayList<>();
     private float stateTime = 0f;
     private int moveDirection = 0;
     private Texture pixel; // Add this
@@ -66,6 +77,28 @@ public class GameView {
         }
 
         playerAtlas = new TextureAtlas(Gdx.files.internal("game/character/sprites_player.atlas"));
+        haleyAtlas = new TextureAtlas(Gdx.files.internal("game/character/sprites_Haley.atlas"));
+        leahAtlas = new TextureAtlas(Gdx.files.internal("game/character/sprites_Leah.atlas"));
+        maruAtlas = new TextureAtlas(Gdx.files.internal("game/character/sprites_Maru.atlas"));
+        sebastianAtlas = new TextureAtlas(Gdx.files.internal("game/character/sprites_Sebastian.atlas"));
+        shaneAtlas = new TextureAtlas(Gdx.files.internal("game/character/sprites_Shane.atlas"));
+
+
+        for (int i = 14; i > 9; i--) {
+            Array<TextureRegion> walkFrames = new Array<>();
+            if (i == 14) {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + 13 + "_" + 0;
+                    walkFrames.add(haleyAtlas.findRegion(region));
+                }
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + i + "_" + j;
+                    walkFrames.add(haleyAtlas.findRegion(region));
+                }
+            }
+            haleyAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+        }
 
         for (int i = 14; i > 9; i--) {
             Array<TextureRegion> walkFrames = new Array<>();
@@ -81,6 +114,70 @@ public class GameView {
                 }
             }
             playerAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+        }
+
+        for (int i = 14; i > 9; i--) {
+            Array<TextureRegion> walkFrames = new Array<>();
+            if (i == 14) {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + 13 + "_" + 0;
+                    walkFrames.add(leahAtlas.findRegion(region));
+                }
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + i + "_" + j;
+                    walkFrames.add(leahAtlas.findRegion(region));
+                }
+            }
+            leahAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+        }
+
+        for (int i = 14; i > 9; i--) {
+            Array<TextureRegion> walkFrames = new Array<>();
+            if (i == 14) {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + 13 + "_" + 0;
+                    walkFrames.add(maruAtlas.findRegion(region));
+                }
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + i + "_" + j;
+                    walkFrames.add(maruAtlas.findRegion(region));
+                }
+            }
+            maruAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+        }
+
+        for (int i = 14; i > 9; i--) {
+            Array<TextureRegion> walkFrames = new Array<>();
+            if (i == 14) {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + 13 + "_" + 0;
+                    walkFrames.add(sebastianAtlas.findRegion(region));
+                }
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + i + "_" + j;
+                    walkFrames.add(sebastianAtlas.findRegion(region));
+                }
+            }
+            sebastianAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+        }
+
+        for (int i = 14; i > 9; i--) {
+            Array<TextureRegion> walkFrames = new Array<>();
+            if (i == 14) {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + 13 + "_" + 0;
+                    walkFrames.add(shaneAtlas.findRegion(region));
+                }
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + i + "_" + j;
+                    walkFrames.add(shaneAtlas.findRegion(region));
+                }
+            }
+            shaneAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
         }
 
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -181,10 +278,25 @@ public class GameView {
 
         stateTime += Gdx.graphics.getDeltaTime();
 
-        Animation<TextureRegion> currentAnimation = playerAnimations.get(moveDirection);
+        Animation<TextureRegion> currentAnimation = null;
+
+
+        if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(1))) {
+            currentAnimation = haleyAnimations.get(moveDirection);
+        } else if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(2))) {
+            currentAnimation = leahAnimations.get(moveDirection);
+        } else if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(3))) {
+            currentAnimation = maruAnimations.get(moveDirection);
+        }else if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(0))) {
+            currentAnimation = sebastianAnimations.get(moveDirection);
+        }
+        else {
+            currentAnimation = playerAnimations.get(moveDirection);
+        }
+
         TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
 
-        batch.draw(currentFrame, pos.first * Main.TILE_SIZE , pos.second * Main.TILE_SIZE, 60, 120);
+        batch.draw(currentFrame, pos.first * Main.TILE_SIZE, pos.second * Main.TILE_SIZE, 60, 120);
         renderInventory();
     }
 

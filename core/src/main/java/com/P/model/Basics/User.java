@@ -1,5 +1,6 @@
 package com.P.model.Basics;
 
+import com.P.model.game.Clock;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import dev.morphia.annotations.Transient;
@@ -36,17 +37,17 @@ public class User {
     private int maxScore;
     private ArrayList<Tool> inventory;
 
-    public User(String gender){
+    public User(String gender) {
 
         this.gender = gender;
     }
 
-    public User (){
+    public User() {
 
     }
 
     public User(String gender
-            , String email, String nickname, String password, String username) {
+        , String email, String nickname, String password, String username) {
         this.gender = gender;
         this.email = email;
         this.nickname = nickname;
@@ -155,6 +156,7 @@ public class User {
 
     public void setCurrentGame(Game currentGame) {
         this.currentGame = currentGame;
+        currentGame.setClock(new Clock());
     }
 
     public void setNumberOfGamesPlayed(int numberOfGamesPlayed) {
@@ -165,7 +167,7 @@ public class User {
         this.id = id;
     }
 
-   public Game getCurrentGame() {
+    public Game getCurrentGame() {
         if (currentGame == null && gameId != null) {
             currentGame = GameRepo.findGameById(gameId.toString(), true);
         }

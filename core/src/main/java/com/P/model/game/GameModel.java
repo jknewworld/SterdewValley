@@ -23,7 +23,7 @@ public class GameModel {
     private Player player;
     private final int mapWidth;
     private final int mapHeight;
-    private OrthographicCamera camera; // Add camera field
+    private static OrthographicCamera camera; // Add camera field
 
 
     public GameModel(int mapWidth, int mapHeight) {
@@ -102,7 +102,7 @@ public class GameModel {
         });
     }
 
-    public OrthographicCamera getCamera() {
+    public static OrthographicCamera getCamera() {
         return camera;
     }
 
@@ -139,5 +139,30 @@ public class GameModel {
 
     public Map<Point, GrowingCrop> getGrowingCrops() {
         return growingCrops;
+    }
+
+    public void setTiles(TileDescriptionId[][] tiles) {
+        this.tiles = tiles;
+    }
+
+    public void setGrowingCrops(Map<Point, GrowingCrop> growingCrops) {
+        this.growingCrops = growingCrops;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+
+    public void setCamera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
+
+    public int getMapHeight() {
+        return mapHeight;
+    }
+
+    public int getMapWidth() {
+        return mapWidth;
     }
 }

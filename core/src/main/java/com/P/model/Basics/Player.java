@@ -16,6 +16,7 @@ import com.P.model.enums.ToolType;
 import com.P.model.Objects.Shop;
 import com.P.model.Objects.ShippingBin;
 import com.P.model.Objects.Trade;
+import com.P.model.game.GameModel;
 import com.P.model.item.ItemDescriptionId;
 import com.P.model.item.TileDescriptionId;
 import dev.morphia.annotations.Embedded;
@@ -68,6 +69,7 @@ public class Player {
     private final Integer maxInventorySize = 9;
     private int selectedSlot = -1;
     private int movingDirection = 0;
+    private GameModel gameModel = null;
 
 
     public Player(User user) {
@@ -532,5 +534,13 @@ public class Player {
         Inventory ref = new Inventory();
         ref.getIngredients().put(Ingredients.MILK, 4);
         return ref;
+    }
+
+    public GameModel getGameModel() {
+        return gameModel;
+    }
+
+    public void setGameModel(GameModel gameModel) {
+        this.gameModel = gameModel;
     }
 }

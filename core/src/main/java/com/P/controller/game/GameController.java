@@ -3,10 +3,13 @@ package com.P.controller.game;
 
 import com.P.Main;
 import com.P.controller.TurnController;
+import com.P.model.Basics.App;
 import com.P.model.game.GameModel;
 import com.P.model.item.ItemDescriptionId;
 import com.P.model.item.TileDescriptionId;
 import com.P.view.GameView.GameMenu;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import java.awt.*;
 
@@ -16,10 +19,14 @@ public class GameController {
     private final Main game;
     private final TurnController mainController;
     private GameMenu gameMenu;
+    private Table table;
 
     public GameController(Main game, TurnController mainController) {
         this.game = game;
         this.mainController = mainController;
+        table = new Table();
+        table.setFillParent(true);
+        table.left();
     }
 
     public void init() {
@@ -49,4 +56,11 @@ public class GameController {
         gameMenu.gameModel.advanceToNextDay();
         gameMenu.startSleepTransition();
     }
+
+    public void update() {
+        Sprite clock = App.getLoggedInUser().getCurrentGame().getClock().updateBatch(Main.getBatch());
+        table.setPosition(clock.getX() + clock.getWidth()*0.3f, clock.getY()-table.getHeight());
+    }
+
+
 }

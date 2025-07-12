@@ -501,8 +501,8 @@ public class GameMenu implements AppMenu {
         Resualt response;
         Command request = new Command(input);
         request.body.put("X", GameMenuCommands.CHEAT_ADVANCE_TIME.getGroup(input, "X"));
-        response = GameController.handleCheatAdvanceTime(request);
-        return response;
+       // response = GameController.handleCheatAdvanceTime(request);
+        return new Resualt(true,"");
     }
 
     private static Resualt getShowPlanetInfoResponse(String input) {
@@ -558,7 +558,7 @@ public class GameMenu implements AppMenu {
     private static Resualt getNextTurnResponse(String input) {
         Resualt response;
         Command request = new Command(input);
-        response = TurnController.handleNextTurn(request);
+        response = TurnController.handleNextTurn();
         return response;
     }
 

@@ -1,7 +1,9 @@
 package com.P.view.GameView;
 
 import com.P.Main;
+import com.P.controller.TurnController;
 import com.P.controller.game.GameController;
+import com.P.model.Basics.App;
 import com.P.model.Basics.Player;
 import com.P.model.Pair;
 import com.P.model.game.GameModel;
@@ -42,6 +44,7 @@ public class GameMenuInputAdapter extends InputAdapter {
 
         if (keycode == Input.Keys.N) {
           //  gameController.advanceToNextDay();
+            TurnController.handleNextTurn();
         }
 
         return true;
@@ -92,6 +95,11 @@ public class GameMenuInputAdapter extends InputAdapter {
             vx += 1;
             dir = 2;
         }
+        if (keysHeld.contains(Input.Keys.P)) {
+        //    App.getLoggedInUser().getCurrentGame().getDate().plusDays(1);
+            App.getLoggedInUser().getCurrentGame().setDate(App.getLoggedInUser().getCurrentGame().getDate().plusHours(1));
+        }
+
 
         float length = (float) Math.sqrt(vx * vx + vy * vy);
         if (length > 0) {

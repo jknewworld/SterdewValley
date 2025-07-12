@@ -16,6 +16,7 @@ import com.P.model.NPC.NPC;
 import com.P.model.enums.NPCinformation;
 import com.P.model.enums.Ingredients;
 import com.P.view.PlayGame;
+import com.P.model.game.Clock;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +37,7 @@ public class Game {
     private ObjectId objectId;
     private ArrayList<ArrayList<FriendInteraction>> friendMatrix;
     private ArrayList<NPC> npcs;
+    private Clock clock;
 
     @Transient
     private PlayGame gameThread;
@@ -269,6 +271,8 @@ public class Game {
     }
 
     public void newDayBackgroundChecks() {
+        App.getLoggedInUser().getCurrentGame().getClock().setWeatherSprite();
+        App.getLoggedInUser().getCurrentGame().getClock().setSeasonSprite();
         for (Player player : players) {
             if (player.isFainted()) {
                 player.setFainted(false);
@@ -385,5 +389,11 @@ public class Game {
         favorites.clear();
     }
 
+    public Clock getClock() {
+        return clock;
+    }
 
+    public void setClock(Clock clock) {
+        this.clock = clock;
+    }
 }

@@ -9,6 +9,7 @@ import com.P.model.Repo.UserRepo;
 import com.P.model.Resualt;
 import com.P.model.enums.GameMenuCommands;
 import com.P.model.enums.Menus;
+import com.P.model.game.GameModel;
 import com.P.view.AppView;
 import com.P.view.PlayGame;
 import com.P.view.PreGameView.NewGameView;
@@ -169,8 +170,10 @@ public class TurnController extends ControllersController {
         }
         Farm farm = Farm.makeFarm(Integer.parseInt(view2.getMap1().getText()));
 
+
         game.getMap().addFarm(farm);
         player.setFarm(farm);
+        player.setGameModel(new GameModel(50, 75));
         boolean check = game.cycleToNextPlayer();
         if (check || (cheakNum==4)) {
             isWaitingForChoosingMap = false;
@@ -302,7 +305,7 @@ public class TurnController extends ControllersController {
         GameRepo.removeGame(game);
     }
 
-    public static Resualt handleNextTurn(Command request) {
+    public static Resualt handleNextTurn() {
         User user = App.getLoggedInUser();
         Game game = user.getCurrentGame();
 

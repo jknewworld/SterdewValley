@@ -89,8 +89,9 @@ public class GameController extends ControllersController {
         }
     }
 
-    public static Resualt handleCheatAdvanceTime(Command request) {
-        int amountOfHours = Integer.parseInt(request.body.get("X"));
+    public static Resualt handleCheatAdvanceTime(int x) {
+//        int amountOfHours = Integer.parseInt(request.body.get("X"));
+        int amountOfHours = x;
         LocalDateTime currentDateTime = App.getLoggedInUser().getCurrentGame().getDate();
         LocalDateTime nextDateTime;
         Game currentGame = App.getLoggedInUser().getCurrentGame();

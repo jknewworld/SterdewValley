@@ -1,14 +1,30 @@
 package com.P.model;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
     public static final Texture PIXEL;
+   // public static final BitmapFont MAIN_FONT = new BitmapFont();
+    public static final BitmapFont MAIN_FONT;
+
+    static {
+        // فونت سفارشی از فایل ttf
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/stardew-valley.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 29;
+        parameter.color = Color.FIREBRICK;
+        MAIN_FONT = generator.generateFont(parameter);
+        generator.dispose();
+    }
+
     private final Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
     static {

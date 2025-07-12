@@ -94,7 +94,7 @@ public class MapController {
                 if (c.energy > player.getEnergy()) {
                     player.setFainted(true);
                     player.setEnergy(player.getEnergy() - c.energy);
-                    TurnController.handleNextTurn(null);
+                    TurnController.handleNextTurn();
                     GameRepo.saveGame(game);
                     return new Resualt(false, "You have fainted");
                 }
