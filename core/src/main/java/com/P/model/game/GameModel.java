@@ -209,4 +209,5 @@ public class GameModel {
             rainDrop.getSprite().draw(Main.getBatch());
         }
     }
+
 }

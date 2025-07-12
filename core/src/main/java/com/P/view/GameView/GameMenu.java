@@ -7,6 +7,9 @@ import com.P.model.game.GameModel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class GameMenu implements Screen {
     private GameView gameView;
@@ -37,9 +40,22 @@ public class GameMenu implements Screen {
     private boolean advancingDay = false;
 
 
+    private Texture overlayTexture;
+    private Sprite overlaySprite;
+
+
+
     public GameMenu(GameController gameController) {
         this.gameController = gameController;
         initializeGame();
+        Pixmap pixmap = new Pixmap(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Pixmap.Format.RGBA8888);
+        pixmap.setColor(0, 0, 0, 1f); // رنگ مشکی، شفافیت کامل
+        pixmap.fill();
+        overlayTexture = new Texture(pixmap);
+        overlaySprite = new Sprite(overlayTexture);
+        overlaySprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        pixmap.dispose();
+
     }
 
     private void initializeGame() {
@@ -106,6 +122,13 @@ public class GameMenu implements Screen {
 //        gameView.render();
 //        gameMenuInputAdapter.update(delta);
         gameController.update();
+        if (App.loggedInUser.getCurrentGame().getDate().toLocalTime().getHour() >= 19) {
+            float hour = App.loggedInUser.getCurrentGame().getDate().toLocalTime().getHour();
+            float alpha = Math.min((hour - 19) / 5f, 0.6f); // حداکثر تیرگی ۰.۶
+            overlaySprite.setAlpha(alpha);
+            overlaySprite.draw(Main.getBatch());
+        }
+
         Main.getBatch().end();
 
         if (isSleeping) {

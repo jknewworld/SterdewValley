@@ -1,6 +1,7 @@
 package com.P.model.Basics;
 
 import com.P.controller.FarmingController;
+import com.P.controller.game.GameController;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import dev.morphia.annotations.Transient;
@@ -53,6 +54,7 @@ public class Game {
 
             weatherToday = weatherTomorrow;
             determineWeatherTomorrow();
+            GameController.advanceToNextDay();
             newDayBackgroundChecks();
 
         }

@@ -19,7 +19,7 @@ public class GameController {
     private boolean escapePressed = false;
     private final Main game;
     private final TurnController mainController;
-    private GameMenu gameMenu;
+    private static GameMenu gameMenu;
     private Table table;
 
     public GameController(Main game, TurnController mainController) {
@@ -53,7 +53,7 @@ public class GameController {
         selectedItem.getFunction().invoke(game, point);
     }
 
-    public void advanceToNextDay() {
+    public static void advanceToNextDay() {
         gameMenu.gameModel.advanceToNextDay();
         gameMenu.startSleepTransition();
     }
