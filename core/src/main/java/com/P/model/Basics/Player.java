@@ -69,7 +69,6 @@ public class Player {
     private GameModel gameModel = null;
 
 
-
     public Player(User user) {
         this.user = user;
         this.energy = 200;
@@ -93,7 +92,7 @@ public class Player {
         this.marriageRequests = new ArrayList<>();
         this.tradeList = new ArrayList<>();
         this.tradeHistory = new ArrayList<>();
-        this.lastPosition = new Position(0, 0);
+        this.lastPosition = new Position(3f, 3f);
 
 
         // Graphic edit
@@ -127,26 +126,36 @@ public class Player {
 
     private float speed = 2f;
     private float vx = 0, vy = 0;
+    private float x = 0, y = 0;
 
-    public void setVelocity(float vx, float vy) {
+    public void setVelocity(float vx, float vy, float x, float y) {
         this.vx = vx;
         this.vy = vy;
+        this.x = x;
+        this.y = y;
     }
 
     public void update(float delta, TileDescriptionId[][] tiles) {
-        tryMove(vx * delta, vy * delta, tiles);
+        tryMove(vx * delta, vy * delta, tiles, x * delta, y * delta);
     }
 
-    public boolean tryMove(float dx, float dy, TileDescriptionId[][] tiles) {
-        int newX = (int) (playerPosition.first + dx);
-        int newY = (int) (playerPosition.second + dy);
+    public boolean tryMove(float dx, float dy, TileDescriptionId[][] tiles, float tx, float ty) {
+//        int newX = (int) ((playerPosition.first.intValue()) + x);
+        /////  int newY = lastPosition.getY() + y;
+//        int newX = (int) (playerPosition.first + dx);
+//        int newY = (int) (playerPosition.second + dy);
+        //  int newY = (int) ((playerPosition.second.intValue()) + y);
+        int newX = (int) (getLastPosition().getFx() + tx);
+        int newY = (int) (getLastPosition().getFy() + ty);
 
         if (newX < 0 || newX >= tiles.length || newY < 0 || newY >= tiles[0].length) return false;
 
         if (tiles[newX][newY] != TileDescriptionId.WATER) {
             playerPosition.first += dx;
             playerPosition.second += dy;
-            System.out.println(newX + " " + newY);
+            getLastPosition().setFx((getLastPosition().getFx() + tx));
+            getLastPosition().setFy((getLastPosition().getFy() + ty));
+            // System.out.println(newX + " " + newY);
             return true;
         }
         System.out.println("Cannot move: Water tile!");

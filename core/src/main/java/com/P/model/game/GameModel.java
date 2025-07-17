@@ -8,6 +8,7 @@ import com.P.model.Basics.User;
 import com.P.model.GameAssetManager;
 import com.P.model.Maps.Farm;
 import com.P.model.Pair;
+import com.P.model.Resualt;
 import com.P.model.item.GrowingCrop;
 import com.P.model.item.TileDescriptionId;
 import com.badlogic.gdx.Gdx;
@@ -18,6 +19,8 @@ import com.badlogic.gdx.utils.Timer;
 import java.awt.*;
 import java.util.*;
 
+import static com.badlogic.gdx.Gdx.app;
+
 public class GameModel {
     private TileDescriptionId[][] tiles;
     private Map<Point, GrowingCrop> growingCrops;
@@ -26,6 +29,8 @@ public class GameModel {
     private final int mapHeight;
     private static OrthographicCamera camera; // Add camera field
     private ArrayList<SpriteMine> rainDrops = new ArrayList<>();
+    private ArrayList<SpriteMine> storms = new ArrayList<>();
+    float delta = 0f;
 
 
     public GameModel(int mapWidth, int mapHeight) {
@@ -66,6 +71,8 @@ public class GameModel {
         Pair<Float, Float> playerPos = player.getPlayerPosition();
         float playerX = playerPos.first * Main.TILE_SIZE;
         float playerY = playerPos.second * Main.TILE_SIZE;
+
+        this.delta+=deltaTime;
 
         float camX = camera.position.x;
         float camY = camera.position.y;
@@ -209,6 +216,5 @@ public class GameModel {
             rainDrop.getSprite().draw(Main.getBatch());
         }
     }
-
 
 }

@@ -10,6 +10,7 @@ import com.P.model.Resualt;
 import com.P.model.enums.GameMenuCommands;
 import com.P.model.enums.Menus;
 import com.P.model.game.GameModel;
+import com.P.model.game.VillageModel;
 import com.P.view.AppView;
 import com.P.view.PlayGame;
 import com.P.view.PreGameView.NewGameView;
@@ -174,6 +175,7 @@ public class TurnController extends ControllersController {
         game.getMap().addFarm(farm);
         player.setFarm(farm);
         player.setGameModel(new GameModel(50, 75));
+        game.setVillageModel(new VillageModel(50,75));
         boolean check = game.cycleToNextPlayer();
         if (check || (cheakNum==4)) {
             isWaitingForChoosingMap = false;

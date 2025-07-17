@@ -7,12 +7,21 @@ public class Position {
     private int x;
     private int y;
 
+    // Graphic
+    private float fx;
+    private float fy;
+
     public Position() {
     }
 
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Position(float x, float y) {
+        this.fx = x;
+        this.fy = y;
     }
 
     public int getX() {
@@ -29,6 +38,22 @@ public class Position {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public float getFx() {
+        return fx;
+    }
+
+    public void setFx(float fx) {
+        this.fx = fx;
+    }
+
+    public float getFy() {
+        return fy;
+    }
+
+    public void setFy(float fy) {
+        this.fy = fy;
     }
 
     public boolean isNextTo(Position position) {

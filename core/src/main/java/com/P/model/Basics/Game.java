@@ -2,13 +2,11 @@ package com.P.model.Basics;
 
 import com.P.controller.FarmingController;
 import com.P.controller.game.GameController;
+import com.P.model.Maps.*;
+import com.P.model.game.VillageModel;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import dev.morphia.annotations.Transient;
-import com.P.model.Maps.Building;
-import com.P.model.Maps.Farm;
-import com.P.model.Maps.Maps;
-import com.P.model.Maps.Position;
 import com.P.model.Objects.*;
 import com.P.model.enums.Season;
 import com.P.model.enums.Weather;
@@ -39,6 +37,7 @@ public class Game {
     private ArrayList<ArrayList<FriendInteraction>> friendMatrix;
     private ArrayList<NPC> npcs;
     private Clock clock;
+    private VillageModel villageModel = null;
 
     @Transient
     private PlayGame gameThread;
@@ -133,6 +132,7 @@ public class Game {
             for (int j = 0; j < players.size(); j++)
                 this.friendMatrix.get(i).add(new FriendInteraction());
         this.npcs = new ArrayList<>();
+
         initializeNPCs();
         //TODO : add npcs & shops
     }
@@ -398,5 +398,13 @@ public class Game {
 
     public void setClock(Clock clock) {
         this.clock = clock;
+    }
+
+    public VillageModel getVillageModel() {
+        return villageModel;
+    }
+
+    public void setVillageModel(VillageModel villageModel) {
+        this.villageModel = villageModel;
     }
 }
