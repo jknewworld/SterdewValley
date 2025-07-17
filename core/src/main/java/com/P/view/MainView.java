@@ -16,10 +16,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -32,6 +29,9 @@ public class MainView implements Screen {
     private TextButton logoutButton;
     private TextButton profileButton;
     private TextButton gameButton;
+    private Texture avatarTexture;
+    private Image avatarImage;
+    private Label nameLabel;
 
     private MainMenuController controller;
 
@@ -40,11 +40,26 @@ public class MainView implements Screen {
         this.backgroundTexture = new Texture("background/mainmenu.png");
         this.backgroundImage = new Image(backgroundTexture);
 
+        this.avatarTexture = new Texture(App.loggedInUser.getAvatar().getIconPath());
+        this.avatarImage = new Image(avatarTexture);
+
+        FreeTypeFontGenerator generator2 = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Scripture.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter2 = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        BitmapFont bigFont2 = generator2.generateFont(parameter2);
+        parameter2.size = 100;
+        bigFont2 = generator2.generateFont(parameter2);
+        generator2.dispose();
+
+        Label.LabelStyle style2 = new Label.LabelStyle(bigFont2, Color.BLUE);
+        this.nameLabel = new Label("", style2);
+
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Scripture.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 100;
         BitmapFont bigFont = generator.generateFont(parameter);
+        bigFont = generator.generateFont(parameter);
         generator.dispose();
+
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = bigFont;
         style.fontColor = Color.NAVY;
@@ -65,6 +80,14 @@ public class MainView implements Screen {
 
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(backgroundImage);
+
+        avatarImage.setPosition(100,700);
+        avatarImage.setSize(200, 200);
+        stage.addActor(avatarImage);
+
+        nameLabel.setPosition(310,750);
+        nameLabel.setText(App.getLoggedInUser().getNickname());
+        stage.addActor(nameLabel);
 
         table.setFillParent(true);
         table.center();
@@ -95,7 +118,7 @@ public class MainView implements Screen {
         profileButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Main.getMain().getScreen().dispose();
+               // Main.getMain().getScreen().dispose();
                 Main.getMain().setScreen(new ProfileView(new ProfileController(), GameAssetManager.getGameAssetManager().getSkin()));
             }
         });

@@ -4,8 +4,11 @@ import com.P.Main;
 import com.P.controller.MainMenuController;
 import com.P.controller.ProfileController;
 import com.P.controller.StartController;
+import com.P.model.Basics.App;
 import com.P.model.GameAssetManager;
+import com.P.model.Repo.UserRepo;
 import com.P.model.Resualt;
+import com.P.model.enums.Avatar;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -36,6 +39,13 @@ public class ProfileView implements Screen {
     private TextField email;
     private TextField nickname;
     private Label message;
+    private Texture avatarTexture;
+    private Image avatarImage;
+    private TextButton profileChange;
+    private Texture profileTexture;
+    private Image profileImage;
+    private SelectBox<String> avatar;
+    private TextButton backButton;
 
     private Label profileData;
 
@@ -45,7 +55,11 @@ public class ProfileView implements Screen {
         this.controller = controller;
         this.backgroundTexture = new Texture("background/profilemenu.png");
         this.backgroundImage = new Image(backgroundTexture);
+        this.profileTexture = new Texture("background/avatar.png");
+        this.profileImage = new Image(profileTexture);
         this.profileData = new Label("", skin);
+        this.avatarTexture = new Texture(App.loggedInUser.getAvatar().getIconPath());
+        this.avatarImage = new Image(avatarTexture);
 
         this.username = new TextField("Change your username", skin);
         this.password = new TextField("Change your password", skin);
@@ -66,26 +80,34 @@ public class ProfileView implements Screen {
         this.emailChange = new TextButton("Change", style);
         this.nicknameChange = new TextButton("Change", style);
 
+
         FreeTypeFontGenerator generator2 = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/IconStart.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter2 = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter2.size = 75;
-        BitmapFont bigFont2 = generator.generateFont(parameter2);
+        BitmapFont bigFont2 = generator2.generateFont(parameter2);
         generator2.dispose();
         Label.LabelStyle style2 = new Label.LabelStyle();
         style2.font = bigFont2;
         style2.fontColor = Color.FIREBRICK;
         this.message = new Label("", style2);
 
+
         FreeTypeFontGenerator generator3 = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Scripture.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter3 = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter3.size = 100;
-        BitmapFont bigFont3 = generator.generateFont(parameter3);
+        BitmapFont bigFont3 = generator3.generateFont(parameter3);
         generator3.dispose();
         TextButton.TextButtonStyle style3 = new TextButton.TextButtonStyle();
         style3.font = bigFont3;
         style3.fontColor = Color.PURPLE;
         style3.overFontColor = Color.PINK;
         this.back = new TextButton("Back", style3);
+        this.profileChange = new TextButton("Change Profile", style3);
+        this.backButton = new TextButton("Back", style3);
+
+        this.avatar = new SelectBox<>(skin);
+        avatar.setItems("Avatar 1", "Avatar 2", "Avatar 3", "Avatar 4", "Avatar 5", "Avatar 6");
+
 
         this.table = new Table();
         this.bunttonTable = new Table();
@@ -112,7 +134,10 @@ public class ProfileView implements Screen {
         style.font = bigFont;
         style.fontColor = Color.NAVY;
         profileData.setStyle(style);
-        profileData.setPosition(100, 500);
+        profileData.setPosition(100, 450);
+        avatarImage.setPosition(100, 750);
+        avatarImage.setSize(200, 200);
+        stage.addActor(avatarImage);
         stage.addActor(profileData);
 
         fieldTable.setFillParent(true);
@@ -133,6 +158,7 @@ public class ProfileView implements Screen {
 
         stage.addActor(fieldTable);
 
+
         bunttonTable.setFillParent(true);
         bunttonTable.right();
         bunttonTable.row().pad(10, 0, 10, 0);
@@ -150,8 +176,11 @@ public class ProfileView implements Screen {
 
         stage.addActor(bunttonTable);
 
-        back.setPosition(1500,100);
+        back.setPosition(1500, 100);
         stage.addActor(back);
+
+        profileChange.setPosition(800, 100);
+        stage.addActor(profileChange);
 
         usernameChange.addListener(new ClickListener() {
             @Override
@@ -223,6 +252,48 @@ public class ProfileView implements Screen {
                 table.clear();
                 Main.getMain().setScreen(new MainView(new MainMenuController(), GameAssetManager.getGameAssetManager().getSkin()));
 
+            }
+        });
+
+        profileChange.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                fieldTable.clear();
+                stage.clear();
+                profileImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                stage.addActor(profileImage);
+
+                avatar.setPosition(100,600);
+                avatar.setWidth(300);
+                avatar.setHeight(70);
+                avatar.setColor(Color.BLUE);
+                stage.addActor(avatar);
+
+                backButton.setPosition(100,400);
+                stage.addActor(backButton);
+
+            }
+        });
+
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if(getAvatar().getSelected().equals("Avatar 1")){
+                    App.loggedInUser.setAvatar(Avatar.ELLIOTT);
+                }else if(getAvatar().getSelected().equals("Avatar 2")){
+                    App.loggedInUser.setAvatar(Avatar.HALEY);
+                }else if(getAvatar().getSelected().equals("Avatar 3")){
+                    App.loggedInUser.setAvatar(Avatar.LEAH);
+                }else if(getAvatar().getSelected().equals("Avatar 4")){
+                    App.loggedInUser.setAvatar(Avatar.ROBIN);
+                }else if(getAvatar().getSelected().equals("Avatar 5")){
+                    App.loggedInUser.setAvatar(Avatar.SEBASTIAN);
+                }else if(getAvatar().getSelected().equals("Avatar 6")){
+                    App.loggedInUser.setAvatar(Avatar.SHANE);
+                }
+                UserRepo.saveUser(App.loggedInUser);
+                // Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new ProfileView(new ProfileController(), GameAssetManager.getGameAssetManager().getSkin()));
             }
         });
 
@@ -394,5 +465,13 @@ public class ProfileView implements Screen {
 
     public void setController(ProfileController controller) {
         this.controller = controller;
+    }
+
+    public SelectBox<String> getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(SelectBox<String> avatar) {
+        this.avatar = avatar;
     }
 }

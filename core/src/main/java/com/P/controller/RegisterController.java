@@ -7,12 +7,14 @@ import com.P.model.Basics.User;
 import com.P.model.Command;
 import com.P.model.Repo.UserRepo;
 import com.P.model.Resualt;
+import com.P.model.enums.Avatar;
 import com.P.model.enums.Menus;
 import com.P.model.enums.SecurityQuestion;
 import com.P.view.SignupView;
 import org.bson.types.ObjectId;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -125,12 +127,25 @@ public class RegisterController extends ControllersController {
             return new Resualt(false, "\n^_^ That username's taken!");
         }
 
+        Random random = new Random();
+        int number = random.nextInt(6) + 1;
+        Avatar avatar = switch (number) {
+            case 1 -> Avatar.ELLIOTT;
+            case 2 -> Avatar.HALEY;
+            case 3 -> Avatar.LEAH;
+            case 4 -> Avatar.ROBIN;
+            case 5 -> Avatar.SEBASTIAN;
+            case 6 -> Avatar.SHANE;
+            default -> null;
+        };
+
         User user = new User(
             gender.equalsIgnoreCase("Female") ? "Male" : gender,
             email,
             nickname,
             Authorization.hashPassword(password),
-            username
+            username,
+            avatar
         );
 
         user.setPassword(password);
@@ -305,7 +320,7 @@ public class RegisterController extends ControllersController {
             UserRepo.saveStayLoggedInUser(user);
         }
         App.setLoggedInUser(user);
-     //   App.setCurrentMenu(Menus.MainMenu);
+        //   App.setCurrentMenu(Menus.MainMenu);
 
         System.out.println("User logged in: " + user.getUsername());
     }
@@ -326,14 +341,14 @@ public class RegisterController extends ControllersController {
 //            "Memory jogger activated for " + user.getUsername() + "!\n" +
 //                "Next step: Prove it's really you by answering your security question\n" +
 //                "Type: 'answer -a <your_answer>' to continue");
-        return  new Resualt(true, "");
+        return new Resualt(true, "");
     }
 
     private static void initiatePasswordRecovery(User user) {
         userOfForgetPassword = user;
         isProgramWaitingForAnswer = true;
 
-       System.out.println("Password recovery initiated for: " + user.getUsername());
+        System.out.println("Password recovery initiated for: " + user.getUsername());
     }
 
     public Resualt handleAnswer() {
