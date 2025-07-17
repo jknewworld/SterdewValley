@@ -120,14 +120,16 @@ public class GameMenu implements Screen {
 //        gameView.render();
 //        gameMenuInputAdapter.update(delta);
         gameController.update();
+        Main.getBatch().end();
+        Main.getBatch().begin();
         if (App.loggedInUser.getCurrentGame().getDate().toLocalTime().getHour() >= 19) {
             float hour = App.loggedInUser.getCurrentGame().getDate().toLocalTime().getHour();
             float alpha = Math.min((hour - 19) / 5f, 0.6f); // حداکثر تیرگی ۰.۶
             overlaySprite.setAlpha(alpha);
             overlaySprite.draw(Main.getBatch());
         }
-
         Main.getBatch().end();
+
 
         if (isSleeping) {
             sleepTimer += delta;
