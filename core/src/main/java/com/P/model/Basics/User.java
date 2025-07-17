@@ -160,6 +160,8 @@ public class User {
     public void setCurrentGame(Game currentGame) {
         this.currentGame = currentGame;
         currentGame.setClock(new Clock());
+        currentGame.getClock().setSeasonSprite();
+        currentGame.getClock().setWeatherSprite();
     }
 
     public void setNumberOfGamesPlayed(int numberOfGamesPlayed) {

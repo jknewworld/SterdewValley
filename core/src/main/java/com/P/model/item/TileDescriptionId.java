@@ -2,7 +2,6 @@ package com.P.model.item;
 
 public enum TileDescriptionId {
     SOIL("game/tiles/soil.png"),
-    GRASS("game/tiles/grass.png"),
     WATER("game/tiles/water.png"),
     SLOT("game/tiles/slot.png"),
     HIGHLIGHT("game/tiles/highlight.png"),
@@ -41,11 +40,20 @@ public enum TileDescriptionId {
     HOUSE15("game/house/15.png"),
     HOUSE16("game/house/16.png"),
 
-    SUMMERTREE("game/tiles/tree/summertree.png"),
-    SPRINGTREE("game/tiles/tree/springtree.png"),
 
-    STONE("game/tiles/stone.png"),
-    WOOD("game/tiles/wood.png"),
+    // Farm
+    TREE1("game/tiles/spring/tree1.png"),
+    TREE2("game/tiles/spring/tree2.png"),
+    STONE("game/tiles/spring/stone.png"),
+    WOOD("game/tiles/spring/wood.png"),
+    GRASS("game/tiles/spring/grass.png"),
+
+    // Village
+    tree1("game/tiles/village/tree1.png"),
+    tree2("game/tiles/village/tree2.png"),
+    stone("game/tiles/village/stone.png"),
+    floor("game/tiles/village/floor.png"),
+
     ;
     final String iconPath;
 
