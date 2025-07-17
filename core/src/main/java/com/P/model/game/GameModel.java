@@ -8,6 +8,7 @@ import com.P.model.Basics.User;
 import com.P.model.GameAssetManager;
 import com.P.model.Maps.Farm;
 import com.P.model.Pair;
+import com.P.model.Resualt;
 import com.P.model.item.GrowingCrop;
 import com.P.model.item.TileDescriptionId;
 import com.badlogic.gdx.Gdx;
@@ -18,6 +19,8 @@ import com.badlogic.gdx.utils.Timer;
 import java.awt.*;
 import java.util.*;
 
+import static com.badlogic.gdx.Gdx.app;
+
 public class GameModel {
     private TileDescriptionId[][] tiles;
     private Map<Point, GrowingCrop> growingCrops;
@@ -26,6 +29,9 @@ public class GameModel {
     private final int mapHeight;
     private static OrthographicCamera camera; // Add camera field
     private ArrayList<SpriteMine> rainDrops = new ArrayList<>();
+    private ArrayList<Sprite> snow = new ArrayList<>();
+    private ArrayList<SpriteMine> storms = new ArrayList<>();
+    float delta = 0f;
 
 
     public GameModel(int mapWidth, int mapHeight) {
@@ -34,17 +40,6 @@ public class GameModel {
         //  tiles = new TileDescriptionId[mapWidth][mapHeight];
         tiles = new TileDescriptionId[50][75];
         initializeTiles();
-
-//        User user = App.getLoggedInUser();
-//        Game game = user.getCurrentGame();
-//        Farm farm = game.getCurrentPlayer().getCurrentFarm(game);
-
-//        TileDescriptionId[][] tiles = new TileDescriptionId[50][75];
-//        User user = App.getLoggedInUser();
-//        Game game = user.getCurrentGame();
-//        Farm farm = game.getCurrentPlayer().getCurrentFarm(game);
-//        tiles=farm.getTiles();
-
 
         growingCrops = new HashMap<>();
         player = new Player(App.getLoggedInUser());// Check It
@@ -62,10 +57,13 @@ public class GameModel {
 
     }
 
+
     public void update(float deltaTime) {
         Pair<Float, Float> playerPos = player.getPlayerPosition();
         float playerX = playerPos.first * Main.TILE_SIZE;
         float playerY = playerPos.second * Main.TILE_SIZE;
+
+        this.delta += deltaTime;
 
         float camX = camera.position.x;
         float camY = camera.position.y;
@@ -182,7 +180,7 @@ public class GameModel {
         for (SpriteMine rainDrop : rainDrops.stream().toList()) {
             if (rand.nextInt(300) == 4) {
                 rainDrop.setMoving(false);
-                Pair<Float,Float> pair = new Pair<>(rainDrop.getSprite().getX(), rainDrop.getSprite().getY());
+                Pair<Float, Float> pair = new Pair<>(rainDrop.getSprite().getX(), rainDrop.getSprite().getY());
                 for (int i = 0; i < 10; i++) {
                     int finalI = i;
                     Timer.schedule(new Timer.Task() {
@@ -210,5 +208,34 @@ public class GameModel {
         }
     }
 
+    public void handleSnowDrops() {
+        Random rand = new Random();
+        if (snow.isEmpty()) {
+            for (int i = 0; i < camera.viewportWidth / GameAssetManager.SNOW.getWidth(); i++) {
+                for (int j = 0; j <= 6 * camera.viewportHeight / GameAssetManager.SNOW.getHeight(); j++) {
+                    Sprite sprite = new Sprite(GameAssetManager.SNOW);
+                    sprite.setScale(1);
+                    sprite.setPosition(
+                        i * sprite.getWidth(),
+                        j * sprite.getHeight() + rand.nextInt((int) sprite.getHeight())
+                    );
+                    snow.add(sprite);
+                }
+            }
+        }
+        float offset = camera.position.x - camera.viewportWidth / 2f;
+        for (Sprite snowDrop : snow.stream().toList()) {
+            snowDrop.setY(snowDrop.getY() - 400 * Gdx.graphics.getDeltaTime());
+            if (snowDrop.getY() + snowDrop.getHeight() < camera.position.y - camera.viewportHeight / 2f - 20) {
+
+                snowDrop.setY(camera.position.y + camera.viewportHeight / 2f);
+
+            }
+            snowDrop.setX(snowDrop.getX() + offset);
+            snowDrop.draw(Main.getBatch());
+            snowDrop.setX(snowDrop.getX() - offset);
+
+        }
+    }
 
 }
