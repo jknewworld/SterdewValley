@@ -1,6 +1,7 @@
 package com.P.model.game;
 
 import com.P.Main;
+import com.P.controller.GameController;
 import com.P.model.Basics.App;
 import com.P.model.Basics.Game;
 import com.P.model.Basics.Player;
@@ -13,11 +14,15 @@ import com.P.model.item.GrowingCrop;
 import com.P.model.item.TileDescriptionId;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Timer;
 
 import java.awt.*;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+
 
 import static com.badlogic.gdx.Gdx.app;
 
@@ -32,6 +37,9 @@ public class GameModel {
     private ArrayList<Sprite> snow = new ArrayList<>();
     private ArrayList<SpriteMine> storms = new ArrayList<>();
     float delta = 0f;
+    private float flashAlpha = 0f; // شفافیت نور
+    private boolean flashActive = false;
+
 
 
     public GameModel(int mapWidth, int mapHeight) {
@@ -238,4 +246,84 @@ public class GameModel {
         }
     }
 
+    public void handleStorms() {
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
+
+        if (rand.nextInt(2000) == 4) {
+            GameController.handleCheatThor(rand.nextInt(50), rand.nextInt(75));
+            flashAlpha = 1f;
+            flashActive = true;
+        }
+
+        if (rand.nextInt(200) == 4) {
+            storms.add(createStormSprite());
+        }
+
+        updateStorms();
+
+        if (delta > 0.3f) {
+            delta = 0f;
+        }
+    }
+
+    private SpriteMine createStormSprite() {
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
+
+        Sprite sprite = new Sprite(
+            GameAssetManager.STORM[rand.nextInt(2)][rand.nextInt(4)]
+        );
+
+        float x = camera.position.x - camera.viewportWidth / 2f + rand.nextFloat(camera.viewportWidth);
+        float y = camera.position.y + camera.viewportHeight / 2f;
+
+        sprite.setPosition(x, y);
+        sprite.setScale(0.938f);
+
+        return new SpriteMine(sprite);
+    }
+
+    private void updateStorms() {
+        Iterator<SpriteMine> iterator = storms.iterator();
+
+        while (iterator.hasNext()) {
+            SpriteMine storm = iterator.next();
+
+            if (delta > 0.1f) {
+                Sprite s = storm.getSprite();
+                s.setY(s.getY() - s.getHeight() / 2.5f);
+
+                if (s.getY() + s.getHeight() < camera.position.y - camera.viewportHeight / 2f - 20) {
+                    iterator.remove();
+                    continue;
+                }
+
+                Sprite newSprite = new Sprite(
+                    GameAssetManager.STORM[ThreadLocalRandom.current().nextInt(2)][ThreadLocalRandom.current().nextInt(4)]
+                );
+                newSprite.setPosition(s.getX(), s.getY());
+                newSprite.setScale(0.938f);
+
+                storm.setSprite(newSprite);
+            }
+
+            storm.getSprite().draw(Main.getBatch());
+        }
+    }
+
+
+    public boolean isFlashActive() {
+        return flashActive;
+    }
+
+    public void setFlashActive(boolean flashActive) {
+        this.flashActive = flashActive;
+    }
+
+    public float getFlashAlpha() {
+        return flashAlpha;
+    }
+
+    public void setFlashAlpha(float flashAlpha) {
+        this.flashAlpha = flashAlpha;
+    }
 }

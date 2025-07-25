@@ -64,11 +64,12 @@ public class GameController {
         Sprite clock = App.getLoggedInUser().getCurrentGame().getClock().updateBatch(Main.getBatch());
         table.setPosition(clock.getX() + clock.getWidth() * 0.3f, clock.getY() - table.getHeight());
 
+        //System.out.println("Weather today: " + App.loggedInUser.getCurrentGame().getWeatherToday().string());
 
         switch (App.loggedInUser.getCurrentGame().getWeatherToday().string()) {
             case "Snow" -> App.loggedInUser.getCurrentGame().getCurrentPlayer().getGameModel().handleSnowDrops();
             case "Rain" -> App.loggedInUser.getCurrentGame().getCurrentPlayer().getGameModel().handleRainDrops();
-            // case Weather.STORM -> handleStorms();
+            case "Storm" -> App.loggedInUser.getCurrentGame().getCurrentPlayer().getGameModel().handleStorms();
         }
     }
 
