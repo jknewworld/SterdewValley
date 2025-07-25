@@ -12,6 +12,7 @@ import com.P.model.enums.Weather;
 import com.P.model.game.GameModel;
 import com.P.model.game.VillageModel;
 import com.P.model.item.ItemDescriptionId;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -80,6 +81,12 @@ public class GameMenuInputAdapter extends InputAdapter {
         if (keycode == Input.Keys.MINUS) {
             GameMenu.isVillage = false;
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
+          //  Main.getMain().setScreen(new MiniGame());
+        }
+
+
         return true;
     }
 

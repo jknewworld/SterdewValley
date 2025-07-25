@@ -177,6 +177,8 @@ public enum Ingredients {
     Raisins("raisin", IngredientsTypes.food,600, 125),
     Cloth("cloth", IngredientsTypes.junk, 470,0),
 
+
+    // Fishhhhhhhhhhhhhhhh
     Flounder("Flounder", IngredientsTypes.fish, 100, 0),
     LionFish("LionFish", IngredientsTypes.fish, 100, 0),
     Herring("Herring", IngredientsTypes.fish, 30, 0),

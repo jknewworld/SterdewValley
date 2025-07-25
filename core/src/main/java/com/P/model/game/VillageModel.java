@@ -40,16 +40,6 @@ public class VillageModel {
         tiles = new TileDescriptionId[50][75];
         initializeTiles();
 
-//        User user = App.getLoggedInUser();
-//        Game game = user.getCurrentGame();
-//        Farm farm = game.getCurrentPlayer().getCurrentFarm(game);
-
-//        TileDescriptionId[][] tiles = new TileDescriptionId[50][75];
-//        User user = App.getLoggedInUser();
-//        Game game = user.getCurrentGame();
-//        Farm farm = game.getCurrentPlayer().getCurrentFarm(game);
-//        tiles=farm.getTiles();
-
 
         growingCrops = new HashMap<>();
         player = new Player(App.getLoggedInUser());// Check It

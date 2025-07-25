@@ -1,6 +1,6 @@
 package com.P.model.Animals;
 
-public enum FishType {
+public enum FishGame {
     MIXED,
     SMOOTH,
     SINKER,

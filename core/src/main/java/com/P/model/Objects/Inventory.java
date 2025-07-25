@@ -27,8 +27,8 @@ public class Inventory {
     private String level = "initial";
     private int capacity = 0;
 
-//    public Inventory() {
-//    }
+    public Inventory() {
+    }
 
     public int getCapacity() {
         if (level.equals("initial")) return 12 + capacity;

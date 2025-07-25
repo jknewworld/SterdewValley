@@ -6,16 +6,15 @@ package com.P.model.Basics;
 import com.P.model.Basics.User;
 import com.P.model.Maps.Farm;
 import com.P.model.Maps.Position;
-import com.P.model.Objects.Inventory;
-import com.P.model.Objects.Tool;
+import com.P.model.Objects.*;
 import com.P.model.Pair;
 import com.P.model.enums.*;
-import com.P.model.Objects.Shop;
-import com.P.model.Objects.ShippingBin;
-import com.P.model.Objects.Trade;
 import com.P.model.game.GameModel;
 import com.P.model.item.ItemDescriptionId;
 import com.P.model.item.TileDescriptionId;
+import com.P.view.GameView.MiniGame;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector3;
 import dev.morphia.annotations.Embedded;
 import dev.morphia.annotations.Transient;
 
@@ -67,6 +66,8 @@ public class Player {
     private int selectedSlot = -1;
     private int movingDirection = 0;
     private GameModel gameModel = null;
+    private MiniGame miniGame;
+    private boolean isFishing = false;
 
 
     public Player(User user) {
@@ -158,9 +159,11 @@ public class Player {
             // System.out.println(newX + " " + newY);
             return true;
         }
+        setFishing(true);
         System.out.println("Cannot move: Water tile!");
         return false;
     }
+
 
     public Map<ItemDescriptionId, Pair<Integer, Integer>> getInventoryForMap() {
         return inventoryForMap;
@@ -550,5 +553,73 @@ public class Player {
 
     public void setGameModel(GameModel gameModel) {
         this.gameModel = gameModel;
+    }
+
+    public void setTalkHistory(ArrayList<ArrayList<String>> talkHistory) {
+        this.talkHistory = talkHistory;
+    }
+
+    public void setInbox(ArrayList<String> inbox) {
+        this.inbox = inbox;
+    }
+
+    public void setGiftHistory(ArrayList<ArrayList<String>> giftHistory) {
+        this.giftHistory = giftHistory;
+    }
+
+    public void setReceivedGifts(ArrayList<String> receivedGifts) {
+        this.receivedGifts = receivedGifts;
+    }
+
+    public void setMarriageRequests(ArrayList<String> marriageRequests) {
+        this.marriageRequests = marriageRequests;
+    }
+
+    public void setTradeList(ArrayList<Trade> tradeList) {
+        this.tradeList = tradeList;
+    }
+
+    public void setTradeHistory(ArrayList<Trade> tradeHistory) {
+        this.tradeHistory = tradeHistory;
+    }
+
+    public void setInventoryForMap(Map<ItemDescriptionId, Pair<Integer, Integer>> inventoryForMap) {
+        this.inventoryForMap = inventoryForMap;
+    }
+
+    public void setPlayerPosition(Pair<Float, Float> playerPosition) {
+        this.playerPosition = playerPosition;
+    }
+
+    public Stack<Integer> getFreeIndexes() {
+        return freeIndexes;
+    }
+
+    public void setFreeIndexes(Stack<Integer> freeIndexes) {
+        this.freeIndexes = freeIndexes;
+    }
+
+    public MiniGame getMiniGame() {
+        return miniGame;
+    }
+
+    public void setMiniGame(MiniGame miniGame) {
+        this.miniGame = miniGame;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public float getVx() {
+        return vx;
+    }
+
+    public boolean isFishing() {
+        return isFishing;
+    }
+
+    public void setFishing(boolean fishing) {
+        isFishing = fishing;
     }
 }

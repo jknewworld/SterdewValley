@@ -23,6 +23,7 @@ public class GameController {
     private final TurnController mainController;
     private static GameMenu gameMenu;
     private Table table;
+    private final FishingController fishingController = new FishingController();
 
     public GameController(Main game, TurnController mainController) {
         this.game = game;
@@ -61,6 +62,7 @@ public class GameController {
     }
 
     public void update() {
+        fishingController.update();
         Sprite clock = App.getLoggedInUser().getCurrentGame().getClock().updateBatch(Main.getBatch());
         table.setPosition(clock.getX() + clock.getWidth() * 0.3f, clock.getY() - table.getHeight());
 
@@ -71,6 +73,7 @@ public class GameController {
             case "Rain" -> App.loggedInUser.getCurrentGame().getCurrentPlayer().getGameModel().handleRainDrops();
             case "Storm" -> App.loggedInUser.getCurrentGame().getCurrentPlayer().getGameModel().handleStorms();
         }
+
     }
 
 
