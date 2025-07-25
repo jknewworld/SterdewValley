@@ -357,9 +357,11 @@ public class GameView {
     }
 
     public void render() {
+
         batch.setProjectionMatrix(game.getCamera().combined);
         handleAltKey();
         batch.begin();
+
         if (!isVillage) {
             renderTiles();
             renderHouse();
@@ -369,7 +371,32 @@ public class GameView {
             renderScarecrow();
             renderScarecrowInfo();
             renderFish();
-        } else {
+        }
+
+        if (game.isFlashActive()) {
+            batch.end();
+
+            batch.setProjectionMatrix(new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+            batch.begin();
+
+            batch.setColor(1f, 1f, 1f, game.getFlashAlpha());
+            batch.draw(pixel, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            batch.setColor(1f, 1f, 1f, 1f);
+
+            game.setFlashAlpha(game.getFlashAlpha() - Gdx.graphics.getDeltaTime() * 2f);
+            if (game.getFlashAlpha() <= 0f) {
+                game.setFlashAlpha(0f);
+                game.setFlashActive(false);
+            }
+
+            batch.end();
+
+            // 🔁 برگرداندن پروجکشن اصلی دوربین برای ادامه رسم:
+            batch.setProjectionMatrix(game.getCamera().combined);
+            batch.begin();
+        }
+
+        if (isVillage) {
             renderVillegeTiles();
             smithRender();
             ranchRender();
@@ -378,8 +405,10 @@ public class GameView {
             jojaRender();
             storeRender();
         }
+
         renderPlayer();
         batch.end();
+
     }
 
     private void renderFish(){

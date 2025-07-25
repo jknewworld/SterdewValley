@@ -274,8 +274,7 @@ public class Game {
     }
 
     public void newDayBackgroundChecks() {
-        App.getLoggedInUser().getCurrentGame().getClock().setWeatherSprite();
-        App.getLoggedInUser().getCurrentGame().getClock().setSeasonSprite();
+
         for (Player player : players) {
             if (player.isFainted()) {
                 player.setFainted(false);
@@ -288,7 +287,9 @@ public class Game {
 
         FarmingController.GoodNightFarm();
 
-        weatherToday = weatherTomorrow;
+       // weatherToday = weatherTomorrow;
+       setWeatherToday(weatherTomorrow);
+     //  System.out.println("TOMOPRROW" + weatherTomorrow);
 
         determineAndSetWeatherTomorrow();
 
@@ -328,6 +329,8 @@ public class Game {
         // npcGiveReward(this);
 
         //  handleArtisanUse();
+        App.getLoggedInUser().getCurrentGame().getClock().setWeatherSprite();
+        App.getLoggedInUser().getCurrentGame().getClock().setSeasonSprite();
     }
 
     private void determineAndSetWeatherTomorrow() {
