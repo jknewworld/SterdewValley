@@ -166,9 +166,9 @@ public class GameController extends ControllersController {
     }
 
     //New Jasmin
-    public static Resualt handleCheatThor(Command request) {
-        int targetX = Integer.parseInt(request.body.get("x"));
-        int targetY = Integer.parseInt(request.body.get("y"));
+    public static Resualt handleCheatThor(int x,int y) {
+        int targetX = x;
+        int targetY = y;
 
         if (targetX >= 75 || targetY >= 50 || targetX < 0 || targetY < 0) {
             return new Resualt(false, "Coordinates out of bounds.");

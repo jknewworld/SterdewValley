@@ -1,6 +1,7 @@
 package com.P.model.game;
 
 import com.P.Main;
+import com.P.controller.GameController;
 import com.P.model.Basics.App;
 import com.P.model.Basics.Game;
 import com.P.model.Basics.Player;
@@ -13,11 +14,15 @@ import com.P.model.item.GrowingCrop;
 import com.P.model.item.TileDescriptionId;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Timer;
 
 import java.awt.*;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+
 
 import static com.badlogic.gdx.Gdx.app;
 
@@ -29,8 +34,12 @@ public class GameModel {
     private final int mapHeight;
     private static OrthographicCamera camera; // Add camera field
     private ArrayList<SpriteMine> rainDrops = new ArrayList<>();
+    private ArrayList<Sprite> snow = new ArrayList<>();
     private ArrayList<SpriteMine> storms = new ArrayList<>();
     float delta = 0f;
+    private float flashAlpha = 0f; // شفافیت نور
+    private boolean flashActive = false;
+
 
 
     public GameModel(int mapWidth, int mapHeight) {
@@ -39,17 +48,6 @@ public class GameModel {
         //  tiles = new TileDescriptionId[mapWidth][mapHeight];
         tiles = new TileDescriptionId[50][75];
         initializeTiles();
-
-//        User user = App.getLoggedInUser();
-//        Game game = user.getCurrentGame();
-//        Farm farm = game.getCurrentPlayer().getCurrentFarm(game);
-
-//        TileDescriptionId[][] tiles = new TileDescriptionId[50][75];
-//        User user = App.getLoggedInUser();
-//        Game game = user.getCurrentGame();
-//        Farm farm = game.getCurrentPlayer().getCurrentFarm(game);
-//        tiles=farm.getTiles();
-
 
         growingCrops = new HashMap<>();
         player = new Player(App.getLoggedInUser());// Check It
@@ -67,12 +65,13 @@ public class GameModel {
 
     }
 
+
     public void update(float deltaTime) {
         Pair<Float, Float> playerPos = player.getPlayerPosition();
         float playerX = playerPos.first * Main.TILE_SIZE;
         float playerY = playerPos.second * Main.TILE_SIZE;
 
-        this.delta+=deltaTime;
+        this.delta += deltaTime;
 
         float camX = camera.position.x;
         float camY = camera.position.y;
@@ -189,7 +188,7 @@ public class GameModel {
         for (SpriteMine rainDrop : rainDrops.stream().toList()) {
             if (rand.nextInt(300) == 4) {
                 rainDrop.setMoving(false);
-                Pair<Float,Float> pair = new Pair<>(rainDrop.getSprite().getX(), rainDrop.getSprite().getY());
+                Pair<Float, Float> pair = new Pair<>(rainDrop.getSprite().getX(), rainDrop.getSprite().getY());
                 for (int i = 0; i < 10; i++) {
                     int finalI = i;
                     Timer.schedule(new Timer.Task() {
@@ -217,4 +216,114 @@ public class GameModel {
         }
     }
 
+    public void handleSnowDrops() {
+        Random rand = new Random();
+        if (snow.isEmpty()) {
+            for (int i = 0; i < camera.viewportWidth / GameAssetManager.SNOW.getWidth(); i++) {
+                for (int j = 0; j <= 6 * camera.viewportHeight / GameAssetManager.SNOW.getHeight(); j++) {
+                    Sprite sprite = new Sprite(GameAssetManager.SNOW);
+                    sprite.setScale(1);
+                    sprite.setPosition(
+                        i * sprite.getWidth(),
+                        j * sprite.getHeight() + rand.nextInt((int) sprite.getHeight())
+                    );
+                    snow.add(sprite);
+                }
+            }
+        }
+        float offset = camera.position.x - camera.viewportWidth / 2f;
+        for (Sprite snowDrop : snow.stream().toList()) {
+            snowDrop.setY(snowDrop.getY() - 400 * Gdx.graphics.getDeltaTime());
+            if (snowDrop.getY() + snowDrop.getHeight() < camera.position.y - camera.viewportHeight / 2f - 20) {
+
+                snowDrop.setY(camera.position.y + camera.viewportHeight / 2f);
+
+            }
+            snowDrop.setX(snowDrop.getX() + offset);
+            snowDrop.draw(Main.getBatch());
+            snowDrop.setX(snowDrop.getX() - offset);
+
+        }
+    }
+
+    public void handleStorms() {
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
+
+        if (rand.nextInt(2000) == 4) {
+            GameController.handleCheatThor(rand.nextInt(50), rand.nextInt(75));
+            flashAlpha = 1f;
+            flashActive = true;
+        }
+
+        if (rand.nextInt(200) == 4) {
+            storms.add(createStormSprite());
+        }
+
+        updateStorms();
+
+        if (delta > 0.3f) {
+            delta = 0f;
+        }
+    }
+
+    private SpriteMine createStormSprite() {
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
+
+        Sprite sprite = new Sprite(
+            GameAssetManager.STORM[rand.nextInt(2)][rand.nextInt(4)]
+        );
+
+        float x = camera.position.x - camera.viewportWidth / 2f + rand.nextFloat(camera.viewportWidth);
+        float y = camera.position.y + camera.viewportHeight / 2f;
+
+        sprite.setPosition(x, y);
+        sprite.setScale(0.938f);
+
+        return new SpriteMine(sprite);
+    }
+
+    private void updateStorms() {
+        Iterator<SpriteMine> iterator = storms.iterator();
+
+        while (iterator.hasNext()) {
+            SpriteMine storm = iterator.next();
+
+            if (delta > 0.1f) {
+                Sprite s = storm.getSprite();
+                s.setY(s.getY() - s.getHeight() / 2.5f);
+
+                if (s.getY() + s.getHeight() < camera.position.y - camera.viewportHeight / 2f - 20) {
+                    iterator.remove();
+                    continue;
+                }
+
+                Sprite newSprite = new Sprite(
+                    GameAssetManager.STORM[ThreadLocalRandom.current().nextInt(2)][ThreadLocalRandom.current().nextInt(4)]
+                );
+                newSprite.setPosition(s.getX(), s.getY());
+                newSprite.setScale(0.938f);
+
+                storm.setSprite(newSprite);
+            }
+
+            storm.getSprite().draw(Main.getBatch());
+        }
+    }
+
+
+    public boolean isFlashActive() {
+        return flashActive;
+    }
+
+    public void setFlashActive(boolean flashActive) {
+        this.flashActive = flashActive;
+    }
+
+    public float getFlashAlpha() {
+        return flashAlpha;
+    }
+
+    public void setFlashAlpha(float flashAlpha) {
+        this.flashAlpha = flashAlpha;
+    }
 }

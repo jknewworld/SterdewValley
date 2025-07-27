@@ -1,6 +1,8 @@
 package com.P.view.GameView;
 
 import com.P.Main;
+import com.P.model.Animals.Fish;
+import com.P.model.Animals.FishType;
 import com.P.model.Basics.App;
 import com.P.model.Basics.Game;
 import com.P.model.Basics.Player;
@@ -15,16 +17,30 @@ import com.P.model.item.GrowingCrop;
 import com.P.model.item.ItemDescriptionId;
 import com.P.model.item.TileDescriptionId;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.math.Rectangle;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+
+import static javax.swing.JColorChooser.showDialog;
 
 public class GameView {
     private GameModel game;
@@ -34,6 +50,8 @@ public class GameView {
     private Map<String, TextureRegion> textures;
     private BitmapFont smallFont;
     private GlyphLayout layout = new GlyphLayout();
+
+    // Charecters
     private TextureAtlas playerAtlas;
     private final ArrayList<Animation<TextureRegion>> playerAnimations = new ArrayList<>();
     private TextureAtlas haleyAtlas;
@@ -48,11 +66,31 @@ public class GameView {
     private final ArrayList<Animation<TextureRegion>> shaneAnimations = new ArrayList<>();
     private TextureAtlas robinAtlas;
     private final ArrayList<Animation<TextureRegion>> robinAnimations = new ArrayList<>();
+
     private float stateTime = 0f;
     private int moveDirection = 0;
     private Texture pixel; // Add this
     private float faintStateTime = 0f;
     private boolean isVillage = false;
+    private boolean isGreenHouseOkey = false;
+    private Stage stage;
+
+    // Fishinf
+    private ArrayList<Fish> fishList;
+    private Rectangle waterBounds;
+    Texture fishMixedTexture = new Texture(Gdx.files.internal("game/animals/fish/mixed.png"));
+    Texture fishSmoothTexture = new Texture(Gdx.files.internal("game/animals/fish/smooth.png"));
+    Texture fishSinkerTexture = new Texture(Gdx.files.internal("game/animals/fish/sinker.png"));
+    Texture fishFloaterTexture = new Texture(Gdx.files.internal("game/animals/fish/floater.png"));
+    Texture fishDartTexture = new Texture(Gdx.files.internal("game/animals/fish/dart.png"));
+
+
+    private Texture scarecrowTexture;
+    private Texture scarecrowInfoTexture;
+    private boolean isScarecrowInfoVisible = false;
+
+    private final int scarecrowTileX = 2;
+    private final int scarecrowTileY = 22;
 
 
     private void loadFont() {
@@ -68,6 +106,8 @@ public class GameView {
         batch = new SpriteBatch();
         loadTextures();
         loadFont();
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
     }
 
     public GameView(VillageModel village) {
@@ -76,6 +116,8 @@ public class GameView {
         loadTextures();
         loadFont();
         isVillage = true;
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
     }
 
 
@@ -95,6 +137,7 @@ public class GameView {
             textures.put(cs.name(), new TextureRegion(new Texture(Gdx.files.internal(path))));
         }
 
+        // Charecters
         playerAtlas = new TextureAtlas(Gdx.files.internal("game/character/sprites_player.atlas"));
         haleyAtlas = new TextureAtlas(Gdx.files.internal("game/character/Haley/sprites_Haley.atlas"));
         leahAtlas = new TextureAtlas(Gdx.files.internal("game/character/Leah/sprites_Leah.atlas"));
@@ -216,36 +259,43 @@ public class GameView {
             robinAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
         }
 
+        // HOUSE
         textures.put("SPRING_HOUSE", new TextureRegion(new Texture(Gdx.files.internal("game\\house\\house\\1.png"))));
         textures.put("SUMMER_HOUSE", new TextureRegion(new Texture(Gdx.files.internal("game\\house\\house\\2.png"))));
         textures.put("FALL_HOUSE", new TextureRegion(new Texture(Gdx.files.internal("game\\house\\house\\3.png"))));
         textures.put("WINTER_HOUSE", new TextureRegion(new Texture(Gdx.files.internal("game\\house\\house\\4.png"))));
 
+        // TREE1
         textures.put("TREE1_SPRING", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/spring/tree1.png"))));
         textures.put("TREE1_SUMMER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/summer/tree1.png"))));
         textures.put("TREE1_FALL", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/fall/tree1.png"))));
         textures.put("TREE1_WINTER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/winter/tree1.png"))));
 
+        // TREE2
         textures.put("TREE2_SPRING", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/spring/tree2.png"))));
         textures.put("TREE2_SUMMER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/summer/tree2.png"))));
         textures.put("TREE2_FALL", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/fall/tree2.png"))));
         textures.put("TREE2_WINTER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/winter/tree2.png"))));
 
+        // GRASS
         textures.put("GRASS_SPRING", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/spring/grass.png"))));
         textures.put("GRASS_SUMMER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/summer/grass.png"))));
         textures.put("GRASS_FALL", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/fall/grass.png"))));
         textures.put("GRASS_WINTER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/winter/grass.png"))));
 
+        // WOOD
         textures.put("WOOD_SPRING", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/spring/wood.png"))));
         textures.put("WOOD_SUMMER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/summer/wood.png"))));
         textures.put("WOOD_FALL", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/fall/wood.png"))));
         textures.put("WOOD_WINTER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/winter/wood.png"))));
 
+        // STONE
         textures.put("STONE_SPRING", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/spring/stone.png"))));
         textures.put("STONE_SUMMER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/summer/stone.png"))));
         textures.put("STONE_FALL", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/fall/stone.png"))));
         textures.put("STONE_WINTER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/winter/stone.png"))));
 
+        // VILLAGE
         textures.put("SMITH", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/village/blackSmith.png"))));
         textures.put("RANCH", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/village/marnieRanch.png"))));
         textures.put("SALOON", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/village/stardropSaloon.png"))));
@@ -253,6 +303,18 @@ public class GameView {
         textures.put("JOJA", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/village/jojaMart.png"))));
         textures.put("STORE", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/village/pierreGeneralStore.png"))));
 
+        // GREENHOUSE
+        textures.put("BROKEN_GREENHOUSE", new TextureRegion(new Texture(Gdx.files.internal("game/greenhouse/Broken_Greenhouse.png"))));
+        textures.put("SCARECROW", new TextureRegion(new Texture(Gdx.files.internal("game/greenhouse/question.png"))));
+        textures.put("SCARECROW_INFO", new TextureRegion(new Texture(Gdx.files.internal("game/greenhouse/command.png"))));
+
+        // FISHING
+        waterBounds = new Rectangle(21 * Main.TILE_SIZE,
+            21 * Main.TILE_SIZE,
+            8 * Main.TILE_SIZE,
+            4 * Main.TILE_SIZE);
+
+        initFishes();
 
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(0, 0, 0, 1);
@@ -261,14 +323,80 @@ public class GameView {
         pixmap.dispose();
     }
 
+    Array<Fish> fishes = new Array<>();
+
+    public void initFishes() {
+        for (int i = 0; i < 10; i++) {
+            float x = MathUtils.random(waterBounds.x, waterBounds.x + waterBounds.width - 32);
+            float y = MathUtils.random(waterBounds.y, waterBounds.y + waterBounds.height - 32);
+
+            FishType type = FishType.values()[i % 5];
+            Texture texture;
+            switch (type) {
+                case MIXED:
+                    texture = fishMixedTexture;
+                    break;
+                case SMOOTH:
+                    texture = fishSmoothTexture;
+                    break;
+                case SINKER:
+                    texture = fishSinkerTexture;
+                    break;
+                case FLOATER:
+                    texture = fishFloaterTexture;
+                    break;
+                case DART:
+                    texture = fishDartTexture;
+                    break;
+                default:
+                    texture = fishMixedTexture;
+            }
+
+            fishes.add(new Fish(texture, x, y, type, texture));
+        }
+    }
 
     public void render() {
+
         batch.setProjectionMatrix(game.getCamera().combined);
+        handleAltKey();
         batch.begin();
+
         if (!isVillage) {
             renderTiles();
             renderHouse();
-        } else {
+            if (!isGreenHouseOkey) {
+                renderBrokenGreenHouse();
+            }
+            renderScarecrow();
+            renderScarecrowInfo();
+            renderFish();
+        }
+
+        if (game.isFlashActive()) {
+            batch.end();
+
+            batch.setProjectionMatrix(new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+            batch.begin();
+
+            batch.setColor(1f, 1f, 1f, game.getFlashAlpha());
+            batch.draw(pixel, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            batch.setColor(1f, 1f, 1f, 1f);
+
+            game.setFlashAlpha(game.getFlashAlpha() - Gdx.graphics.getDeltaTime() * 2f);
+            if (game.getFlashAlpha() <= 0f) {
+                game.setFlashAlpha(0f);
+                game.setFlashActive(false);
+            }
+
+            batch.end();
+
+            // 🔁 برگرداندن پروجکشن اصلی دوربین برای ادامه رسم:
+            batch.setProjectionMatrix(game.getCamera().combined);
+            batch.begin();
+        }
+
+        if (isVillage) {
             renderVillegeTiles();
             smithRender();
             ranchRender();
@@ -277,9 +405,72 @@ public class GameView {
             jojaRender();
             storeRender();
         }
+
         renderPlayer();
         batch.end();
+
     }
+
+    private void renderFish(){
+        for (Fish fish : fishes) {
+            float camX = game.getCamera().position.x;
+            float camY = game.getCamera().position.y;
+            float viewportWidth = game.getCamera().viewportWidth;
+            float viewportHeight = game.getCamera().viewportHeight;
+
+            float cameraLeft = camX - viewportWidth / 2;
+            float cameraBottom = camY - viewportHeight / 2;
+
+            float drawX = fish.getPosition().x  - cameraLeft;
+            float drawY = fish.getPosition().y - cameraBottom;
+            fish.update(Gdx.graphics.getDeltaTime(), waterBounds);
+            batch.draw(fish.getFishTexture(), drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE);
+        }
+    }
+
+    private void handleAltKey() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.ALT_RIGHT)) {
+            isScarecrowInfoVisible = !isScarecrowInfoVisible;
+        }
+    }
+
+
+
+
+    private void renderScarecrow() {
+        float camX = game.getCamera().position.x;
+        float camY = game.getCamera().position.y;
+        float viewportWidth = game.getCamera().viewportWidth;
+        float viewportHeight = game.getCamera().viewportHeight;
+
+        float cameraLeft = camX - viewportWidth / 2;
+        float cameraBottom = camY - viewportHeight / 2;
+
+        float drawX = scarecrowTileX * Main.TILE_SIZE - cameraLeft;
+        float drawY = scarecrowTileY * Main.TILE_SIZE - cameraBottom;
+        TextureRegion houseTexture = textures.get("SCARECROW");
+
+        batch.draw(houseTexture, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE * 2);
+    }
+
+    private void renderScarecrowInfo() {
+        if (!isScarecrowInfoVisible) return;
+        float camX = game.getCamera().position.x;
+        float camY = game.getCamera().position.y;
+        float viewportWidth = game.getCamera().viewportWidth;
+        float viewportHeight = game.getCamera().viewportHeight;
+        int x = 2; // جای دلخواه روی صفحه
+        int y = 24;
+        float cameraLeft = camX - viewportWidth / 2;
+        float cameraBottom = camY - viewportHeight / 2;
+
+        float drawX = x * Main.TILE_SIZE - cameraLeft;
+        float drawY = y * Main.TILE_SIZE - cameraBottom;
+
+        TextureRegion houseTexture = textures.get("SCARECROW_INFO");
+        batch.draw(houseTexture, drawX, drawY, 300, 200); // اندازه دلخواه
+    }
+
 
     private void renderVillegeTiles() {
         TileDescriptionId[][] tiles = village.getTiles();
@@ -355,10 +546,37 @@ public class GameView {
             float drawX = houseTileX * tileSize - cameraLeft;
             float drawY = houseTileY * tileSize - cameraBottom;
 
-            batch.draw(houseTexture, drawX, drawY, tileSize * 5, tileSize * 7); // فرض شده خانه 2x2 کاشی است
+            batch.draw(houseTexture, drawX, drawY, tileSize * 5, tileSize * 7);
         }
     }
 
+    // GREENHOUSE
+    private void renderBrokenGreenHouse() {
+        TextureRegion houseTexture = textures.get("BROKEN_GREENHOUSE");
+
+        if (houseTexture != null) {
+            int tileSize = Main.TILE_SIZE;
+
+            int houseTileX = 3;
+            int houseTileY = 22;
+
+            float camX = game.getCamera().position.x;
+            float camY = game.getCamera().position.y;
+            float viewportWidth = game.getCamera().viewportWidth;
+            float viewportHeight = game.getCamera().viewportHeight;
+
+            float cameraLeft = camX - viewportWidth / 2;
+            float cameraBottom = camY - viewportHeight / 2;
+
+            float drawX = houseTileX * tileSize - cameraLeft;
+            float drawY = houseTileY * tileSize - cameraBottom;
+
+            batch.draw(houseTexture, drawX, drawY, tileSize * 4, tileSize * 4);
+        }
+
+    }
+
+    // VILLAGE
     private void smithRender() {
         TextureRegion houseTexture = textures.get("SMITH");
         int tileSize = Main.TILE_SIZE;
@@ -377,7 +595,7 @@ public class GameView {
         float drawX = houseTileX * tileSize - cameraLeft;
         float drawY = houseTileY * tileSize - cameraBottom;
 
-        batch.draw(houseTexture, drawX, drawY, tileSize * 5, tileSize * 4); // فرض شده خانه 2x2 کاشی است
+        batch.draw(houseTexture, drawX, drawY, tileSize * 5, tileSize * 4);
 
     }
 
@@ -399,7 +617,7 @@ public class GameView {
         float drawX = houseTileX * tileSize - cameraLeft;
         float drawY = houseTileY * tileSize - cameraBottom;
 
-        batch.draw(houseTexture, drawX, drawY, tileSize * 5, tileSize * 4); // فرض شده خانه 2x2 کاشی است
+        batch.draw(houseTexture, drawX, drawY, tileSize * 5, tileSize * 4);
 
     }
 
@@ -421,7 +639,7 @@ public class GameView {
         float drawX = houseTileX * tileSize - cameraLeft;
         float drawY = houseTileY * tileSize - cameraBottom;
 
-        batch.draw(houseTexture, drawX, drawY, tileSize * 4, tileSize * 5); // فرض شده خانه 2x2 کاشی است
+        batch.draw(houseTexture, drawX, drawY, tileSize * 4, tileSize * 5);
 
     }
 
@@ -443,7 +661,7 @@ public class GameView {
         float drawX = houseTileX * tileSize - cameraLeft;
         float drawY = houseTileY * tileSize - cameraBottom;
 
-        batch.draw(houseTexture, drawX, drawY, tileSize * 6, tileSize * 7); // فرض شده خانه 2x2 کاشی است
+        batch.draw(houseTexture, drawX, drawY, tileSize * 6, tileSize * 7);
 
     }
 
@@ -491,6 +709,7 @@ public class GameView {
 
     }
 
+    // TILES
     private void renderTiles() {
         TileDescriptionId[][] tiles = game.getTiles();
 
@@ -514,8 +733,6 @@ public class GameView {
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
                 TileDescriptionId id = tiles[x][y];
-                if (tiles[x][y] == TileDescriptionId.WATER) {
-                }
                 if (id != null) {
                     float drawX = x * tileSize - cameraLeft;
                     float drawY = y * tileSize - cameraBottom;
@@ -644,7 +861,7 @@ public class GameView {
         batch.setColor(1f, 1f, 1f, 1f);
     }
 
-
+    // PLAYER
     private void renderPlayer() {
         Pair<Float, Float> pos;
         if (!isVillage)
@@ -709,17 +926,11 @@ public class GameView {
         }
 
         TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
-//        if (o.getEnergy() == 0) {
-//            currentFrame = currentAnimation.getKeyFrame(stateTime, /* looping= */ false);
-//            stateTime += Gdx.graphics.getDeltaTime();
-//        }
 
         if (isFainting) {
             currentFrame = currentAnimation.getKeyFrame(faintStateTime, false); // فقط یک بار اجرا بشه
         }
 
-
-//        System.out.println(pos.first + " " + pos.second);
         if (o.getEnergy() == 0) {
             batch.draw(currentFrame, pos.first * Main.TILE_SIZE, pos.second * Main.TILE_SIZE, 100, 100);
         } else
@@ -729,7 +940,7 @@ public class GameView {
             renderInventory();
     }
 
-
+    // INVENTORY
     private void renderInventory() {
         Player player = game.getPlayer();
         Map<ItemDescriptionId, Pair<Integer, Integer>> inventoryForMap = player.getInventoryForMap();
@@ -785,4 +996,11 @@ public class GameView {
         return pixel;
     }
 
+    public boolean isGreenHouseOkey() {
+        return isGreenHouseOkey;
+    }
+
+    public void setGreenHouseOkey(boolean greenHouseOkey) {
+        isGreenHouseOkey = greenHouseOkey;
+    }
 }

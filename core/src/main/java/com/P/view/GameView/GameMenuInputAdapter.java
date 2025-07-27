@@ -64,7 +64,14 @@ public class GameMenuInputAdapter extends InputAdapter {
         }
 
         if (keycode == Input.Keys.SPACE) {
-            App.getLoggedInUser().getCurrentGame().setSeason(Season.AUTUMN);
+            App.getLoggedInUser().getCurrentGame().setSeason(Season.WINTER);
+            App.getLoggedInUser().getCurrentGame().getClock().setSeasonSprite();
+        }
+
+        if(keycode == Input.Keys.L) {
+            App.getLoggedInUser().getCurrentGame().setWeatherToday(Weather.STORM);
+            App.getLoggedInUser().getCurrentGame().getClock().setWeatherSprite();
+          //  System.out.println(App.getLoggedInUser().getCurrentGame().getWeatherTomorrow());
         }
 
         if (keycode == Input.Keys.COMMA) {

@@ -26,7 +26,7 @@ public class GameAssetManager {
         generator.dispose();
     }
 
-    private final Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+    private static final Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
     static {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -165,7 +165,7 @@ public class GameAssetManager {
         GameAssetManager.gameAssetManager = gameAssetManager;
     }
 
-    public Skin getSkin() {
+    public static Skin getSkin() {
         return skin;
     }
 

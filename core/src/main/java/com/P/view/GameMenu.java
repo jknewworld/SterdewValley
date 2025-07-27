@@ -464,7 +464,7 @@ public class GameMenu implements AppMenu {
     }
 
     private static Resualt getCheatThorResponse(String input) {
-        Resualt response;
+        Resualt response = new Resualt(true,"");
         Command request = new Command(input);
         request.body.put("x", GameMenuCommands.CHEAT_THOR.getGroup(input, "x"));
         request.body.put("y", GameMenuCommands.CHEAT_THOR.getGroup(input, "y"));
@@ -473,7 +473,7 @@ public class GameMenu implements AppMenu {
         if ((targetX == 25) && (targetY == 13)) {
             response = new Resualt(true, "Greeen House");
         } else {
-            response = GameController.handleCheatThor(request);
+           // response = GameController.handleCheatThor(request);
         }
         return response;
     }

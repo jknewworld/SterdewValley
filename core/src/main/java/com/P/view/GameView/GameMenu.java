@@ -124,14 +124,17 @@ public class GameMenu implements Screen {
             renderGameView(gameModel4, gameView4, w, 0, w, h);
         }
         else {
-            Main.getBatch().begin();
+
             if(isVillage){
+                Main.getBatch().begin();
                 Gdx.input.setInputProcessor(villageMenuInputAdapter);
                 villageModel.update(delta);
                 villageView.render();
                 villageMenuInputAdapter.update(delta);
+                Main.getBatch().end();
             }
             else {
+                Main.getBatch().begin();
                 if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(0))) {
                     Gdx.input.setInputProcessor(gameMenuInputAdapter1);
                     gameModel1.update(delta);
@@ -159,10 +162,11 @@ public class GameMenu implements Screen {
 //        gameModel.update(delta);
 //        gameView.render();
 //        gameMenuInputAdapter.update(delta);
-                //gameController.update();
+                gameController.update();
+                Main.getBatch().end();
             }
-            gameController.update();
-            Main.getBatch().end();
+
+//            gameController.update();
 
 
         }
