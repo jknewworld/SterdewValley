@@ -1,25 +1,14 @@
 package com.P;
 
-import com.P.controller.StartController;
-import com.P.model.GameAssetManager;
-import com.P.view.StartView;
-import com.badlogic.gdx.ApplicationAdapter;
+import com.P.Client.controller.StartController;
+import com.P.Client.model.GameAssetManager;
+import com.P.Client.view.StartView;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Window;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.utils.ScreenUtils;
-
-import java.awt.*;
-import java.nio.file.Path;
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
