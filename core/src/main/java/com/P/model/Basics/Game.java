@@ -38,6 +38,7 @@ public class Game {
     private ArrayList<NPC> npcs;
     private Clock clock;
     private VillageModel villageModel = null;
+    private double weather;
 
     @Transient
     private PlayGame gameThread;
@@ -331,6 +332,7 @@ public class Game {
         //  handleArtisanUse();
         App.getLoggedInUser().getCurrentGame().getClock().setWeatherSprite();
         App.getLoggedInUser().getCurrentGame().getClock().setSeasonSprite();
+        setWeather();
     }
 
     private void determineAndSetWeatherTomorrow() {
@@ -409,5 +411,18 @@ public class Game {
 
     public void setVillageModel(VillageModel villageModel) {
         this.villageModel = villageModel;
+    }
+
+    public void setWeather(){
+        switch (App.getLoggedInUser().getCurrentGame().getWeatherToday()) {
+            case SUNNY -> this.weather = 1.5;
+            case RAIN -> this.weather = 1.2;
+            case STORM -> this.weather = 0.5;
+            default -> this.weather = 1;
+        }
+    }
+
+    public double getWeather(){
+        return weather;
     }
 }

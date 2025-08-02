@@ -149,6 +149,50 @@ public class GameAssetManager {
         new TextureRegion(character5_idle2_tex)
     );
 
+    // Fishing Pole
+    public static final Texture BAMBOOPOLE = new Texture("game/Fishing_Pole/Bamboo_Pole.png");
+    public static final Texture FIBERGLASSROD = new Texture("game/Fishing_Pole/Fiberglass_Rod.png");
+    public static final Texture IRIDIUMROD = new Texture("game/Fishing_Pole/Iridium_Rod.png");
+    public static final Texture TRAININGROD = new Texture("game/Fishing_Pole/Training_Rod.png");
+
+    // Fish
+    public static final Texture ANGLER = new Texture("game/Fish/Angler.png");
+    public static final Texture BLUE_DISCUS = new Texture("game/Fish/Blue_Discus.png");
+    public static final Texture CRIMSONFISH = new Texture("game/Fish/Crimsonfish.png");
+    public static final Texture DORADO = new Texture("game/Fish/Dorado.png");
+    public static final Texture FLOUNDER = new Texture("game/Fish/Flounder.png");
+    public static final Texture GHOSTFISH = new Texture("game/Fish/Ghostfish.png");
+    public static final Texture GLACIERFISH = new Texture("game/Fish/Glacierfish.png");
+    public static final Texture HERRING = new Texture("game/Fish/Herring.png");
+    public static final Texture LEGEND = new Texture("game/Fish/Legend.png");
+    public static final Texture LIONFISH = new Texture("game/Fish/Lionfish.png");
+    public static final Texture MIDNIGHT_CARP = new Texture("game/Fish/Midnight_Carp.png");
+    public static final Texture PERCH = new Texture("game/Fish/Perch.png");
+    public static final Texture RAINBOW_TROUT = new Texture("game/Fish/Rainbow_Trout.png");
+    public static final Texture SALMON = new Texture("game/Fish/Salmon.png");
+    public static final Texture SARDINE = new Texture("game/Fish/Sardine.png");
+    public static final Texture SHAD = new Texture("game/Fish/Shad.png");
+    public static final Texture SQUID = new Texture("game/Fish/Squid.png");
+    public static final Texture SUNFISH = new Texture("game/Fish/Sunfish.png");
+    public static final Texture TILAPIA = new Texture("game/Fish/Tilapia.png");
+    public static final Texture TUNA = new Texture("game/Fish/Tuna.png");
+
+    // Animals
+    public static final Texture CHICKEN = new Texture("game/animals/White_Chicken.png");
+    public static final Texture DUCK = new Texture("game/animals/Duck.png");
+    public static final Texture RABBIT = new Texture("game/animals/Rabbit.png");
+    public static final Texture DINOSAUR = new Texture("game/animals/Dinosaur.png");
+    public static final Texture COW = new Texture("game/animals/White_Cow.png");
+    public static final Texture GOAT = new Texture("game/animals/Goat.png");
+    public static final Texture SHEEP = new Texture("game/animals/Sheep.png");
+    public static final Texture PIG = new Texture("game/animals/Pig.png");
+
+    public static final Texture MINI_GAME_BACKGROUND = new Texture("game/background.png");
+    public static final Texture MINI_GAME_BAR = new Texture("game/barMini.png");
+
+    // Crown
+    public static final Texture CROWN = new Texture("game/crown.png");
+
 
     private GameAssetManager() {
 
@@ -160,6 +204,7 @@ public class GameAssetManager {
         }
         return gameAssetManager;
     }
+
 
     public static void setGameAssetManager(GameAssetManager gameAssetManager) {
         GameAssetManager.gameAssetManager = gameAssetManager;

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class GameMenu implements Screen {
     private GameView gameView;
@@ -76,8 +77,6 @@ public class GameMenu implements Screen {
 
     private void initializeGame() {
         gameModel = App.loggedInUser.getCurrentGame().getCurrentPlayer().getGameModel();
-        System.out.println(App.loggedInUser.getCurrentGame().getPlayers().getFirst().getUser().getUsername());
-        System.out.println(App.loggedInUser.getCurrentGame().getPlayers().getLast().getUser().getUsername());
 
         gameModel1 = App.loggedInUser.getCurrentGame().getPlayers().get(0).getGameModel();
         gameModel2 = App.loggedInUser.getCurrentGame().getPlayers().get(1).getGameModel();

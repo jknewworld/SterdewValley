@@ -2,7 +2,7 @@ package com.P.view.GameView;
 
 import com.P.Main;
 import com.P.model.Animals.Fish;
-import com.P.model.Animals.FishType;
+import com.P.model.Animals.FishGame;
 import com.P.model.Basics.App;
 import com.P.model.Basics.Game;
 import com.P.model.Basics.Player;
@@ -24,13 +24,8 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -38,7 +33,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import static javax.swing.JColorChooser.showDialog;
 
@@ -330,7 +324,7 @@ public class GameView {
             float x = MathUtils.random(waterBounds.x, waterBounds.x + waterBounds.width - 32);
             float y = MathUtils.random(waterBounds.y, waterBounds.y + waterBounds.height - 32);
 
-            FishType type = FishType.values()[i % 5];
+            FishGame type = FishGame.values()[i % 5];
             Texture texture;
             switch (type) {
                 case MIXED:
@@ -357,7 +351,6 @@ public class GameView {
     }
 
     public void render() {
-
         batch.setProjectionMatrix(game.getCamera().combined);
         handleAltKey();
         batch.begin();
@@ -373,7 +366,7 @@ public class GameView {
             renderFish();
         }
 
-        if (game.isFlashActive()) {
+        if (game != null && game.isFlashActive()) {
             batch.end();
 
             batch.setProjectionMatrix(new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -391,7 +384,7 @@ public class GameView {
 
             batch.end();
 
-            // 🔁 برگرداندن پروجکشن اصلی دوربین برای ادامه رسم:
+
             batch.setProjectionMatrix(game.getCamera().combined);
             batch.begin();
         }
@@ -429,13 +422,10 @@ public class GameView {
     }
 
     private void handleAltKey() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.ALT_RIGHT)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_RIGHT)) {
             isScarecrowInfoVisible = !isScarecrowInfoVisible;
         }
     }
-
-
-
 
     private void renderScarecrow() {
         float camX = game.getCamera().position.x;

@@ -16,6 +16,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Timer;
 
@@ -41,7 +42,6 @@ public class GameModel {
     private boolean flashActive = false;
 
 
-
     public GameModel(int mapWidth, int mapHeight) {
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
@@ -54,6 +54,7 @@ public class GameModel {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(player.getPlayerPosition().first, player.getPlayerPosition().second, 0);
+
     }
 
     private void initializeTiles() {
@@ -62,7 +63,6 @@ public class GameModel {
         Farm farm = game.getCurrentPlayer().getCurrentFarm(game);
         tiles = farm.getTiles();
         System.out.println(user.getNickname());
-
     }
 
 
@@ -310,7 +310,6 @@ public class GameModel {
         }
     }
 
-
     public boolean isFlashActive() {
         return flashActive;
     }
@@ -325,5 +324,37 @@ public class GameModel {
 
     public void setFlashAlpha(float flashAlpha) {
         this.flashAlpha = flashAlpha;
+    }
+
+    public ArrayList<SpriteMine> getRainDrops() {
+        return rainDrops;
+    }
+
+    public void setRainDrops(ArrayList<SpriteMine> rainDrops) {
+        this.rainDrops = rainDrops;
+    }
+
+    public ArrayList<Sprite> getSnow() {
+        return snow;
+    }
+
+    public void setSnow(ArrayList<Sprite> snow) {
+        this.snow = snow;
+    }
+
+    public ArrayList<SpriteMine> getStorms() {
+        return storms;
+    }
+
+    public void setStorms(ArrayList<SpriteMine> storms) {
+        this.storms = storms;
+    }
+
+    public float getDelta() {
+        return delta;
+    }
+
+    public void setDelta(float delta) {
+        this.delta = delta;
     }
 }

@@ -10,7 +10,7 @@ import java.util.Random;
 public class Fish {
     private Vector2 position;
     private Texture texture;
-    private FishType type;
+    private FishGame type;
 
     private float elapsedTime = 0f;
     private float moveCooldown = 0.5f; // نیم ثانیه
@@ -19,7 +19,7 @@ public class Fish {
 
     private Random random = new Random();
 
-    public Fish(Texture texture, float x, float y, FishType type, Texture fishTexture) {
+    public Fish(Texture texture, float x, float y, FishGame type, Texture fishTexture) {
         this.texture = texture;
         this.position = new Vector2(x, y);
         this.type = type;
@@ -81,11 +81,11 @@ public class Fish {
         this.texture = texture;
     }
 
-    public FishType getType() {
+    public FishGame getType() {
         return type;
     }
 
-    public void setType(FishType type) {
+    public void setType(FishGame type) {
         this.type = type;
     }
 
