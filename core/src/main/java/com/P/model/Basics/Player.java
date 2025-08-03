@@ -154,9 +154,9 @@ public class Player {
         if (tiles[newX][newY] != TileDescriptionId.WATER) {
             playerPosition.first += dx;
             playerPosition.second += dy;
-            getLastPosition().setFx(newX);
-            getLastPosition().setFy(newY);
-             System.out.println(newX + " " + newY);
+            getLastPosition().setFx((getLastPosition().getFx() + tx));
+            getLastPosition().setFy((getLastPosition().getFy() + ty));
+            // System.out.println(newX + " " + newY);
             return true;
         }
         setFishing(true);

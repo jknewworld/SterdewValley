@@ -4,6 +4,7 @@ import com.P.Main;
 import com.P.controller.TurnController;
 import com.P.controller.game.GameController;
 import com.P.model.Basics.App;
+import com.P.model.Basics.Game;
 import com.P.model.Basics.Player;
 import com.P.model.Maps.Village;
 import com.P.model.Pair;
@@ -25,6 +26,7 @@ import java.util.Set;
 public class GameMenuInputAdapter extends InputAdapter {
     private GameModel game;
     private VillageModel village;
+
     private final GameController gameController;
     private final Set<Integer> keysHeld = new HashSet<>();
     private int threeX = 0;
@@ -80,6 +82,9 @@ public class GameMenuInputAdapter extends InputAdapter {
         }
         if (keycode == Input.Keys.MINUS) {
             GameMenu.isVillage = false;
+        }
+        if (keycode== Input.Keys.C){
+            GameView.setCook(!GameView.isCook());
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {

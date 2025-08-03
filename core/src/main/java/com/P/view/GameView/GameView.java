@@ -9,6 +9,7 @@ import com.P.model.Basics.Player;
 import com.P.model.GameAssetManager;
 import com.P.model.Pair;
 import com.P.model.enums.Avatar;
+import com.P.model.enums.Recipe;
 import com.P.model.enums.Season;
 import com.P.model.game.GameModel;
 import com.P.model.game.VillageModel;
@@ -24,7 +25,11 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.math.Rectangle;
@@ -78,6 +83,9 @@ public class GameView {
     Texture fishFloaterTexture = new Texture(Gdx.files.internal("game/animals/fish/floater.png"));
     Texture fishDartTexture = new Texture(Gdx.files.internal("game/animals/fish/dart.png"));
 
+    //Cooking
+    private Stage cookingStage=new Stage(new ScreenViewport());
+    private static boolean isCook=false;
 
     private Texture scarecrowTexture;
     private Texture scarecrowInfoTexture;
@@ -114,6 +122,50 @@ public class GameView {
         Gdx.input.setInputProcessor(stage);
     }
 
+    private void createCookingMenu() {
+        Table cookingTable = new Table();
+        cookingTable.setFillParent(true);
+        cookingTable.center();
+
+        Label title = new Label("Cooking Menu", skin, "title");
+
+        Table recipesTable = new Table();
+        recipesTable.top().left();
+
+        for (Recipe recipe : recipes) {
+            TextButton cookButton = new TextButton("Cook: " + recipe.getName(), skin);
+            Label ingredientsLabel = new Label("Ingredients: " + String.join(", ", recipe.getIngredients()), skin);
+
+            cookButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    // TODO: بررسی موجود بودن مواد اولیه و اعمال اثر غذا
+                    System.out.println("Trying to cook " + recipe.getName());
+                    // مثلاً:
+                    // if (player.hasIngredients(recipe.getIngredients())) { cook(recipe); }
+                }
+            });
+
+            recipesTable.add(cookButton).left().pad(5).row();
+            recipesTable.add(ingredientsLabel).left().padBottom(10).row();
+        }
+
+        // دکمه خروج
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                GameData.setCooking(false);
+                Gdx.input.setInputProcessor(new InputMultiplexer(stage, GameView.this));
+            }
+        });
+
+        cookingTable.add(title).pad(10).row();
+        cookingTable.add(new ScrollPane(recipesTable, skin)).width(500).height(300).pad(10).row();
+        cookingTable.add(closeButton).pad(10).width(200);
+
+        cookingStage.addActor(cookingTable);
+    }
 
     private void loadTextures() {
         textures = new HashMap<>();
@@ -310,6 +362,11 @@ public class GameView {
 
         initFishes();
 
+        //COOKING
+        for (Recipe recipe:Recipe.values()){
+            textures.put(recipe.getName(), new TextureRegion(new Texture(Gdx.files.internal(recipe.getTextureName()))));
+        }
+
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pixmap.setColor(0, 0, 0, 1);
         pixmap.fill();
@@ -355,6 +412,9 @@ public class GameView {
         handleAltKey();
         batch.begin();
 
+        if (isCook()){
+
+        }
         if (!isVillage) {
             renderTiles();
             renderHouse();
@@ -992,5 +1052,13 @@ public class GameView {
 
     public void setGreenHouseOkey(boolean greenHouseOkey) {
         isGreenHouseOkey = greenHouseOkey;
+    }
+
+    public static boolean isCook() {
+        return isCook;
+    }
+
+    public static void setCook(boolean cook) {
+        isCook = cook;
     }
 }
