@@ -1,5 +1,6 @@
-package com.P.Client.view.GameView;
+package com.P.view.GameView;
 
+import com.P.Client.view.GameView.GameMenu;
 import com.P.Main;
 import com.P.Client.controller.TurnController;
 import com.P.Client.controller.game.GameController;
@@ -17,12 +18,14 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 
+import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
 public class GameMenuInputAdapter extends InputAdapter {
     private GameModel game;
     private VillageModel village;
+
     private final GameController gameController;
     private final Set<Integer> keysHeld = new HashSet<>();
     private int threeX = 0;

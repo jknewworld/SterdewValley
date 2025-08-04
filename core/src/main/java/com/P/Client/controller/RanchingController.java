@@ -63,7 +63,7 @@ public class RanchingController {
     private boolean isAnimalMenuOpen = false;
 
 
-    public void update() {
+   public void update() {
         handleInputs();
 
         float delta = Gdx.graphics.getDeltaTime();
