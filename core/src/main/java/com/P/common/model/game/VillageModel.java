@@ -37,7 +37,7 @@ public class VillageModel {
 
 
         growingCrops = new HashMap<>();
-        player = new Player(App.getLoggedInUser());// Check It
+        player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();// Check It
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(player.getPlayerPosition().first, player.getPlayerPosition().second, 0);
@@ -50,6 +50,7 @@ public class VillageModel {
     }
 
     public void update(float deltaTime) {
+        player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
         Pair<Float, Float> playerPos = player.getPlayerPosition();
         float playerX = playerPos.first * Main.TILE_SIZE;
         float playerY = playerPos.second * Main.TILE_SIZE;

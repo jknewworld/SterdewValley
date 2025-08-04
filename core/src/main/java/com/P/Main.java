@@ -21,8 +21,6 @@ public class Main extends Game {
     private static String currentCursorPath = "";
     public static final int TILE_SIZE = 100;
 
-
-
     @Override
     public void create() {
         main = this;

@@ -3,7 +3,7 @@ package com.P.Client.controller.game;
 import com.badlogic.gdx.math.MathUtils;
 
 public class FishController {
-    private float currentY;
+    private float currentX;
     private FishMovementType type;
     private float timer;
 
@@ -11,7 +11,7 @@ public class FishController {
 
     public FishController(FishMovementType type, float startY) {
         this.type = type;
-        this.currentY = startY;
+        this.currentX = startY;
     }
 
     public void update(float delta) {
@@ -19,7 +19,7 @@ public class FishController {
         if (timer >= 0.5f) {
             timer = 0;
             int movement = decideMove();
-            currentY += movement;
+            currentX += movement;
         }
     }
 
@@ -47,6 +47,6 @@ public class FishController {
     }
 
     public float getCurrentY() {
-        return currentY;
+        return currentX;
     }
 }

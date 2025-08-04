@@ -43,7 +43,7 @@ public class Fish {
     }
 
     private int decideMovement() {
-        int[] basic = { -5, 0, 5 };
+        int[] basic = { -4, 0, 4 };
         switch (type) {
             case MIXED:
                 return basic[random.nextInt(3)];
