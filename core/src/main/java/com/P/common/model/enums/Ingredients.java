@@ -229,6 +229,7 @@ public enum Ingredients {
     private final int energy;
 
 
+
     Ingredients(String name, IngredientsTypes type, int price, int energy) {
         this.name = name;
         this.type = type;
