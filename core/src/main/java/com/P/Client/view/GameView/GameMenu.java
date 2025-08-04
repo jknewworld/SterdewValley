@@ -7,6 +7,7 @@ import com.P.common.model.game.GameModel;
 import com.P.common.model.game.VillageModel;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.P.view.GameView.GameMenuInputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;

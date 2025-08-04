@@ -1,5 +1,6 @@
 package com.P.Client.controller;
 
+import com.P.Client.model.GameAssetManager;
 import com.P.common.model.Basics.App;
 import com.P.common.model.Basics.Player;
 import com.P.Client.model.Command;
@@ -11,11 +12,113 @@ import com.P.Client.model.Resualt;
 import com.P.common.model.enums.ForAgingSeeds;
 import com.P.common.model.enums.Ingredients;
 import com.P.common.model.enums.Recipe;
-//import org.h2.command.CommandContainer;
+import com.P.common.model.game.GameModel;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.PrimitiveIterator;
 
 public class CookingController extends ControllersController {
+    private Stage cookingStage=null;
+    private boolean isCookingMenuOpen=false;
+    private void createCookingMenu() {
+        if (!Gdx.input.isKeyJustPressed(Input.Keys.C))return;
+        Stage cookingStage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(cookingStage);
+
+        Group menuGroup = new Group();
+        Window window = new Window("Cooking Menu", GameAssetManager.SKIN);
+        window.setSize(1000, 600);
+        window.setMovable(false);
+
+        Table table = new Table();
+        table.top().pad(20).defaults().pad(10);
+        table.setFillParent(true);
+
+        ImageButton exitButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(GameAssetManager.EXIT_BUTTON)));
+        exitButton.setSize(32, 32);
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                cookingStage.clear();
+            }
+        });
+
+        // لیست همه‌ی دستورهای غذا
+        for (Recipe recipe : Recipe.values()) {
+            Texture texture = new Texture(Gdx.files.internal(recipe.getTextureName()));
+            Image image = new Image(texture);
+            Label nameLabel = new Label(recipe.name(), GameAssetManager.SKIN);
+
+            Label energyLabel = new Label("Energy: " + recipe.getEnergy(), GameAssetManager.SKIN);
+            Label priceLabel = new Label("Sell Price: " + recipe.getSellPrice(), GameAssetManager.SKIN);
+
+            TextButton cookButton = new TextButton("Cook", GameAssetManager.SKIN);
+            cookButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Command n = new Command("cook");
+                    n.body.put("recipeName", recipe.getName());
+                    Resualt response = cookFood(n);
+                    Dialog dialog = new Dialog("", GameAssetManager.SKIN);
+                    dialog.text(response.getAnswer());
+                    dialog.button("OK");
+                    dialog.show(cookingStage);
+                }
+            });
+
+            table.add(image).size(64, 64);
+            table.add(nameLabel).left();
+            table.add(energyLabel);
+            table.add(priceLabel);
+            table.add(cookButton).right();
+            table.row();
+        }
+
+        window.add(table).expand().fill();
+
+        Group group = new Group() {
+            @Override
+            public void act(float delta) {
+                window.setPosition(
+                    (GameModel.getCamera().viewportWidth - window.getWidth()) / 2f +
+                        GameModel.getCamera().position.x - GameModel.getCamera().viewportWidth / 2,
+                    (GameModel.getCamera().viewportHeight - window.getHeight()) / 2f +
+                        GameModel.getCamera().position.y - GameModel.getCamera().viewportHeight / 2
+                );
+                exitButton.setPosition(
+                    window.getX() + window.getWidth() - exitButton.getWidth() / 2f + 16,
+                    window.getY() + window.getHeight() - exitButton.getHeight() / 2f
+                );
+                super.act(delta);
+            }
+        };
+
+        group.addActor(window);
+        group.addActor(exitButton);
+        menuGroup.addActor(group);
+        cookingStage.addActor(menuGroup);
+
+        this.cookingStage = cookingStage;
+        this.isCookingMenuOpen = true;
+
+        Gdx.app.postRunnable(() -> {
+            Gdx.input.setInputProcessor(cookingStage);
+        });
+    }
+
+
     public static Resualt getFromRefrigerator(Command command) {
         Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
         Inventory inventory = player.getInventory();
