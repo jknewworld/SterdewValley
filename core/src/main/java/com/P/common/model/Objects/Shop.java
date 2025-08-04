@@ -16,7 +16,6 @@ public class Shop extends Building {
     private final ArrayList<ShopItem> seasonItems;
     private int startingTime;
     private int finishingTime;
-    //TODO : Add work time
 
     public Shop(ArrayList<Tile> tiles, ShopName name, int startingTime, int finishingTime) {
         super(tiles);
