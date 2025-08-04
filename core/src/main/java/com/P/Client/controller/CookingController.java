@@ -30,12 +30,21 @@ import java.util.Map;
 import java.util.PrimitiveIterator;
 
 public class CookingController extends ControllersController {
-    private Stage cookingStage=null;
-    private boolean isCookingMenuOpen=false;
-    private void createCookingMenu() {
-        if (!Gdx.input.isKeyJustPressed(Input.Keys.C))return;
-        Stage cookingStage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(cookingStage);
+    public static Stage cookingStage=null;
+    public static boolean isCookingMenuOpen=false;
+    public void update(){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C))createCookingMenu();
+
+        if (isCookingMenuOpen && cookingStage != null) {
+            cookingStage.act(Gdx.graphics.getDeltaTime());
+            Gdx.input.setInputProcessor(cookingStage);
+            cookingStage.draw();
+        }
+    }
+    public void createCookingMenu() {
+        //if (!Gdx.input.isKeyJustPressed(Input.Keys.C))return;
+        final Stage[] cookingStage = {new Stage(new ScreenViewport())};
+        //Gdx.input.setInputProcessor(cookingStage);
 
         Group menuGroup = new Group();
         Window window = new Window("Cooking Menu", GameAssetManager.SKIN);
@@ -44,19 +53,25 @@ public class CookingController extends ControllersController {
 
         Table table = new Table();
         table.top().pad(20).defaults().pad(10);
-        table.setFillParent(true);
+        //table.setFillParent(true);
 
         ImageButton exitButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(GameAssetManager.EXIT_BUTTON)));
         exitButton.setSize(32, 32);
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                cookingStage.clear();
+                isCookingMenuOpen = false;
+                Gdx.input.setInputProcessor(null);
+                cookingStage[0].dispose();
+                cookingStage[0] = null;
             }
         });
 
-        // لیست همه‌ی دستورهای غذا
         for (Recipe recipe : Recipe.values()) {
+            if (!recipe.isEatable()) {
+                //System.out.println(recipe.getName());
+                continue;
+            }
             Texture texture = new Texture(Gdx.files.internal(recipe.getTextureName()));
             Image image = new Image(texture);
             Label nameLabel = new Label(recipe.name(), GameAssetManager.SKIN);
@@ -74,7 +89,7 @@ public class CookingController extends ControllersController {
                     Dialog dialog = new Dialog("", GameAssetManager.SKIN);
                     dialog.text(response.getAnswer());
                     dialog.button("OK");
-                    dialog.show(cookingStage);
+                    dialog.show(cookingStage[0]);
                 }
             });
 
@@ -85,8 +100,13 @@ public class CookingController extends ControllersController {
             table.add(cookButton).right();
             table.row();
         }
-
-        window.add(table).expand().fill();
+        ScrollPane scrollPane = new ScrollPane(table, GameAssetManager.SKIN);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setForceScroll(false, true);
+        scrollPane.layout();
+        window.setSize(1000, 600);
+        window.add(scrollPane).expand().fill();
 
         Group group = new Group() {
             @Override
@@ -108,13 +128,13 @@ public class CookingController extends ControllersController {
         group.addActor(window);
         group.addActor(exitButton);
         menuGroup.addActor(group);
-        cookingStage.addActor(menuGroup);
+        cookingStage[0].addActor(menuGroup);
 
-        this.cookingStage = cookingStage;
-        this.isCookingMenuOpen = true;
+        CookingController.cookingStage = cookingStage[0];
+        isCookingMenuOpen = true;
 
         Gdx.app.postRunnable(() -> {
-            Gdx.input.setInputProcessor(cookingStage);
+            Gdx.input.setInputProcessor(cookingStage[0]);
         });
     }
 

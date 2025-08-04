@@ -117,10 +117,10 @@ public class GameMenu implements Screen {
             int w = Gdx.graphics.getWidth() / 2;
             int h = Gdx.graphics.getHeight() / 2;
 
-            renderGameView(gameModel1, gameView1, 0, h, w, h);
-            renderGameView(gameModel2, gameView2, w, h, w, h);
-            renderGameView(gameModel3, gameView3, 0, 0, w, h);
-            renderGameView(gameModel4, gameView4, w, 0, w, h);
+            renderGameView(delta,gameModel1, gameView1, 0, h, w, h);
+            renderGameView(delta, gameModel2, gameView2, w, h, w, h);
+            renderGameView(delta ,gameModel3, gameView3, 0, 0, w, h);
+            renderGameView(delta ,gameModel4, gameView4, w, 0, w, h);
         }
         else {
 
@@ -128,7 +128,7 @@ public class GameMenu implements Screen {
                 Main.getBatch().begin();
                 Gdx.input.setInputProcessor(villageMenuInputAdapter);
                 villageModel.update(delta);
-                villageView.render();
+                villageView.render(delta);
                 villageMenuInputAdapter.update(delta);
                 Main.getBatch().end();
             }
@@ -137,25 +137,25 @@ public class GameMenu implements Screen {
                 if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(0))) {
                     Gdx.input.setInputProcessor(gameMenuInputAdapter1);
                     gameModel1.update(delta);
-                    gameView1.render();
+                    gameView1.render(delta);
                     gameMenuInputAdapter1.update(delta);
                 }
                 if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(1))) {
                     Gdx.input.setInputProcessor(gameMenuInputAdapter2);
                     gameModel2.update(delta);
-                    gameView2.render();
+                    gameView2.render(delta);
                     gameMenuInputAdapter2.update(delta);
                 }
                 if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(2))) {
                     Gdx.input.setInputProcessor(gameMenuInputAdapter3);
                     gameModel3.update(delta);
-                    gameView3.render();
+                    gameView3.render(delta);
                     gameMenuInputAdapter3.update(delta);
                 }
                 if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(3))) {
                     Gdx.input.setInputProcessor(gameMenuInputAdapter4);
                     gameModel4.update(delta);
-                    gameView4.render();
+                    gameView4.render(delta);
                     gameMenuInputAdapter4.update(delta);
                 }
 //        gameModel.update(delta);
@@ -205,21 +205,21 @@ public class GameMenu implements Screen {
         }
     }
 
-    private void renderGameView(GameModel model, GameView view, int x, int y, int width, int height) {
+    private void renderGameView(float delta, GameModel model, GameView view, int x, int y, int width, int height) {
         Gdx.gl.glViewport(x, y, width, height);
         model.update(Gdx.graphics.getDeltaTime());
         Main.getBatch().setProjectionMatrix(model.getCamera().combined);
         Main.getBatch().begin();
-        view.render();
+        view.render(delta);
         Main.getBatch().end();
     }
 
-    private void renderVillageView(VillageModel model, GameView view, int x, int y, int width, int height) {
+    private void renderVillageView(float delta, VillageModel model, GameView view, int x, int y, int width, int height) {
         Gdx.gl.glViewport(x, y, width, height);
         model.update(Gdx.graphics.getDeltaTime());
         Main.getBatch().setProjectionMatrix(model.getCamera().combined);
         Main.getBatch().begin();
-        view.render();
+        view.render(delta);
         Main.getBatch().end();
     }
 

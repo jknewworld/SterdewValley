@@ -1,5 +1,6 @@
 package com.P.Client.view.GameView;
 
+import com.P.Client.controller.CookingController;
 import com.P.Main;
 import com.P.common.model.Animals.Fish;
 import com.P.common.model.Animals.FishGame;
@@ -350,7 +351,7 @@ public class GameView {
         }
     }
 
-    public void render() {
+    public void render(float delta) {
         batch.setProjectionMatrix(game.getCamera().combined);
         handleAltKey();
         batch.begin();
@@ -365,6 +366,8 @@ public class GameView {
             renderScarecrowInfo();
             renderFish();
         }
+
+
 
         if (game != null && game.isFlashActive()) {
             batch.end();

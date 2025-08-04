@@ -1,18 +1,17 @@
 package com.P.view.GameView;
 
+import com.P.Client.view.GameView.GameMenu;
 import com.P.Main;
-import com.P.controller.TurnController;
-import com.P.controller.game.GameController;
-import com.P.model.Basics.App;
-import com.P.model.Basics.Game;
-import com.P.model.Basics.Player;
-import com.P.model.Maps.Village;
-import com.P.model.Pair;
-import com.P.model.enums.Season;
-import com.P.model.enums.Weather;
-import com.P.model.game.GameModel;
-import com.P.model.game.VillageModel;
-import com.P.model.item.ItemDescriptionId;
+import com.P.Client.controller.TurnController;
+import com.P.Client.controller.game.GameController;
+import com.P.common.model.Basics.App;
+import com.P.common.model.Basics.Player;
+import com.P.Client.model.Pair;
+import com.P.common.model.enums.Season;
+import com.P.common.model.enums.Weather;
+import com.P.common.model.game.GameModel;
+import com.P.common.model.game.VillageModel;
+import com.P.common.model.item.ItemDescriptionId;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -82,9 +81,6 @@ public class GameMenuInputAdapter extends InputAdapter {
         }
         if (keycode == Input.Keys.MINUS) {
             GameMenu.isVillage = false;
-        }
-        if (keycode== Input.Keys.C){
-            GameView.setCook(!GameView.isCook());
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ALT_LEFT)) {
