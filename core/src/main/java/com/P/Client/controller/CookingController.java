@@ -70,7 +70,7 @@ public class CookingController extends ControllersController {
         fridgeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // TODO: نمایش یخچال یا هر عملیاتی که می‌خوای انجام بشه
+                Table ref=creatRefrigeratorTable();
                 Dialog dialog = new Dialog("Refrigerator", GameAssetManager.SKIN);
                 dialog.text("Refrigerator contents go here...");
                 dialog.button("OK");
@@ -159,42 +159,27 @@ public class CookingController extends ControllersController {
     }
 
 
-    /*private Table creatRefrigeratorTable(){
-        Table ref=new Table();
+    private Table creatRefrigeratorTable(){
+        Table table=new Table();
         Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
         Inventory refrigerator = player.getRefrigerator();
         for (Map.Entry<Ingredients, Integer> need: refrigerator.getIngredients().entrySet()){
-            Texture texture = new Texture(Gdx.files.internal(need.getTextureName()));
+            Texture texture = new Texture(Gdx.files.internal(need.getKey().getTextureName()));
             Image image = new Image(texture);
-            Label nameLabel = new Label(recipe.name(), GameAssetManager.SKIN);
+            Label nameLabel = new Label(need.getKey().getName(), GameAssetManager.SKIN);
 
-            Label energyLabel = new Label("Energy: " + recipe.getEnergy(), GameAssetManager.SKIN);
-            Label priceLabel = new Label("Sell Price: " + recipe.getSellPrice(), GameAssetManager.SKIN);
+            Label energyLabel = new Label("Energy: " + need.getKey().getEnergy(), GameAssetManager.SKIN);
+            Label priceLabel = new Label("Sell Price: " + need.getKey().getPrice(), GameAssetManager.SKIN);
 
-
-            TextButton cookButton = new TextButton("Cook", GameAssetManager.SKIN);
-            cookButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    Command n = new Command("cook");
-                    n.body.put("recipeName", recipe.getName());
-                    Resualt response = cookFood(n);
-                    Dialog dialog = new Dialog("", GameAssetManager.SKIN);
-                    dialog.text(response.getAnswer());
-                    dialog.button("OK");
-                    dialog.show(cookingStage[0]);
-                }
-            });
 
             table.add(image).size(64, 64);
             table.add(nameLabel).left();
             table.add(energyLabel);
             table.add(priceLabel);
-            table.add(cookButton).right();
             table.row();
         }
-        return ref;
-    }*/
+        return table;
+    }
     public static Resualt getFromRefrigerator(Command command) {
         Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
         Inventory inventory = player.getInventory();
