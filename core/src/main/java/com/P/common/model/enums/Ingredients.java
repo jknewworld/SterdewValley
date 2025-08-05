@@ -256,4 +256,8 @@ public enum Ingredients {
     public int getPrice() {
         return price;
     }
+
+    public Texture getTexture() {
+        return texture;
+    }
 }

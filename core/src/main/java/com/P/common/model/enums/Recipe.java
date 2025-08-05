@@ -15,7 +15,7 @@ public enum Recipe {
     MakiRoll("Maki Roll", true, Map.of(Ingredients.FIBER, 1, Ingredients.RICE, 1), 100, 220, Ingredients.MAKI_ROLL, "game/Recipe/Maki_Roll.png"),
     TripleShotEspresso("Triple Shot Espresso", true, Map.of(Ingredients.COFFEE, 3), 200, 450, Ingredients.TRIPLE_SHOT_ESPRESSO, "game/Recipe/Triple_Shot_Espresso.png"),
     Cookie("Cookie", true, Map.of(Ingredients.WHEAT_FLOUR, 1, Ingredients.SUGAR, 1, Ingredients.EGG, 1), 90, 140, Ingredients.COOKIE, "game/Recipe/Cookie.png"),
-    HashBrowns("hash browns", true, Map.of(Ingredients.POTATO, 1, Ingredients.OIL, 1), 90, 120, Ingredients.ASH_BROWNS, "game/Recipe/Hashbrowns.png"),
+    HashBrowns("hash browns", true, Map.of(Ingredients.POTATO, 1, Ingredients.OIL, 1), 90, 120, Ingredients.HASH_BROWNS, "game/Recipe/Hashbrowns.png"),
     Pancakes("pancakes", true, Map.of(Ingredients.WHEAT_FLOUR, 1, Ingredients.EGG, 1), 90, 80, Ingredients.PANCAKES, "game/Recipe/Pancakes.png"),
     FruitSalad("fruit salad", true, Map.of(Ingredients.BLUEBERRY, 1, Ingredients.MELON, 1, Ingredients.Apricot, 1), 263, 450, Ingredients.FRUIT_SALAD, "game/Recipe/Fruit_Salad.png"),
     RedPlate("red plate", true, Map.of(Ingredients.RED_CABBAGE, 1, Ingredients.RADISH, 1), 240, 400, Ingredients.RED_PLATE, "game/Recipe/Red_Plate.png"),

@@ -59,6 +59,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 import static com.P.common.model.enums.Weather.SUNNY;
+import static java.lang.Integer.max;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.floor;
 
@@ -115,6 +116,15 @@ public class RanchingController {
             Gdx.input.setInputProcessor(animalMenuStage);
             animalMenuStage.draw();
         }
+
+        for (Animal animal : App.loggedInUser.getCurrentGame().getProductAnimals()) {
+            float x = animal.getPosition().getX() * Main.TILE_SIZE;
+            float y = animal.getPosition().getY() * Main.TILE_SIZE;
+
+            // بکش محصول حیوان
+            batch.draw(animal.getProduct().getTexture(), x, y, Main.TILE_SIZE, Main.TILE_SIZE);
+        }
+
     }
 
     private void renderAnimal(Animal animal) {
@@ -504,8 +514,8 @@ public class RanchingController {
             pet.changeFriendship(15);
         }
 
-        heartEffects.add(new Effect((pet.getTiles().get(0).getCoordinate().getX() + 1 )* Main.TILE_SIZE,
-                        pet.getTiles().get(0).getCoordinate().getY() * Main.TILE_SIZE));
+        heartEffects.add(new Effect(pet.getTiles().get(0).getCoordinate().getX()* Main.TILE_SIZE,
+            (pet.getTiles().get(0).getCoordinate().getY() + 1) * Main.TILE_SIZE));
         return new Resualt(true, "Done successfully!");
     }
 
