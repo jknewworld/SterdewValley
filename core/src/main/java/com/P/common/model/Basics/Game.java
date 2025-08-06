@@ -294,12 +294,10 @@ public class Game {
 
         FarmingController.GoodNightFarm();
 
-       // weatherToday = weatherTomorrow;
        setWeatherToday(weatherTomorrow);
-     //  System.out.println("TOMOPRROW" + weatherTomorrow);
 
         determineAndSetWeatherTomorrow();
-        productAnimals.clear(); // پاک کردن لیست روز قبل
+        productAnimals.clear();
 
         for (Player player : getPlayers()) {
             for (Building building : player.getFarm().getBuildings())
@@ -312,7 +310,7 @@ public class Game {
                     }
                 }
             for(ShippingBin shippingBin : player.getFarm().getShippingBins()){}
-                //shippingBin.GoodNight();
+//                shippingBin.GoodNight();
         }
 
         for (NPC npc : getNpcs())
@@ -326,21 +324,10 @@ public class Game {
             //  waterAllCrops();
         }
 
-        // handleCrowAttack();
-
-        //  resetAllAnimalDailyVariables();
-
-//        reInitializeStoreProductsCount();
-//        reInitializeNpc();
-//        addPlayersMoney(this);
-
         if (weatherToday == Weather.STORM) {
             strikeLightningOnStormyDay();
         }
 
-        // npcGiveReward(this);
-
-        //  handleArtisanUse();
         App.getLoggedInUser().getCurrentGame().getClock().setWeatherSprite();
         App.getLoggedInUser().getCurrentGame().getClock().setSeasonSprite();
         setWeather();

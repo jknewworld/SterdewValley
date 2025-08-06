@@ -27,5 +27,4 @@ public class App {
         App.loggedInUser = loggedInUser;
     }
 
-
 }

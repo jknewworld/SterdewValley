@@ -73,16 +73,19 @@ public class ProfileMenu implements AppMenu {
     private static Resualt getEnterMenuResponse(String input) {
         Command request = new Command(input);
         request.body.put("menuName", RegisterMenuCommand.ENTER_MENU.getGroup(input, "menuName"));
-        return RegisterController.getMenu(request);
+        //return RegisterController.getMenu(request);
+        return null;
     }
 
     private static Resualt getExitMenuResponse(String input) {
         Command request = new Command(input);
-        return RegisterController.exit(request);
+       // return RegisterController.exit(request);
+        return null;
     }
 
     private static Resualt getShowMenuResponse(String input) {
-        return RegisterController.handleShowMenu(new Command(input));
+       // return RegisterController.handleShowMenu(new Command(input));
+        return null;
     }
 
 }
