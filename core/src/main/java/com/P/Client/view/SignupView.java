@@ -341,7 +341,7 @@ public class SignupView implements Screen {
                 Resualt sQustionLabelResualt = controller.handleAnswer();
                 message.setText(messageResualt.getAnswer());
                 sQustionLabel.setText(sQustionLabelResualt.getAnswer());
-                if(messageResualt.isAccept())
+                if (messageResualt.isAccept())
                     user = UserRepo.findUserByUsername(getUsernameForgetPassword().getText());
 
                 if (messageResualt.isAccept() && sQustionLabelResualt.isAccept()) {
@@ -362,10 +362,7 @@ public class SignupView implements Screen {
                     randomPassButton.setPosition(600, 200);
                     forgetStage.addActor(newPassword);
                     forgetStage.addActor(randomPassButton);
-
                 }
-
-
             }
         });
 

@@ -13,13 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
     public static final Texture PIXEL;
-    // public static final BitmapFont MAIN_FONT = new BitmapFont();
     public static final BitmapFont MAIN_FONT;
 
     public static final Skin SKIN = new Skin(Gdx.files.internal("skin/uiskin.json"));
+    public static final Skin LABI_SKIN = new Skin(Gdx.files.internal("labiskin/freezing-ui.json"));
 
     static {
-        // فونت سفارشی از فایل ttf
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/stardew-valley.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 29;
@@ -206,6 +205,97 @@ public class GameAssetManager {
     public static final Texture COOP = new Texture("game/Barn/Coop.png");
     public static final Texture DELUXE_BARN = new Texture("game/Barn/Deluxe_Barn.png");
     public static final Texture DELUXE_COOP = new Texture("game/Barn/Deluxe_Coop.png");
+
+
+    // Ingredients Enum
+    public static final Texture WOOD = new Texture("game/Ingredient/Wood.png");
+    public static final Texture STONE = new Texture("game/Ingredient/Stone.png");
+    public static final Texture HAY = new Texture("game/Ingredient/Hay.png");
+    public static final Texture EGG = new Texture("game/Ingredient/Egg.png");
+    public static final Texture DUCK_EGG = new Texture("game/Ingredient/Duck_Egg.png");
+    public static final Texture DINOSAUR_EGG = new Texture("game/Ingredient/Dinosaur_Egg.png");
+    public static final Texture MILK = new Texture("game/Ingredient/Milk.png");
+    public static final Texture GOAT_MILK = new Texture("game/Ingredient/Goat_Milk.png");
+    public static final Texture DUCK_FEATHER = new Texture("game/Ingredient/Duck_Feather.png");
+    public static final Texture WOOL = new Texture("game/Ingredient/Wool.png");
+    public static final Texture RABBIT_PIE = new Texture("game/Ingredient/Rabbit_Pie.png");
+    public static final Texture TRUFFLE = new Texture("game/Ingredient/Truffle.png");
+
+    public static final Texture RICE = new Texture("game/Ingredient/Rice.png");
+    public static final Texture SUGAR = new Texture("game/Ingredient/Sugar.png");
+    public static final Texture WHEAT_FLOUR = new Texture("game/Ingredient/Wheat_Flour.png");
+    public static final Texture OIL = new Texture("game/Ingredient/Oil.png");
+    public static final Texture VINEGAR = new Texture("game/Ingredient/Vinegar.png");
+
+    public static final Texture SPEED_GRO = new Texture("game/Ingredient/Speed-Gro.png");
+    public static final Texture BASIC_RETAINING_SOIL = new Texture("game/Ingredient/Basic_Retaining_Soil.png");
+    public static final Texture QUALITY_RETAINING_SOIL = new Texture("game/Ingredient/Quality_Retaining_Soil.png");
+    public static final Texture DELUXE_RETAINING_SOIL = new Texture("game/Ingredient/Deluxe_Retaining_Soil.png");
+    public static final Texture BOUQUET = new Texture("game/Ingredient/Bouquet.png");
+    public static final Texture WEDDING_RING = new Texture("game/Ingredient/Wedding_Ring.png");
+
+    public static final Texture JOJA_COLA = new Texture("game/Ingredient/Joja_Cola.png");
+
+    public static final Texture BEER = new Texture("game/Ingredient/Beer.png");
+    public static final Texture SALAD = new Texture("game/Ingredient/Salad.png");
+    public static final Texture BREAD = new Texture("game/Ingredient/Bread.png");
+    public static final Texture SPAGHETTI = new Texture("game/Ingredient/Spaghetti.png");
+    public static final Texture PIZZA = new Texture("game/Ingredient/Pizza.png");
+    public static final Texture COFFEE = new Texture("game/Ingredient/Coffee.png");
+    public static final Texture TROUT_SOUP = new Texture("game/Ingredient/Trout_Soup.png");
+
+    public static final Texture COOPER_ORE = new Texture("game/Ingredient/Cooper_Ore.png");
+    public static final Texture IRON_ORE = new Texture("game/Ingredient/Iron_Ore.png");
+    public static final Texture GOLD_ORE = new Texture("game/Ingredient/Gold_Ore.png");
+    public static final Texture IRIDIUM_ORE = new Texture("game/Ingredient/Iridium_Ore.png");
+
+    public static final Texture BLUE_JAZZ = new Texture("game/Ingredient/Blue_Jazz.png");
+    public static final Texture CARROT = new Texture("game/Ingredient/Carrot.png");
+    public static final Texture CAULIFLOWER = new Texture("game/Ingredient/Cauliflower.png");
+    public static final Texture COFFEE_BEAN = new Texture("game/Ingredient/Coffee_Bean.png");
+    public static final Texture GARLIC = new Texture("game/Ingredient/Garlic.png");
+    public static final Texture GREEN_BEAN = new Texture("game/Ingredient/Green_Bean.png");
+    public static final Texture KALE = new Texture("game/Ingredient/Kale.png");
+    public static final Texture PARSNIP = new Texture("game/Ingredient/Parsnip.png");
+    public static final Texture POTATO = new Texture("game/Ingredient/Potato.png");
+    public static final Texture RHUBARB = new Texture("game/Ingredient/Rhubarb.png");
+    public static final Texture STRAWBERRY = new Texture("game/Ingredient/Strawberry.png");
+    public static final Texture TULIP = new Texture("game/Ingredient/Tulip.png");
+    public static final Texture UNMILLED_RICE = new Texture("game/Ingredient/Unmilled_Rice.png");
+    public static final Texture BLUEBERRY = new Texture("game/Ingredient/Blueberry.png");
+    public static final Texture CORN = new Texture("game/Ingredient/Corn.png");
+    public static final Texture HOPS = new Texture("game/Ingredient/Hops.png");
+    public static final Texture HOT_PEPPER = new Texture("game/Ingredient/Hot_Pepper.png");
+    public static final Texture MELON = new Texture("game/Ingredient/Melon.png");
+    public static final Texture POPPY = new Texture("game/Ingredient/Poppy.png");
+    public static final Texture RADISH = new Texture("game/Ingredient/Radish.png");
+    public static final Texture RED_CABBAGE = new Texture("game/Ingredient/Red_Cabbage.png");
+    public static final Texture STARFRUIT = new Texture("game/Ingredient/Starfruit.png");
+    public static final Texture SUMMER_SPANGLE = new Texture("game/Ingredient/Summer_Spangle.png");
+    public static final Texture SUMMER_SQUASH = new Texture("game/Ingredient/Summer_Squash.png");
+    public static final Texture SUNFLOWER = new Texture("game/Ingredient/Sunflower.png");
+    public static final Texture TOMATO = new Texture("game/Ingredient/Tomato.png");
+    public static final Texture WHEAT = new Texture("game/Ingredient/Wheat.png");
+    public static final Texture AMARANTH = new Texture("game/Ingredient/Amaranth.png");
+    public static final Texture ARTICHOKE = new Texture("game/Ingredient/Artichoke.png");
+    public static final Texture BEET = new Texture("game/Ingredient/Beet.png");
+    public static final Texture BOK_CHOY = new Texture("game/Ingredient/Bok_Choy.png");
+    public static final Texture BROCCOLI = new Texture("game/Ingredient/Broccoli.png");
+    public static final Texture CRANBERRIES = new Texture("game/Ingredient/Cranberries.png");
+    public static final Texture EGGPLANT = new Texture("game/Ingredient/Eggplant.png");
+    public static final Texture FAIRY_ROSE = new Texture("game/Ingredient/Fairy_Rose.png");
+    public static final Texture GRAPE = new Texture("game/Ingredient/Grape.png");
+    public static final Texture PUMPKIN = new Texture("game/Ingredient/Pumpkin.png");
+    public static final Texture YAM = new Texture("game/Ingredient/Yam.png");
+    public static final Texture SWEET_GEM_BERRY = new Texture("game/Ingredient/Sweet_Gem_Berry.png");
+    public static final Texture POWDERMELON = new Texture("game/Ingredient/Powdermelon.png");
+    public static final Texture ANCIENT_FRUIT = new Texture("game/Ingredient/Ancient_Fruit.png");
+
+    public static final Texture COMMON_MUSHROOM = new Texture("game/Ingredient/Common_Mushroom.png");
+    public static final Texture DAFFODIL = new Texture("game/Ingredient/Daffodil.png");
+    public static final Texture DANDELION = new Texture("game/Ingredient/Dandelion.png");
+    public static final Texture LEEK = new Texture("game/Ingredient/Leek.png");
+    public static final Texture MOREL = new Texture("game/Ingredient/Morel.png");
 
     private GameAssetManager() {
 

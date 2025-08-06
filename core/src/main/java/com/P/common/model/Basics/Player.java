@@ -29,6 +29,7 @@ public class Player {
     @Transient
     private User user;
     private Farm farm;
+    private int farmNum;
     private int farmingSkill = 0;
     private int miningSkill = 0;
     private int foragingSkill = 0;
@@ -622,5 +623,41 @@ public class Player {
 
     public void setFishing(boolean fishing) {
         isFishing = fishing;
+    }
+
+    public int getFarmNum() {
+        return farmNum;
+    }
+
+    public void setFarmNum(int farmNum) {
+        this.farmNum = farmNum;
+    }
+
+    public void setVx(float vx) {
+        this.vx = vx;
+    }
+
+    public float getVy() {
+        return vy;
+    }
+
+    public void setVy(float vy) {
+        this.vy = vy;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }

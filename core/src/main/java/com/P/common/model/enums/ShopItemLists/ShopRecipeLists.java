@@ -7,7 +7,7 @@ import java.util.List;
 
 public enum ShopRecipeLists {
     STARDROP(
-            new ShopRecipe(Recipe.HashBrowns, 1),
+          //  new ShopRecipe(Recipe.HashBrowns, 1),
             new ShopRecipe(Recipe.Olmelet, 1),
             new ShopRecipe(Recipe.Pancakes, 1),
             new ShopRecipe(Recipe.Bread, 1),

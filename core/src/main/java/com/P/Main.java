@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.P.Server.model.Repo.Connection;
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
@@ -21,14 +22,14 @@ public class Main extends Game {
     private static String currentCursorPath = "";
     public static final int TILE_SIZE = 100;
 
-
-
     @Override
     public void create() {
         main = this;
         batch = new SpriteBatch();
         ShaderProgram.pedantic = false;
         setCustomCursor("C.png");
+        Connection.printDatabaseName();
+
 
         getMain().setScreen(new StartView(new StartController(), GameAssetManager.getGameAssetManager().getSkin()));
 

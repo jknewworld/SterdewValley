@@ -12,7 +12,7 @@ import com.P.Client.view.SignupView;
 
 import java.util.Random;
 
-public class RegisterController extends ControllersController {
+public class RegisterController {
     private static User userOfForgetPassword = null;
     private static String userPassword;
     public static boolean isProgramWaitingForQuestion = false;
@@ -88,12 +88,6 @@ public class RegisterController extends ControllersController {
     }
 
     public Resualt handleRegister() {
-//        String username = request.body.getOrDefault("username", "anonymous_coward");
-//        String password = request.body.getOrDefault("password", "123456");
-//        String email = request.body.getOrDefault("email", "fake@email.com");
-//        String passwordConfirm = request.body.getOrDefault("passwordConfirm", "1234567");
-//        String nickname = request.body.getOrDefault("nickname", "newbie_" + (int) (Math.random() * 1000));
-//        String gender = request.body.getOrDefault("gender", "women");
         String username = view.getUsername().getText();
         String password = view.getPassword().getText();
         String email = view.getEmail().getText();
