@@ -17,7 +17,7 @@ public enum Recipe {
     Cookie("Cookie", true, Map.of(Ingredients.WHEAT_FLOUR, 1, Ingredients.SUGAR, 1, Ingredients.EGG, 1), 90, 140, Ingredients.COOKIE, "game/Recipe/Cookie.png"),
     HashBrowns("hash browns", true, Map.of(Ingredients.POTATO, 1, Ingredients.OIL, 1), 90, 120, Ingredients.HASH_BROWNS, "game/Recipe/Hashbrowns.png"),
     Pancakes("pancakes", true, Map.of(Ingredients.WHEAT_FLOUR, 1, Ingredients.EGG, 1), 90, 80, Ingredients.PANCAKES, "game/Recipe/Pancakes.png"),
-    FruitSalad("fruit salad", true, Map.of(Ingredients.BLUEBERRY, 1, Ingredients.MELON, 1, Ingredients.Apricot, 1), 263, 450, Ingredients.FRUIT_SALAD, "game/Recipe/Fruit_Salad.png"),
+    FruitSalad("fruit salad", true, Map.of(Ingredients.BLUEBERRY, 1, Ingredients.MELON, 1, Ingredients.APRICOT, 1), 263, 450, Ingredients.FRUIT_SALAD, "game/Recipe/Fruit_Salad.png"),
     RedPlate("red plate", true, Map.of(Ingredients.RED_CABBAGE, 1, Ingredients.RADISH, 1), 240, 400, Ingredients.RED_PLATE, "game/Recipe/Red_Plate.png"),
     Bread("bread", true, Map.of(Ingredients.WHEAT_FLOUR, 1), 50, 60, Ingredients.BREAD, "game/Recipe/Bread.png"),
     SalmonDinner("salmon dinner", true, Map.of(Ingredients.Salmon, 1, Ingredients.AMARANTH, 1, Ingredients.KALE, 1), 125, 300, Ingredients.SALMON_DINNER, "game/Recipe/Salmon_Dinner.png"),

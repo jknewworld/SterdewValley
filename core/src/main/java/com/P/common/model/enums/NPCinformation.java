@@ -24,7 +24,7 @@ public enum NPCinformation {
             new Pair(Ingredients.DAFFODIL, 12),
             new Pair(Ingredients.Salmon, 1),
             new Pair(Ingredients.Wine, 1),
-            new Pair(Ingredients.Apple, 7),
+            new Pair(Ingredients.APPLE, 7),
             new Pair(Ingredients.COAL, 4),
             new Pair(Ingredients.SALAD, 5)
     ),
@@ -33,14 +33,14 @@ public enum NPCinformation {
             new Pair(Ingredients.Salmon, 1),
             new Pair(Ingredients.WOOD, 200),
             new Pair(Ingredients.Cheese, 1),
-            new Pair(Ingredients.Cherry, 12),
+            new Pair(Ingredients.CHERRY, 12),
             new Pair(Ingredients.DELUXE_SCARECROW, 3)
     ),
     Robbin(
             new Pair(Ingredients.WOOD, 80),
             new Pair(Ingredients.IRON_ORE, 10),
             new Pair(Ingredients.WOOD, 1000),
-            new Pair(Ingredients.Apricot, 5),
+            new Pair(Ingredients.APRICOT, 5),
             new Pair(Ingredients.HONEY, 3),
             new Pair(Ingredients.TOPAZ, 2)
     );

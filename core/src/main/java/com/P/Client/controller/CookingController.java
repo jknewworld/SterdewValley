@@ -70,13 +70,18 @@ public class CookingController extends ControllersController {
         fridgeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Table ref=creatRefrigeratorTable();
+                Table ref = creatRefrigeratorTable();
+
+                ScrollPane scrollPane = new ScrollPane(ref, GameAssetManager.SKIN);
+                scrollPane.setFadeScrollBars(false);
                 Dialog dialog = new Dialog("Refrigerator", GameAssetManager.SKIN);
-                dialog.text("Refrigerator contents go here...");
+
+                dialog.getContentTable().add(scrollPane).width(500).height(400);
                 dialog.button("OK");
                 dialog.show(cookingStage[0]);
             }
         });
+
 
         table.add(fridgeButton).colspan(5).center();
         table.row();
@@ -159,27 +164,29 @@ public class CookingController extends ControllersController {
     }
 
 
-    private Table creatRefrigeratorTable(){
-        Table table=new Table();
+    private Table creatRefrigeratorTable() {
+        Table table = new Table();
+        table.defaults().pad(5);
+
         Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
         Inventory refrigerator = player.getRefrigerator();
-        for (Map.Entry<Ingredients, Integer> need: refrigerator.getIngredients().entrySet()){
+
+        for (Map.Entry<Ingredients, Integer> need : refrigerator.getIngredients().entrySet()) {
             Texture texture = new Texture(Gdx.files.internal(need.getKey().getTextureName()));
             Image image = new Image(texture);
             Label nameLabel = new Label(need.getKey().getName(), GameAssetManager.SKIN);
-
             Label energyLabel = new Label("Energy: " + need.getKey().getEnergy(), GameAssetManager.SKIN);
             Label priceLabel = new Label("Sell Price: " + need.getKey().getPrice(), GameAssetManager.SKIN);
 
-
-            table.add(image).size(64, 64);
-            table.add(nameLabel).left();
-            table.add(energyLabel);
-            table.add(priceLabel);
-            table.row();
+            table.add(image).size(64, 64).left().padRight(10);
+            table.add(nameLabel).left().padRight(10);
+            table.add(energyLabel).left().padRight(10);
+            table.add(priceLabel).left();
+            table.row().padBottom(10);
         }
         return table;
     }
+
     public static Resualt getFromRefrigerator(Command command) {
         Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
         Inventory inventory = player.getInventory();
