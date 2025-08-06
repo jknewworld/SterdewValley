@@ -175,6 +175,7 @@ public class TurnController extends ControllersController {
         Game game = user.getCurrentGame();
         Player player = game.getCurrentPlayer();
         int mapNumber = Integer.parseInt(view2.getMap1().getText());
+        player.setFarmNum(mapNumber);
         if (mapNumber != 1 && mapNumber != 2) {
             return new Resualt(false, "Invalid map number");
         }

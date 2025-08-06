@@ -304,10 +304,10 @@ public class GameView {
         textures.put("SCARECROW_INFO", new TextureRegion(new Texture(Gdx.files.internal("game/greenhouse/command.png"))));
 
         // FISHING
-        waterBounds = new Rectangle(21 * Main.TILE_SIZE,
-            21 * Main.TILE_SIZE,
-            8 * Main.TILE_SIZE,
-            4 * Main.TILE_SIZE);
+        waterBounds = new Rectangle(12* Main.TILE_SIZE,
+            12 * Main.TILE_SIZE,
+            3 * Main.TILE_SIZE,
+            3 * Main.TILE_SIZE);
 
         initFishes();
 
@@ -321,9 +321,9 @@ public class GameView {
     Array<Fish> fishes = new Array<>();
 
     public void initFishes() {
-        for (int i = 0; i < 10; i++) {
-            float x = MathUtils.random(waterBounds.x, waterBounds.x + waterBounds.width - 32);
-            float y = MathUtils.random(waterBounds.y, waterBounds.y + waterBounds.height - 32);
+        for (int i = 0; i < 4; i++) {
+            float x = MathUtils.random(waterBounds.x, waterBounds.x + waterBounds.width);
+            float y = MathUtils.random(waterBounds.y, waterBounds.y + waterBounds.height);
 
             FishGame type = FishGame.values()[i % 5];
             Texture texture;
@@ -417,8 +417,8 @@ public class GameView {
             float cameraLeft = camX - viewportWidth / 2;
             float cameraBottom = camY - viewportHeight / 2;
 
-            float drawX = fish.getPosition().x  - cameraLeft;
-            float drawY = fish.getPosition().y - cameraBottom;
+            float drawX = fish.getPosition().y  - cameraLeft;
+            float drawY = fish.getPosition().x - cameraBottom;
             fish.update(Gdx.graphics.getDeltaTime(), waterBounds);
             batch.draw(fish.getFishTexture(), drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE);
         }

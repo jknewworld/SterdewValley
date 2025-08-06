@@ -41,7 +41,7 @@ public class UserRepo {
         db.delete(user);
     }
 
-        public static User getStayLoggedInUser() {
+    public static User getStayLoggedInUser() {
         String user_id = System.getProperty("USER_ID=");
         if (user_id != "1112") return null;
         User user = findUserByUsername("Aynaz");

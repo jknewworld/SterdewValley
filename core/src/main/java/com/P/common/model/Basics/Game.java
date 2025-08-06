@@ -23,6 +23,7 @@ import com.P.common.model.game.Clock;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity("games")
 public class Game {
@@ -277,6 +278,8 @@ public class Game {
         this.hasTurnCycleFinished = hasTurnCycleFinished;
     }
 
+    List<Animal> productAnimals = new ArrayList<>();
+
     public void newDayBackgroundChecks() {
 
         for (Player player : players) {
@@ -296,12 +299,17 @@ public class Game {
      //  System.out.println("TOMOPRROW" + weatherTomorrow);
 
         determineAndSetWeatherTomorrow();
+        productAnimals.clear(); // پاک کردن لیست روز قبل
 
         for (Player player : getPlayers()) {
             for (Building building : player.getFarm().getBuildings())
                 if (building instanceof Barn) {
-                    for (Animal animal : ((Barn) building).getAnimals())
+                    for (Animal animal : ((Barn) building).getAnimals()) {
                         animal.GoodNight();
+                        if (animal.getProduct() != null) {
+                            productAnimals.add(animal);
+                        }
+                    }
                 }
             for(ShippingBin shippingBin : player.getFarm().getShippingBins()){}
                 //shippingBin.GoodNight();
@@ -427,5 +435,25 @@ public class Game {
 
     public double getWeather(){
         return weather;
+    }
+
+    public void setFriendMatrix(ArrayList<ArrayList<FriendInteraction>> friendMatrix) {
+        this.friendMatrix = friendMatrix;
+    }
+
+    public void setNpcs(ArrayList<NPC> npcs) {
+        this.npcs = npcs;
+    }
+
+    public void setWeather(double weather) {
+        this.weather = weather;
+    }
+
+    public List<Animal> getProductAnimals() {
+        return productAnimals;
+    }
+
+    public void setProductAnimals(List<Animal> productAnimals) {
+        this.productAnimals = productAnimals;
     }
 }

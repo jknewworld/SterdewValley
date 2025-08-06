@@ -27,13 +27,16 @@ import com.P.common.model.item.TileDescriptionId;
 import com.P.Client.view.GameView.Effect;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -43,8 +46,11 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+
 
 import java.awt.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import java.util.*;
 import java.util.List;
 
@@ -53,20 +59,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 import static com.P.common.model.enums.Weather.SUNNY;
+import static java.lang.Integer.max;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.floor;
 
 // check 481
 public class RanchingController {
-    private final Array<Effect> heartEffects = new Array<>();
+    private static final Array<Effect> heartEffects = new Array<>();
     private Stage animalMenuStage = null;
     private boolean isAnimalMenuOpen = false;
 
-
-   public void update() {
+    public void update() {
         handleInputs();
-
         float delta = Gdx.graphics.getDeltaTime();
+
         for (int i = heartEffects.size - 1; i >= 0; i--) {
             Effect heartEffect = heartEffects.get(i);
             heartEffect.update(delta);
@@ -74,17 +80,14 @@ public class RanchingController {
                 heartEffects.removeIndex(i);
             }
         }
-        for (Effect heartEffect : heartEffects) {
-            heartEffect.draw(Main.getBatch());
-        }
+
         for (Player player : App.loggedInUser.getCurrentGame().getPlayers()) {
             for (Building building : player.getFarm().getBuildings()) {
                 if (building instanceof Barn) {
                     for (Animal animal : ((Barn) building).getAnimals()) {
-                        //if (animal.isHasBeenOut()) {
+                        System.out.println(animal.getName());
                         handleAnimalMovement(animal);
-                        updateAnimalMovement(Gdx.graphics.getDeltaTime(), animal);
-                        // }
+                        updateAnimalMovement(delta, animal);
                     }
                 }
             }
@@ -92,7 +95,8 @@ public class RanchingController {
     }
 
     public void render() {
-        // رندر حیوانات
+        SpriteBatch batch = Main.getBatch();
+
         for (Player player : App.loggedInUser.getCurrentGame().getPlayers()) {
             for (Building building : player.getFarm().getBuildings()) {
                 if (building instanceof Barn) {
@@ -103,22 +107,29 @@ public class RanchingController {
             }
         }
 
-        // رندر اثرهای قلب
         for (Effect heartEffect : heartEffects) {
-            heartEffect.draw(Main.getBatch());
+            heartEffect.draw(batch);
         }
 
-        // رندر منوی حیوان اگر باز است
         if (isAnimalMenuOpen && animalMenuStage != null) {
             animalMenuStage.act(Gdx.graphics.getDeltaTime());
             Gdx.input.setInputProcessor(animalMenuStage);
             animalMenuStage.draw();
         }
+
+        for (Animal animal : App.loggedInUser.getCurrentGame().getProductAnimals()) {
+            float x = animal.getPosition().getX() * Main.TILE_SIZE;
+            float y = animal.getPosition().getY() * Main.TILE_SIZE;
+
+            // بکش محصول حیوان
+            batch.draw(animal.getProduct().getTexture(), x, y, Main.TILE_SIZE, Main.TILE_SIZE);
+        }
+
     }
 
     private void renderAnimal(Animal animal) {
 
-        Main.getBatch().draw(animal.getTexture(),animal.getTiles().get(0).getCoordinate().getX() * Main.TILE_SIZE,
+        Main.getBatch().draw(animal.getTexture(), animal.getTiles().get(0).getCoordinate().getX() * Main.TILE_SIZE,
             animal.getTiles().get(0).getCoordinate().getY() * Main.TILE_SIZE);
     }
 
@@ -132,11 +143,12 @@ public class RanchingController {
             for (Player player1 : App.loggedInUser.getCurrentGame().getPlayers()) {
                 for (Building building : App.loggedInUser.getCurrentGame().getCurrentPlayer().getFarm().getBuildings())
                     if (building instanceof Barn) {
-                        for (Animal animal : ((Barn) building).getAnimals()){
-                          //  if (collision(animal, worldX, worldY)){
-                                isAnimalMenuOpen = true;
-                                createAnimalMenu(animal);
-                            }
+                        for (Animal animal : ((Barn) building).getAnimals()) {
+                            //  if (collision(animal, worldX, worldY)){
+                            isAnimalMenuOpen = true;
+
+                            createAnimalMenu(animal);
+                        }
                     }
             }
 
@@ -156,13 +168,14 @@ public class RanchingController {
 //        }
     }
 
+    final Resualt[] response = {null};
     private void createAnimalMenu(Animal animal) {
         Stage animalStage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(animalStage);
 
         Group menuGroup = new Group();
 
-        Window window = new Window("", GameAssetManager.SKIN);
+        Window window = new Window("Aniaml Menuث", GameAssetManager.SKIN);
         window.setSize(1000, 600);
         window.setMovable(false);
 
@@ -181,9 +194,7 @@ public class RanchingController {
         feedButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Resualt response = FeedHay(animal.getName());
-                responseLabel.setText(response.getAnswer());
-                responseLabel.setColor(response.isAccept() ? Color.GREEN : Color.RED);
+                response[0] = FeedHay(animal.getName());
                 animalStage.clear();
                 createAnimalMenu(animal);
             }
@@ -197,9 +208,7 @@ public class RanchingController {
         petButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Resualt response = NuzPet(animal.getName());
-                responseLabel.setText(response.getAnswer());
-                responseLabel.setColor(response.isAccept() ? Color.GREEN : Color.RED);
+                response[0] = NuzPet(animal.getName());
                 animalStage.clear();
                 createAnimalMenu(animal);
             }
@@ -209,20 +218,13 @@ public class RanchingController {
         table.row();
 
         Label produce;
-//        if (animal.getProduct() != null) {
-//            produce = new Label("ProduceToday: " + animal.getProduct().getName() + " " + animal.getProduct().getType(), GameAssetManager.SKIN);
-//        } else {
-//            produce = new Label("ProduceToday: None", GameAssetManager.SKIN);
-//        }
         Resualt response1 = ShowProducts();
         produce = new Label(response1.getAnswer(), GameAssetManager.SKIN);
         TextButton produceButton = new TextButton("collectProduct", GameAssetManager.SKIN);
         produceButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Resualt response = CollectProduct(animal.getName());
-                responseLabel.setText(response.getAnswer());
-                responseLabel.setColor(response.isAccept() ? Color.GREEN : Color.RED);
+                response[0] = CollectProduct(animal.getName());
                 animalStage.clear();
                 createAnimalMenu(animal);
             }
@@ -241,9 +243,7 @@ public class RanchingController {
                 try {
                     int positionX = Integer.parseInt(shepherdPositionX.getText());
                     int positionY = Integer.parseInt(shepherdPositionY.getText());
-                    Resualt response = ShepherdAnimals(animal.getName(), positionX, positionY);
-                    responseLabel.setText(response.getAnswer());
-                    responseLabel.setColor(response.isAccept() ? Color.GREEN : Color.RED);
+                    response[0] = ShepherdAnimals(animal.getName(), positionX, positionY);
                     animalStage.clear();
                     createAnimalMenu(animal);
                 } catch (Exception ignored) {
@@ -267,10 +267,7 @@ public class RanchingController {
         sell.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Resualt response = SellAnimal(animal.getName());
-                responseLabel.setText(response.getAnswer());
-                responseLabel.setColor(response.isAccept() ? Color.GREEN : Color.RED);
-                animalStage.clear();
+                response[0] = SellAnimal(animal.getName());
             }
         });
         table.add(sell).colspan(2).center();
@@ -283,7 +280,9 @@ public class RanchingController {
         exitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                animalStage.clear(); // بستن منو
+                animalStage.clear();
+                isAnimalMenuOpen = false;
+                Gdx.input.setInputProcessor(null);
             }
         });
 
@@ -309,14 +308,15 @@ public class RanchingController {
         menuGroup.addActor(group);
         animalStage.addActor(menuGroup);
 
-        // باید توی رندر این رو دستی صدا بزنی:
-        Gdx.app.postRunnable(() -> {
-            Gdx.input.setInputProcessor(animalStage);
-        });
-
-        // نگه‌دار stage برای استفاده در render()
         this.animalMenuStage = animalStage;
         this.isAnimalMenuOpen = true;
+        if (response[0] != null) {
+            Dialog dialog = new Dialog("", GameAssetManager.SKIN);
+            dialog.text(response[0].getAnswer());
+            dialog.button("OK");
+            dialog.show(animalStage);
+        }
+
     }
 
 
@@ -325,22 +325,7 @@ public class RanchingController {
         sprite.setPosition(animal.getTiles().get(0).getCoordinate().getX() * Main.TILE_SIZE, animal.getTiles().get(0).getCoordinate().getY() * Main.TILE_SIZE);
         return worldX >= sprite.getX() && worldX <= sprite.getX() + sprite.getWidth() && worldY >= sprite.getY() && worldY <= sprite.getY() + sprite.getHeight();
     }
-//    private boolean collision(Animal animal, float worldX, float worldY) {
 
-    /// /        if (animal.getTiles() == null || animal.getTiles().isEmpty()) {
-    /// /            return false;
-    /// /        }
-//
-//        Sprite sprite = animal.getSprite();
-//        sprite.setPosition(
-//            animal.getTiles().get(0).getCoordinate().getX() * Main.TILE_SIZE,
-//            animal.getTiles().get(0).getCoordinate().getY() * Main.TILE_SIZE
-//        );
-//        return worldX >= sprite.getX()
-//            && worldX <= sprite.getX() + sprite.getWidth()
-//            && worldY >= sprite.getY()
-//            && worldY <= sprite.getY() + sprite.getHeight();
-//    }
     private void handleAnimalMovement(Animal animal) {
         Random random = new Random();
         if (random.nextInt(1, 1000) == 1) {
@@ -348,37 +333,30 @@ public class RanchingController {
         }
     }
 
+
     private void moveAnimal(Animal animal) {
         Random random = new Random();
         int totalDistance = 5;
         int dx = random.nextInt(-1, 2);
         int dy = random.nextInt(-1, 2);
+
         if (dx == 0 && dy == 0) return;
+
         Queue<Vector2> path = new LinkedList<>();
         int currentX = animal.getPosition().getX();
         int currentY = animal.getPosition().getY();
+
         for (int i = 1; i <= totalDistance; i++) {
             int stepX = currentX + dx * i;
             int stepY = currentY + dy * i;
-            //  TileDescriptionId tile = getTileByXAndY(stepX, stepY);
             path.add(new Vector2(stepX, stepY));
-
         }
+
         if (!path.isEmpty()) {
             animal.setMovementPath(path);
-            animal.getTiles().get(0).getCoordinate().setX(currentX + dx * 5);
-            animal.getTiles().get(0).getCoordinate().setY(currentY + dx * 5);
         }
     }
 
-    private Farm getPlayerMainFarm(Player player) {
-        return App.loggedInUser.getCurrentGame().getCurrentPlayer().getFarm();
-    }
-
-    private TileDescriptionId getTileByXAndY(int x, int y) {
-        Point point = new Point(x, y);
-        return App.loggedInUser.getCurrentGame().getCurrentPlayer().getFarm().getTile(point);
-    }
 
     private void updateAnimalMovement(float delta, Animal animal) {
         animal.setTimeSinceLastMove(animal.getTimeSinceLastMove() + delta);
@@ -389,8 +367,6 @@ public class RanchingController {
                 Vector2 nextStep = animal.getMovementPath().poll();
                 animal.getTiles().get(0).getCoordinate().setX((int) nextStep.x);
                 animal.getTiles().get(0).getCoordinate().setY((int) nextStep.y);
-
-                // به‌روزرسانی موقعیت فیزیکی
                 animal.setPosition(new Position((int) nextStep.x, (int) nextStep.y));
             }
         }
@@ -527,17 +503,19 @@ public class RanchingController {
     }
 
     public static Resualt NuzPet(String name) {
-        // String name = request.body.get("name");
         Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
         Animal pet = getAnimalByName(name);
-        if (pet == null)
+        if (pet == null) {
+            System.out.println("No pet found with name " + name);
             return new Resualt(false, "No pet found.");
-        if (!pet.getPosition().isNextTo(player.getPosition()))
-            return new Resualt(false, "You are not next to " + name);
+        }
         if (!pet.getHasBeenNuzzed()) {
             pet.setHasBeenNuzzed(true);
             pet.changeFriendship(15);
         }
+
+        heartEffects.add(new Effect(pet.getTiles().get(0).getCoordinate().getX()* Main.TILE_SIZE,
+            (pet.getTiles().get(0).getCoordinate().getY() + 1) * Main.TILE_SIZE));
         return new Resualt(true, "Done successfully!");
     }
 
@@ -565,9 +543,6 @@ public class RanchingController {
     }
 
     public static Resualt ShepherdAnimals(String name, int x, int y) {
-//        String name = request.body.get("name");
-//        int x = parseInt(request.body.get("x"));
-//        int y = parseInt(request.body.get("y"));
         Position newPosition = new Position(x, y);
         Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
 

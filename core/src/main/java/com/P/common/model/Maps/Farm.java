@@ -205,8 +205,8 @@ public class Farm {
 
 
     private static void addOneLake(ArrayList<Tile> farmCells) {
-        for (int j = 37; j < 46; j++) {
-            for (int i = 33; i < 41; i++) {
+        for (int j = 10; j < 14; j++) {
+            for (int i = 10; i < 14; i++) {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
                 cell.setObjectOnCell(new Water());
                 tiles[j][i] = TileDescriptionId.WATER;
@@ -215,15 +215,15 @@ public class Farm {
     }
 
     private static void addTwoLakes(ArrayList<Tile> farmCells) {
-        for (int j = 37; j < 46; j++) {
-            for (int i = 33; i < 41; i++) {
+        for (int j = 11; j < 16; j++) {
+            for (int i = 10; i < 16; i++) {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
                 cell.setObjectOnCell(new Water());
                 tiles[j][i] = TileDescriptionId.WATER;
             }
         }
-        for (int j = 21; j < 30; j++) {
-            for (int i = 21; i < 25; i++) {
+        for (int j = 30; j < 40; j++) {
+            for (int i = 5; i < 9; i++) {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
                 cell.setObjectOnCell(new Water());
                 tiles[j][i] = TileDescriptionId.WATER;
