@@ -29,4 +29,9 @@ public class Connection {
         return database;
     }
 
+    public static void printDatabaseName() {
+        System.out.println("Connected to database: " + getDatabase().getDatabase().getName());
+    }
+
+
 }

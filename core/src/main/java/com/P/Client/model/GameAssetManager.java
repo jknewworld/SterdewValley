@@ -13,14 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
     public static final Texture PIXEL;
-    // public static final BitmapFont MAIN_FONT = new BitmapFont();
     public static final BitmapFont MAIN_FONT;
 
     public static final Skin SKIN = new Skin(Gdx.files.internal("skin/uiskin.json"));
-    public static final Skin ANIMALSKIN = new Skin(Gdx.files.internal("animal,skin/LibGdx-Skin-main/NzSkin.json"));
+    public static final Skin LABI_SKIN = new Skin(Gdx.files.internal("labiskin/freezing-ui.json"));
 
     static {
-        // فونت سفارشی از فایل ttf
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/stardew-valley.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 29;
