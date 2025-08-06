@@ -9,11 +9,11 @@ import java.util.Collections;
 import java.util.List;
 
 public enum ItemDescriptionId {
-    CARROT(0, "carrot", 100, "game/crops/Carrot.png",
+    CARROT(0, "carrot", 100, "game/Ingredient/Carrot.png",
         Collections.emptyList(),
         null
     ),
-    CARROT_SEED(1, "carrot-seed", 10, "game/crops/Carrot_Seeds.png",
+    CARROT_SEED(1, "carrot-seed", 10, "game/Ingredient/Carrot_Seeds.png",
         List.of(TileDescriptionId.SOIL),
         (gameModel, position) -> {
             gameModel.addGrowingCrop(new GrowingCrop(ItemDescriptionId.CARROT), position);

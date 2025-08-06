@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CraftsmanshipController extends ControllersController {
+
     public static Resualt useCraftingMachine(Command command) {
         String machineName = command.body.get("artisanName");
         Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();

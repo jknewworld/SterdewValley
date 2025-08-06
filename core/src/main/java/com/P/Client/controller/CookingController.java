@@ -32,15 +32,131 @@ import java.util.PrimitiveIterator;
 public class CookingController extends ControllersController {
     public static Stage cookingStage=null;
     public static boolean isCookingMenuOpen=false;
+    public static Stage buildingStage=null;
+    public static boolean isBuildingMenuOpen=false;
+
     public void update(){
-        if (Gdx.input.isKeyJustPressed(Input.Keys.C))createCookingMenu();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.C)){
+            showCookingRecipes();
+            createCookingMenu();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.B)){
+            showCraftingRecipes();
+            createBuildingMenu();
+        }
+
 
         if (isCookingMenuOpen && cookingStage != null) {
             cookingStage.act(Gdx.graphics.getDeltaTime());
             Gdx.input.setInputProcessor(cookingStage);
             cookingStage.draw();
+        }else if (isBuildingMenuOpen && buildingStage != null) {
+            buildingStage.act(Gdx.graphics.getDeltaTime());
+            Gdx.input.setInputProcessor(buildingStage);
+            buildingStage.draw();
         }
     }
+
+    public void createBuildingMenu() {
+        //if (!Gdx.input.isKeyJustPressed(Input.Keys.C))return;
+        final Stage[] buildingStage = {new Stage(new ScreenViewport())};
+        //Gdx.input.setInputProcessor(cookingStage);
+
+        Group menuGroup = new Group();
+        Window window = new Window("Building Menu", GameAssetManager.SKIN);
+        window.setSize(1000, 600);
+        window.setMovable(false);
+
+        Table table = new Table();
+        table.top().pad(20).defaults().pad(10);
+        //table.setFillParent(true);
+
+        ImageButton exitButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(GameAssetManager.EXIT_BUTTON)));
+        exitButton.setSize(32, 32);
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                isBuildingMenuOpen = false;
+                Gdx.input.setInputProcessor(null);
+                buildingStage[0].dispose();
+                buildingStage[0] = null;
+            }
+        });
+
+        for (Recipe recipe : Recipe.values()) {
+            if (recipe.isEatable()) {
+                continue;
+            }
+            Texture texture = new Texture(Gdx.files.internal(recipe.getTextureName()));
+            Image image = new Image(texture);
+            Label nameLabel = new Label(recipe.name(), GameAssetManager.SKIN);
+            Label priceLabel = new Label("Sell Price: " + recipe.getSellPrice(), GameAssetManager.SKIN);
+
+
+            TextButton cookButton = new TextButton("Make", GameAssetManager.SKIN);
+            cookButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Command n = new Command("cook");
+                    n.body.put("itemName", recipe.getName());
+                    Resualt response = startCraft(n);
+                    Dialog dialog = new Dialog("", GameAssetManager.SKIN);
+                    dialog.text(response.getAnswer());
+                    dialog.button("OK");
+                    dialog.show(buildingStage[0]);
+                }
+            });
+
+            table.add(image).size(64, 64);
+            table.add(nameLabel).left();
+            table.add(priceLabel);
+            table.add(cookButton).right();
+            table.row();
+        }
+
+
+        ScrollPane scrollPane = new ScrollPane(table, GameAssetManager.SKIN);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setForceScroll(false, true);
+        scrollPane.layout();
+        window.setSize(1000, 600);
+        window.add(scrollPane).expand().fill();
+
+        Group group = new Group() {
+            @Override
+            public void act(float delta) {
+                window.setPosition(
+                    (GameModel.getCamera().viewportWidth - window.getWidth()) / 2f +
+                        GameModel.getCamera().position.x - GameModel.getCamera().viewportWidth / 2,
+                    (GameModel.getCamera().viewportHeight - window.getHeight()) / 2f +
+                        GameModel.getCamera().position.y - GameModel.getCamera().viewportHeight / 2
+                );
+                exitButton.setPosition(
+                    window.getX() + window.getWidth() - exitButton.getWidth() / 2f + 16,
+                    window.getY() + window.getHeight() - exitButton.getHeight() / 2f
+                );
+                exitButton.setPosition(
+                    window.getX() + window.getWidth() - exitButton.getWidth() / 2f + 16,
+                    window.getY() + window.getHeight() - exitButton.getHeight() / 2f
+                );
+                super.act(delta);
+            }
+        };
+
+        group.addActor(window);
+        group.addActor(exitButton);
+        menuGroup.addActor(group);
+        buildingStage[0].addActor(menuGroup);
+
+        CookingController.cookingStage = buildingStage[0];
+        isCookingMenuOpen = true;
+
+        Gdx.app.postRunnable(() -> {
+            Gdx.input.setInputProcessor(buildingStage[0]);
+        });
+    }
+
     public void createCookingMenu() {
         //if (!Gdx.input.isKeyJustPressed(Input.Keys.C))return;
         final Stage[] cookingStage = {new Stage(new ScreenViewport())};
@@ -172,10 +288,10 @@ public class CookingController extends ControllersController {
         Inventory refrigerator = player.getRefrigerator();
 
         for (Map.Entry<Ingredients, Integer> need : refrigerator.getIngredients().entrySet()) {
-            Texture texture = new Texture(Gdx.files.internal(need.getKey().getTextureName()));
+            Texture texture = need.getKey().getTexture();
             Image image = new Image(texture);
             Label nameLabel = new Label(need.getKey().getName(), GameAssetManager.SKIN);
-            Label energyLabel = new Label("Energy: " + need.getKey().getEnergy(), GameAssetManager.SKIN);
+            Label energyLabel = new Label("Quantity: " + refrigerator.getIngredients().get(need.getKey()), GameAssetManager.SKIN);
             Label priceLabel = new Label("Sell Price: " + need.getKey().getPrice(), GameAssetManager.SKIN);
 
             table.add(image).size(64, 64).left().padRight(10);
@@ -377,6 +493,7 @@ public class CookingController extends ControllersController {
             return new Resualt(false, "You don't know this recipe.");
         }
         for (Map.Entry<Ingredients, Integer> provided : recipe.getIngredients().entrySet()) {
+            if (!player.getInventory().getIngredients().containsKey(provided.getKey()))return new Resualt(false, "You don't have enough ingredients");
             for (Map.Entry<Ingredients, Integer> needed : player.getInventory().getIngredients().entrySet()) {
                 if (needed.getKey() == provided.getKey()) {
                     if (needed.getValue() < provided.getValue()) {
