@@ -1,10 +1,10 @@
 package com.P.Server.app;
 
 import com.P.common.ConnectionThread;
+import com.P.common.Message;
 
 import java.io.IOException;
 import java.net.Socket;
-import com.P.common.Message;
 
 public class ClientConnectionThread extends ConnectionThread {
     public ClientConnectionThread(Socket socket) throws IOException {
@@ -12,7 +12,8 @@ public class ClientConnectionThread extends ConnectionThread {
     }
 
     protected boolean handleMessage(Message message) {
-        if (message.getType() != Message.MessageType.response) {
+        if (message.getType() == Message.MessageType.command) {
+            System.out.println("handling command, in ClientConnectionThread");
             sendMessage(ServerConnectionController.handleCommand(message));
             return true;
         }

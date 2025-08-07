@@ -1,5 +1,6 @@
 package com.P.common.model.Basics;
 
+import com.P.Server.model.Lobby;
 import com.P.Server.model.Repo.UserRepo;
 import com.P.common.model.enums.Menus;
 
@@ -10,6 +11,7 @@ public class App {
     public final ArrayList<Game> allGames = new ArrayList<>();
     public static User loggedInUser = UserRepo.getStayLoggedInUser();
     private static Menus currentMenu = Menus.AvatarMenu;
+    private static ArrayList<Lobby> lobbies = new ArrayList<>();
 
     public static Menus getCurrentMenu() {
         return currentMenu;
@@ -27,4 +29,12 @@ public class App {
         App.loggedInUser = loggedInUser;
     }
 
+
+    public static ArrayList<Lobby> getLobbies() {
+        return lobbies;
+    }
+
+    public static void setLobbies(ArrayList<Lobby> lobbies) {
+        App.lobbies = lobbies;
+    }
 }

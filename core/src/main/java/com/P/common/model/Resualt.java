@@ -1,4 +1,4 @@
-package com.P.Client.model;
+package com.P.common.model;
 
 import dev.morphia.annotations.Embedded;
 

@@ -12,7 +12,7 @@ import com.P.common.model.Naturals.Tree;
 import com.P.common.model.Objects.Animal;
 import com.P.common.model.Objects.Inventory;
 import com.P.common.model.Objects.Tool;
-import com.P.Client.model.Resualt;
+import com.P.common.model.Resualt;
 import com.P.common.model.enums.*;
 
 import java.util.Map;

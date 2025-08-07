@@ -2,7 +2,7 @@ package com.P.Client.view;
 
 import com.P.Client.controller.RegisterController;
 import com.P.Client.model.Command;
-import com.P.Client.model.Resualt;
+import com.P.common.model.Resualt;
 import com.P.common.model.enums.ProfileMenuCommands;
 import com.P.common.model.enums.RegisterMenuCommand;
 

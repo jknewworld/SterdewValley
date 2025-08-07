@@ -245,7 +245,7 @@ public class GameAssetManager {
     public static final Texture COFFEE = new Texture("game/Ingredient/Coffee.png");
     public static final Texture TROUT_SOUP = new Texture("game/Ingredient/Trout_Soup.png");
 
-    public static final Texture COOPER_ORE = new Texture("game/Ingredient/Cooper_Ore.png");
+    public static final Texture COOPER_ORE = new Texture("game/Ingredient/Copper_Ore.png");
     public static final Texture IRON_ORE = new Texture("game/Ingredient/Iron_Ore.png");
     public static final Texture GOLD_ORE = new Texture("game/Ingredient/Gold_Ore.png");
     public static final Texture IRIDIUM_ORE = new Texture("game/Ingredient/Iridium_Ore.png");

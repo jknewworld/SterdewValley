@@ -5,7 +5,7 @@ import com.P.Client.model.Command;
 import com.P.Client.model.GameAssetManager;
 import com.P.common.model.Maps.Farm;
 import com.P.common.model.Objects.Animal;
-import com.P.Client.model.Resualt;
+import com.P.common.model.Resualt;
 import com.P.common.model.enums.AnimalType;
 import com.P.common.model.Basics.Player;
 import com.P.common.model.Basics.App;

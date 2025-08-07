@@ -50,8 +50,6 @@ public enum Recipe {
     Dehydrator("dehydrator", false, Map.of(Ingredients.WOOD, 30, Ingredients.STONE, 20, Ingredients.FIBER, 30), 0, 0, Ingredients.DEHYDRATOR, GameAssetManager.DEHYDRATOR.toString()),
     GrassStarter("grass starter", false, Map.of(Ingredients.WOOD, 1, Ingredients.FIBER, 1), 0, 0, Ingredients.GRASS_STARTER, GameAssetManager.GRASS_STARTER.toString()),
     FishSmoker("fish smoker", false, Map.of(Ingredients.WOOD, 50, Ingredients.IRON, 3, Ingredients.COAL, 10), 0, 0, Ingredients.FISH_SMOKER,GameAssetManager.FISH_SMOKER.toString() ),
-
-
     ;
 
     private final String name;

@@ -25,6 +25,7 @@ public class ListenerThread extends Thread {
         while (!ServerApp.isEnded()) {
             try {
                 Socket socket = serverSocket.accept();
+                System.out.println("connected to a new client!");
                 handleConnection(socket);
             } catch (Exception e) {
                 break;

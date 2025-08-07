@@ -1,8 +1,13 @@
 package com.P.Client.view.PreGameView;
 
+import com.P.Client.controller.BasicsController;
+import com.P.Client.view.LobbyView;
 import com.P.Main;
 import com.P.Client.controller.TurnController;
 import com.P.Client.model.GameAssetManager;
+import com.P.Client.controller.LobbyController;
+import com.P.Server.model.Lobby;
+import com.P.common.model.Basics.App;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -29,7 +34,10 @@ public class PreGameView implements Screen {
     private TextButton thisGame;
     private TextButton exitGame;
 
+
+
     private TurnController controller;
+    private BasicsController controllerBasic = new BasicsController();
 
     public PreGameView(TurnController controller, Skin skin) {
         this.controller = controller;
@@ -83,16 +91,29 @@ public class PreGameView implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Main.getMain().getScreen().dispose();
-                Main.getMain().setScreen(new NewGameView(controller, GameAssetManager.getGameAssetManager().getSkin()));
+               // Main.getMain().setScreen(new NewGameView(controller, GameAssetManager.getGameAssetManager().getSkin()));
+                Main.getMain().setScreen(new LobbyView(new LobbyController(), GameAssetManager.LABI_SKIN));
             }
         });
 
+        loadGame.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Main.getMain().getScreen().dispose();
+                 Main.getMain().setScreen(new NewGameView(controller, GameAssetManager.getGameAssetManager().getSkin()));
+            }
+        });
+
+
+        stage.addActor(table);
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
         stage.act(delta);
+
+        String LobbiesList = controllerBasic.getLobbyList().getAnswer();
         stage.draw();
 
     }

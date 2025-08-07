@@ -1,5 +1,7 @@
 package com.P.common;
 
+import com.P.common.model.Resualt;
+
 import java.util.HashMap;
 
 public class Message {
@@ -24,6 +26,12 @@ public class Message {
 
     public int getIntFromBody(String fieldName) {
         return (int) ((double) ((Double) body.get(fieldName)));
+    }
+
+    public Resualt getResualt() {
+        boolean is = body.get("is").equals("true");
+        String response = (String) body.get("ok");
+        return new Resualt(is, response);
     }
 
     public enum MessageType {

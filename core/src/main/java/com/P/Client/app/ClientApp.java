@@ -5,7 +5,7 @@ import java.net.Socket;
 import static java.lang.Integer.parseInt;
 
 public class ClientApp {
-    public static final int TIMEOUT_MILLIS = 500;
+    public static final int TIMEOUT_MILLIS = 5000;
     private static String clientIp;
     private static int clientPort;
     private static ServerConnectionThread serverConnection;

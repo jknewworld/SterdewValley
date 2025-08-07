@@ -4,11 +4,12 @@ import com.P.Main;
 import com.P.Client.controller.MainMenuController;
 import com.P.Client.controller.RegisterController;
 import com.P.Client.controller.StartController;
-import com.P.Server.model.Authorization;
+import com.P.Server.controller.Authorization;
+import com.P.Server.model.Repo.UserRepo;
+import com.P.common.model.Basics.App;
 import com.P.common.model.Basics.User;
 import com.P.Client.model.GameAssetManager;
-import com.P.Server.model.Repo.UserRepo;
-import com.P.Client.model.Resualt;
+import com.P.common.model.Resualt;
 import com.P.common.model.enums.SecurityQuestion;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -341,8 +342,6 @@ public class SignupView implements Screen {
                 Resualt sQustionLabelResualt = controller.handleAnswer();
                 message.setText(messageResualt.getAnswer());
                 sQustionLabel.setText(sQustionLabelResualt.getAnswer());
-                if (messageResualt.isAccept())
-                    user = UserRepo.findUserByUsername(getUsernameForgetPassword().getText());
 
                 if (messageResualt.isAccept() && sQustionLabelResualt.isAccept()) {
                     forgetTable.clear();
@@ -372,9 +371,7 @@ public class SignupView implements Screen {
                 Resualt check = controller.handlePasswordLogic(getPassword().getText(), getPasswordConfirm().getText());
                 sQustionLabel.setText(check.getAnswer());
                 if (check.isAccept()) {
-                    user.setHashedPassword(Authorization.hashPassword(getPassword().getText()));
-                    user.setPassword(getPassword().getText());
-                    UserRepo.saveUser(user);
+                    controller.handleNewPassword();
                     Main.getMain().getScreen().dispose();
                     Main.getMain().setScreen(new SignupView(new RegisterController(), GameAssetManager.getGameAssetManager().getSkin()));
                 } else {
@@ -399,6 +396,7 @@ public class SignupView implements Screen {
                 style.font = bigFont;
                 if (answer.isAccept()) {
                     style.fontColor = Color.FOREST;
+                    App.setLoggedInUser(UserRepo.findUserByUsername(username.getText())); // CHECK
                 } else {
                     style.fontColor = Color.RED;
                 }

@@ -13,7 +13,7 @@ import com.P.common.model.Objects.Animal;
 import com.P.common.model.Objects.Barn;
 import com.P.Server.model.Repo.GameRepo;
 import com.P.Server.model.Repo.UserRepo;
-import com.P.Client.model.Resualt;
+import com.P.common.model.Resualt;
 import com.P.common.model.enums.AnimalType;
 import com.P.common.model.enums.BarnType;
 import com.P.common.model.enums.GameMenuCommands;
