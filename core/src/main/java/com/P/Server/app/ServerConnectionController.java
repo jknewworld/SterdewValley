@@ -11,6 +11,8 @@ public class ServerConnectionController {
         if (controller.equals("RegisterController")) {
             System.out.println("it's register controller");
             return RegisterController.handleCommand(command);
+        } else if (controller.equals("LobbyController")) {
+            return LobbyController.handleCommand(command);
         }
         return null;
     }

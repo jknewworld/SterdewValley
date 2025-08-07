@@ -5,6 +5,8 @@ import com.P.Main;
 import com.P.Client.controller.TurnController;
 import com.P.Client.model.GameAssetManager;
 import com.P.Client.controller.LobbyController;
+import com.P.Server.model.Lobby;
+import com.P.common.model.Basics.App;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -30,6 +32,12 @@ public class PreGameView implements Screen {
     private TextButton loadGame;
     private TextButton thisGame;
     private TextButton exitGame;
+
+//    {
+//        for(Lobby lobby : App.getLobbies()){
+//            private TextButton
+//        }
+//    }
 
     private TurnController controller;
 
@@ -89,6 +97,17 @@ public class PreGameView implements Screen {
                 Main.getMain().setScreen(new LobbyView(new LobbyController(), GameAssetManager.LABI_SKIN));
             }
         });
+
+        loadGame.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Main.getMain().getScreen().dispose();
+                 Main.getMain().setScreen(new NewGameView(controller, GameAssetManager.getGameAssetManager().getSkin()));
+            }
+        });
+
+
+
 
     }
 

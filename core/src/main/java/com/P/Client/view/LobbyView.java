@@ -1,6 +1,11 @@
 package com.P.Client.view;
 
 import com.P.Client.controller.LobbyController;
+import com.P.Client.controller.TurnController;
+import com.P.Client.model.GameAssetManager;
+import com.P.Client.view.PreGameView.PreGameView;
+import com.P.Main;
+import com.P.common.model.Resualt;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -25,6 +30,9 @@ public class LobbyView implements Screen {
     private TextButton creatLobbyButton;
     private Label passLabel;
     private CheckBox isVisible;
+    private Label message;
+    private TextButton backButton;
+
 
     private LobbyController controller;
 
@@ -43,11 +51,14 @@ public class LobbyView implements Screen {
         style.overFontColor = Color.PINK;
         style.downFontColor = Color.SKY;
         this.creatLobbyButton = new TextButton("^_^ LET'S GO", style);
+        this.backButton = new TextButton("^_^ Back", style);
 
         this.passwordField = new TextField("Lobby's Password?", skin);
         this.nameField = new TextField("Lobby's Name", skin);
         this.passLabel = new Label("Enter 0 if you want public LOBBY", skin);
         this.isVisible = new CheckBox("Visible Lobby?",skin);
+
+        this.message = new Label("", skin.get("title", Label.LabelStyle.class));
 
         this.table = new Table();
 
@@ -96,7 +107,20 @@ public class LobbyView implements Screen {
         creatLobbyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-               controller.createLobby();
+               Resualt resualt = controller.createLobby();
+               message.setText(resualt.getAnswer());
+                table.row().pad(10, 0, 10, 0);
+                table.add(message).width(500).height(50);
+
+                stage.addActor(table);
+            }
+        });
+
+        creatLobbyButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new PreGameView(new TurnController(), GameAssetManager.getGameAssetManager().getSkin()));
             }
         });
 

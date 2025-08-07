@@ -5,6 +5,8 @@ import com.P.Client.controller.MainMenuController;
 import com.P.Client.controller.RegisterController;
 import com.P.Client.controller.StartController;
 import com.P.Server.controller.Authorization;
+import com.P.Server.model.Repo.UserRepo;
+import com.P.common.model.Basics.App;
 import com.P.common.model.Basics.User;
 import com.P.Client.model.GameAssetManager;
 import com.P.common.model.Resualt;
@@ -394,6 +396,7 @@ public class SignupView implements Screen {
                 style.font = bigFont;
                 if (answer.isAccept()) {
                     style.fontColor = Color.FOREST;
+                    App.setLoggedInUser(UserRepo.findUserByUsername(username.getText())); // CHECK
                 } else {
                     style.fontColor = Color.RED;
                 }

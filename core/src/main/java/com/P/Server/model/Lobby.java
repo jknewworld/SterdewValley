@@ -7,18 +7,20 @@ import java.util.ArrayList;
 public class Lobby {
     public String name;
     public boolean isPrivate;
+    public boolean isVisible;
     public String password;
     public int peopleCounter;
     public ArrayList<User> players;
     public User admin;
     public int ID;
 
-    public Lobby(String name, boolean isPrivate, String password, User admin, int ID) {
+    public Lobby(String name, boolean isPrivate, String password, User admin, int ID,boolean isVisible) {
         this.name = name;
         this.isPrivate = isPrivate;
         this.password = password;
         this.admin = admin;
         this.ID = ID;
+        this.isVisible = isVisible;
     }
 
     public String getName() {
@@ -59,5 +61,29 @@ public class Lobby {
 
     public void setPlayers(ArrayList<User> players) {
         this.players = players;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

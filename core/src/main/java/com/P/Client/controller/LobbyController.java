@@ -3,6 +3,7 @@ package com.P.Client.controller;
 import com.P.Client.app.ClientApp;
 import com.P.Client.view.LobbyView;
 import com.P.common.Message;
+import com.P.common.model.Resualt;
 
 import java.util.HashMap;
 
@@ -15,7 +16,7 @@ public class LobbyController {
         this.view = view;
     }
 
-    public void createLobby() {
+    public Resualt createLobby() {
         String name= view.getNameField().getText();
         String password= view.getPasswordField().getText();
         boolean isVisible = view.getIsVisible().getText().equals("true");
@@ -24,10 +25,11 @@ public class LobbyController {
         body.put("name", name);
         body.put("password", password);
         body.put("isVisible", isVisible);
+        body.put("controller", "LobbyController");
+        body.put("request", "createLobby");
 
         Message message = new Message(body, Message.MessageType.command);
-        Message response = sendCommand(message);
-        //return response.getFromBody("result");
+        return sendCommand(message).getResualt();
     }
 
     private Message sendCommand(Message message) {
