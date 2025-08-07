@@ -7,7 +7,7 @@ import com.P.common.model.Maps.Position;
 import com.P.common.model.Maps.Tile;
 import com.P.common.model.Objects.CraftingMachine;
 import com.P.common.model.Objects.Inventory;
-import com.P.Client.model.Resualt;
+import com.P.common.model.Resualt;
 import com.P.common.model.enums.Ingredients;
 import com.P.common.model.enums.IngredientsTypes;
 

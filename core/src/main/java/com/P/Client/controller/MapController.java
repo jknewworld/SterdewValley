@@ -9,7 +9,7 @@ import com.P.Client.model.Command;
 import com.P.common.model.NPC.NPC;
 import com.P.common.model.Objects.Shop;
 import com.P.Server.model.Repo.GameRepo;
-import com.P.Client.model.Resualt;
+import com.P.common.model.Resualt;
 import com.P.Client.view.AppView;
 
 import java.util.ArrayList;

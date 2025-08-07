@@ -1,14 +1,14 @@
-package com.P.Client.controller;
+package com.P.Server.controller;
 
 import com.P.Client.controller.Authorization;
+import com.P.Client.model.Command;
+import com.P.Client.view.SignupView;
+import com.P.Server.model.Repo.UserRepo;
 import com.P.common.model.Basics.App;
 import com.P.common.model.Basics.User;
-import com.P.Client.model.Command;
-import com.P.Server.model.Repo.UserRepo;
 import com.P.common.model.Resualt;
 import com.P.common.model.enums.Avatar;
 import com.P.common.model.enums.SecurityQuestion;
-import com.P.Client.view.SignupView;
 
 import java.util.Random;
 
@@ -30,7 +30,7 @@ public class RegisterController {
     }
 
     public static void setUserOfForgetPassword(User userOfForgetPassword) {
-        RegisterController.userOfForgetPassword = userOfForgetPassword;
+        com.P.Client.controller.RegisterController.userOfForgetPassword = userOfForgetPassword;
     }
 
     public static Resualt handleAccountRecovery(Command request) {
@@ -404,5 +404,4 @@ public class RegisterController {
     public static String getUserPassword() {
         return userPassword;
     }
-
 }

@@ -1,4 +1,4 @@
-package com.P.Server.model;
+package com.P.Client.controller;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

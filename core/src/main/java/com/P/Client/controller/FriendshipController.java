@@ -4,7 +4,7 @@ import com.P.Client.model.Command;
 import com.P.common.model.Basics.Player;
 import com.P.common.model.Basics.App;
 import com.P.common.model.Basics.Game;
-import com.P.Client.model.Resualt;
+import com.P.common.model.Resualt;
 import com.P.common.model.enums.Ingredients;
 import com.P.common.model.enums.IngredientsTypes;
 import com.P.common.model.NPC.Pair;

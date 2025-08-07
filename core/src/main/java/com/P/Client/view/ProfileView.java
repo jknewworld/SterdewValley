@@ -6,7 +6,7 @@ import com.P.Client.controller.ProfileController;
 import com.P.common.model.Basics.App;
 import com.P.Client.model.GameAssetManager;
 import com.P.Server.model.Repo.UserRepo;
-import com.P.Client.model.Resualt;
+import com.P.common.model.Resualt;
 import com.P.common.model.enums.Avatar;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

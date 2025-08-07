@@ -1,10 +1,9 @@
 package com.P.Client.controller;
 
-import com.P.Server.model.Authorization;
 import com.P.common.model.Basics.App;
 import com.P.common.model.Basics.User;
 import com.P.Server.model.Repo.UserRepo;
-import com.P.Client.model.Resualt;
+import com.P.common.model.Resualt;
 import com.P.Client.view.ProfileView;
 
 public class ProfileController extends ControllersController {
