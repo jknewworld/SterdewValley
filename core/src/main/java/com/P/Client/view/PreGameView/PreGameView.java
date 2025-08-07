@@ -1,5 +1,6 @@
 package com.P.Client.view.PreGameView;
 
+import com.P.Client.controller.BasicsController;
 import com.P.Client.view.LobbyView;
 import com.P.Main;
 import com.P.Client.controller.TurnController;
@@ -36,6 +37,7 @@ public class PreGameView implements Screen {
 
 
     private TurnController controller;
+    private BasicsController controllerBasic = new BasicsController();
 
     public PreGameView(TurnController controller, Skin skin) {
         this.controller = controller;
@@ -110,6 +112,8 @@ public class PreGameView implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0, 0, 0, 1);
         stage.act(delta);
+
+        String LobbiesList = controllerBasic.getLobbyList().getAnswer();
         stage.draw();
 
     }

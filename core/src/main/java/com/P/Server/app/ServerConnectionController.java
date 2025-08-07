@@ -13,6 +13,8 @@ public class ServerConnectionController {
             return RegisterController.handleCommand(command);
         } else if (controller.equals("LobbyController")) {
             return LobbyController.handleCommand(command);
+        } else if (controller.equals("BasicsController")) {
+            return BasicsController.handleCommand(command);
         }
         return null;
     }
