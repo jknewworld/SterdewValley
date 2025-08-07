@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.fasterxml.jackson.databind.introspect.AnnotationCollector;
 
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
@@ -406,6 +407,21 @@ public class GameAssetManager {
     public static final Texture FIBER = new Texture("game/Ingredient/fiber.png");
     public static final Texture WATER_FERTILITY = new Texture("game/Ingredient/Basic_fertilizer.png");
     public static final Texture SPEED_FERTILITY = new Texture("game/Ingredient/Basic_fertilizer.png");
+
+    public static final Texture Axe=new Texture("game/Tools/axe.png");
+    public static final Texture Hoe=new Texture("game/Tools/hoe.png");
+    public static final Texture WateringCan=new Texture("game/Tools/watering_can.png");
+    public static final Texture Scythe=new Texture("game/Tools/scythe.png");
+    public static final Texture pickaxe=new Texture("game/Tools/pickaxe.png");
+    public static final Texture milkingCan=new Texture("game/Tools/milkingCan.png");
+    public static final Texture trashCan=new Texture("game/Tools/trash_can_gold.png");
+    public static final Texture scissors=new Texture("game/Tools/shears.png");
+
+    public static final Texture mineSkill=new Texture("game/Skill/mining_Skill_icon.png");
+    public static final Texture farmSkill=new Texture("game/Skill/farming_skill_icon.png");
+    public static final Texture fishSkill=new Texture("game/Skill/fishing_Skill_icon.png");
+    public static final Texture forageSkill=new Texture("game/Skill/foraging_Skill_icon.png");
+
 
 
     private GameAssetManager() {

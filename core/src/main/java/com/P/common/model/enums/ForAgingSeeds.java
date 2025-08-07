@@ -68,6 +68,7 @@ public enum ForAgingSeeds {
     private final Season[] season;
     private final int price;
 
+
     ForAgingSeeds(String seedName, Season[] season, int price) {
         this.seedName = seedName;
         this.season = season;

@@ -1,11 +1,8 @@
 package com.P.Client.controller.game;
 
 
-import com.P.Client.controller.CookingController;
-import com.P.Client.controller.CraftsmanshipController;
+import com.P.Client.controller.*;
 import com.P.Main;
-import com.P.Client.controller.RanchingController;
-import com.P.Client.controller.TurnController;
 import com.P.common.model.Basics.App;
 import com.P.common.model.game.GameModel;
 import com.P.common.model.item.ItemDescriptionId;
@@ -26,7 +23,7 @@ public class GameController {
     private final FishingController fishingController = new FishingController();
     private final RanchingController animalController = new RanchingController();
     private final CookingController cookingController=new CookingController();
-    private final CraftsmanshipController craftsmanshipController=new CraftsmanshipController();
+    private final InventoryFunctionsController inventoryController=new InventoryFunctionsController();
 
 
     public GameController(Main game, TurnController mainController) {
@@ -70,7 +67,7 @@ public class GameController {
         animalController.update();
         animalController.render();
         cookingController.update();
-        //craftsmanshipController.update();
+        inventoryController.update();
 
         Sprite clock = App.getLoggedInUser().getCurrentGame().getClock().updateBatch(Main.getBatch());
         table.setPosition(clock.getX() + clock.getWidth() * 0.3f, clock.getY() - table.getHeight());

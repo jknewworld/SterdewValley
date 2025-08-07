@@ -149,8 +149,8 @@ public class CookingController extends ControllersController {
         menuGroup.addActor(group);
         buildingStage[0].addActor(menuGroup);
 
-        CookingController.cookingStage = buildingStage[0];
-        isCookingMenuOpen = true;
+        CookingController.buildingStage = buildingStage[0];
+        isBuildingMenuOpen = true;
 
         Gdx.app.postRunnable(() -> {
             Gdx.input.setInputProcessor(buildingStage[0]);
