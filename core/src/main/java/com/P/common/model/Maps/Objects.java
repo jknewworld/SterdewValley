@@ -8,6 +8,7 @@ abstract public class Objects {
     public boolean canWalk;
     public String type;
 
+
     public Objects(boolean canWalk, String color, String type) {
         this.color = color;
         this.canWalk = canWalk;

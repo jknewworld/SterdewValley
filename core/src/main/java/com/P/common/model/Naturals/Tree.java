@@ -6,7 +6,6 @@ import dev.morphia.annotations.Embedded;
 
 @Embedded
 public class Tree implements Objectss {
-
     private final TreeName treeName;
     private boolean cut;
     private boolean wateredToday = false;
@@ -19,7 +18,6 @@ public class Tree implements Objectss {
     public Tree(TreeName treeName) {
         this.treeName = treeName;
     }
-
 
     public TreeName getTreeName() {
         return treeName;

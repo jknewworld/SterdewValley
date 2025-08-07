@@ -128,9 +128,25 @@ public class RanchingController {
     }
 
     private void renderAnimal(Animal animal) {
+        int tileSize = Main.TILE_SIZE;
 
-        Main.getBatch().draw(animal.getTexture(), animal.getTiles().get(0).getCoordinate().getX() * Main.TILE_SIZE,
-            animal.getTiles().get(0).getCoordinate().getY() * Main.TILE_SIZE);
+        int houseTileX = animal.getTiles().get(0).getCoordinate().getX();
+        int houseTileY = animal.getTiles().get(0).getCoordinate().getY();
+
+        float camX = GameModel.getCamera().position.x;
+        float camY = GameModel.getCamera().position.y;
+        float viewportWidth = GameModel.getCamera().viewportWidth;
+        float viewportHeight = GameModel.getCamera().viewportHeight;
+
+        float cameraLeft = camX - viewportWidth / 2;
+        float cameraBottom = camY - viewportHeight / 2;
+
+        float drawX = houseTileX * tileSize - cameraLeft;
+        float drawY = houseTileY * tileSize - cameraBottom;
+
+
+        Main.getBatch().draw(animal.getTexture(), drawX,
+            drawY);
     }
 
     private void handleInputs() {

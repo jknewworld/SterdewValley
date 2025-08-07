@@ -1,5 +1,6 @@
 package com.P.Client.view.PreGameView;
 
+import com.P.Client.controller.BasicsController;
 import com.P.Client.view.LobbyView;
 import com.P.Main;
 import com.P.Client.controller.TurnController;
@@ -15,10 +16,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -32,10 +30,10 @@ public class PreGameView implements Screen {
     private TextButton loadGame;
     private TextButton thisGame;
     private TextButton exitGame;
-
-
+    private Label lobby;
 
     private TurnController controller;
+    private BasicsController controllerBasic = new BasicsController();
 
     public PreGameView(TurnController controller, Skin skin) {
         this.controller = controller;
@@ -55,6 +53,8 @@ public class PreGameView implements Screen {
         this.loadGame = new TextButton("Load Game", style);
         this.thisGame = new TextButton("Current Game", style);
         this.exitGame = new TextButton("Exit & Delete Game", style);
+
+        this.lobby = new Label("",skin);
 
         this.table = new Table();
 
@@ -104,10 +104,16 @@ public class PreGameView implements Screen {
 
 
         stage.addActor(table);
+        lobby.setPosition(100,100);
+        stage.addActor(lobby);
+
+
     }
 
     @Override
     public void render(float delta) {
+        String LobbiesList = controllerBasic.getLobbyList().getAnswer();
+        lobby.setText(LobbiesList);
         ScreenUtils.clear(0, 0, 0, 1);
         stage.act(delta);
         stage.draw();

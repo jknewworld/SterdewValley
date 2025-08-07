@@ -9,8 +9,11 @@ import com.P.common.model.Basics.Game;
 import com.P.common.model.Basics.Player;
 import com.P.Client.model.GameAssetManager;
 import com.P.Client.model.Pair;
-import com.P.common.model.enums.Avatar;
-import com.P.common.model.enums.Season;
+import com.P.common.model.Maps.Farm;
+import com.P.common.model.Maps.Tile;
+import com.P.common.model.Naturals.Crop;
+import com.P.common.model.Naturals.Tree;
+import com.P.common.model.enums.*;
 import com.P.common.model.game.GameModel;
 import com.P.common.model.game.VillageModel;
 import com.P.common.model.item.CarrotStages;
@@ -34,6 +37,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import static javax.swing.JColorChooser.showDialog;
 
@@ -713,7 +717,6 @@ public class GameView {
 
         int tileSize = Main.TILE_SIZE;
 
-
         float cameraLeft = camX - viewportWidth / 2;
         float cameraBottom = camY - viewportHeight / 2;
 
@@ -853,6 +856,7 @@ public class GameView {
 
         batch.setColor(1f, 1f, 1f, 1f);
     }
+
 
     // PLAYER
     private void renderPlayer() {
