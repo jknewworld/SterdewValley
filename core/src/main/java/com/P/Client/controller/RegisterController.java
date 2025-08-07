@@ -36,8 +36,7 @@ public class RegisterController {
         body.put("gender", gender);
 
         Message message = new Message(body, Message.MessageType.command);
-        Message response = sendCommand(message);
-        return response.getFromBody("result");
+        return sendCommand(message).getResualt();
     }
 
 
@@ -48,8 +47,7 @@ public class RegisterController {
         body.put("password", password);
         body.put("passwordConfirm", passwordConfirm);
         Message message = new Message(body, Message.MessageType.command);
-        Message response = sendCommand(message);
-        return response.getFromBody("result");
+        return sendCommand(message).getResualt();
     }
 
     public Resualt handlePickQuestion() {
@@ -65,8 +63,7 @@ public class RegisterController {
         body.put("answerConfirm", answerConfirm);
 
         Message message = new Message(body, Message.MessageType.command);
-        Message response = sendCommand(message);
-        return response.getFromBody("result");
+        return sendCommand(message).getResualt();
     }
 
     public static Resualt handleLogin() {
@@ -82,8 +79,7 @@ public class RegisterController {
         body.put("loginFlag", loginFlag);
 
         Message message = new Message(body, Message.MessageType.command);
-        Message response = sendCommand(message);
-        return response.getFromBody("result");
+        return sendCommand(message).getResualt();
     }
 
     public Resualt handleForgetPassword() {
@@ -94,8 +90,7 @@ public class RegisterController {
         body.put("request", "handleForgetPassword");
         body.put("username", username);
         Message message = new Message(body, Message.MessageType.command);
-        Message response = sendCommand(message);
-        return response.getFromBody("result");
+        return sendCommand(message).getResualt();
     }
 
     public Resualt handleAnswer() {
@@ -106,8 +101,7 @@ public class RegisterController {
         body.put("request", "handleAnswer");
         body.put("userAnswer", userAnswer);
         Message message = new Message(body, Message.MessageType.command);
-        Message response = sendCommand(message);
-        return response.getFromBody("result");
+        return sendCommand(message).getResualt();
     }
 
     public Resualt handleNewPassword() {
@@ -120,8 +114,7 @@ public class RegisterController {
         body.put("username", username);
         body.put("password", password);
         Message message = new Message(body, Message.MessageType.command);
-        Message response = sendCommand(message);
-        return response.getFromBody("result");
+        return sendCommand(message).getResualt();
     }
 
     public static Message sendCommand(Message message) {

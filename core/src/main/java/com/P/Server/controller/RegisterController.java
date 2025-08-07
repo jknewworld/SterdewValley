@@ -41,7 +41,8 @@ public class RegisterController {
         }
 
         HashMap<String, Object> body = new HashMap<>();
-        body.put("result", resualt);
+        body.put("is", resualt.isAccept());
+        body.put("ok", resualt.getAnswer());
         return new Message(body, Message.MessageType.response);
     }
 
