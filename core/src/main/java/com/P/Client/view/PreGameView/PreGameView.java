@@ -33,11 +33,7 @@ public class PreGameView implements Screen {
     private TextButton thisGame;
     private TextButton exitGame;
 
-//    {
-//        for(Lobby lobby : App.getLobbies()){
-//            private TextButton
-//        }
-//    }
+
 
     private TurnController controller;
 
@@ -107,8 +103,7 @@ public class PreGameView implements Screen {
         });
 
 
-
-
+        stage.addActor(table);
     }
 
     @Override

@@ -102,6 +102,9 @@ public class LobbyView implements Screen {
         table.row().pad(10, 0, 10, 0);
         table.add(creatLobbyButton).width(500).height(50);
 
+        table.row().pad(10, 0, 10, 0);
+        table.add(backButton).width(500).height(50);
+
         stage.addActor(table);
 
         creatLobbyButton.addListener(new ClickListener() {
@@ -116,7 +119,7 @@ public class LobbyView implements Screen {
             }
         });
 
-        creatLobbyButton.addListener(new ClickListener() {
+        backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Main.getMain().getScreen().dispose();
