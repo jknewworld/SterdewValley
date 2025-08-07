@@ -1,5 +1,7 @@
 package com.P.Client.model;
 
+import com.P.common.model.Objects.Tool;
+import com.P.common.model.enums.ToolType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -9,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.fasterxml.jackson.databind.introspect.AnnotationCollector;
+
+import java.awt.image.TileObserver;
 
 public class GameAssetManager {
     private static GameAssetManager gameAssetManager;
@@ -296,7 +301,7 @@ public class GameAssetManager {
     public static final Texture DANDELION = new Texture("game/Ingredient/Dandelion.png");
     public static final Texture LEEK = new Texture("game/Ingredient/Leek.png");
     public static final Texture MOREL = new Texture("game/Ingredient/Morel.png");
-    public static final Texture SALMONBERRY =new Texture("game/Ingredient/salmonberry.png");
+    public static final Texture SALMONBERRY = new Texture("game/Ingredient/salmonberry.png");
     public static final Texture SPRING_ONION = new Texture("game/Ingredient/spring_onion.png");
     public static final Texture WILD_HORSERADISH = new Texture("game/Ingredient/wild_horseradish.png");
     public static final Texture FIDDLEHEAD_FERN = new Texture("game/Ingredient/fiddlehead_fern.png");
@@ -406,6 +411,135 @@ public class GameAssetManager {
     public static final Texture FIBER = new Texture("game/Ingredient/fiber.png");
     public static final Texture WATER_FERTILITY = new Texture("game/Ingredient/Basic_fertilizer.png");
     public static final Texture SPEED_FERTILITY = new Texture("game/Ingredient/Basic_fertilizer.png");
+
+    public static final Texture axe = new Texture("game/Tools/axe.png");
+    public static final Texture hoe = new Texture("game/Tools/hoe.png");
+    public static final Texture wateringCan = new Texture("game/Tools/watering_can.png");
+    public static final Texture scythe = new Texture("game/Tools/scythe.png");
+    public static final Texture pickaxe = new Texture("game/Tools/pickaxe.png");
+    public static final Texture milkingCan = new Texture("game/Tools/milkingCan.png");
+    public static final Texture trashCan = new Texture("game/Tools/trash_can_gold.png");
+    public static final Texture scissors = new Texture("game/Tools/shears.png");
+
+    public static final Texture mineSkill = new Texture("game/Skill/mining_Skill_icon.png");
+    public static final Texture farmSkill = new Texture("game/Skill/farming_skill_icon.png");
+    public static final Texture fishSkill = new Texture("game/Skill/fishing_Skill_icon.png");
+    public static final Texture forageSkill = new Texture("game/Skill/foraging_Skill_icon.png");
+
+
+    //Trees
+    public static final Texture apTree1 = new Texture("game/Ingredient/apricot_stage_1.png");
+    public static final Texture apTree2 = new Texture("game/Ingredient/apricot_stage_2.png");
+    public static final Texture apTree3 = new Texture("game/Ingredient/apricot_stage_3.png");
+    public static final Texture apTree4 = new Texture("game/Ingredient/apricot_stage_4.png");
+    public static final Texture apTree5 = new Texture("game/Ingredient/apricot_stage_5.png");
+    public static final Texture[] apricotStages = new Texture[]{
+        apTree1, apTree2, apTree3, apTree4, apTree5
+    };
+    public static final Texture[] cherryStages = new Texture[]{
+        new Texture("game/Ingredient/cherry_stage_1.png"),
+        new Texture("game/Ingredient/cherry_stage_2.png"),
+        new Texture("game/Ingredient/cherry_stage_3.png"),
+        new Texture("game/Ingredient/cherry_stage_4.png"),
+        new Texture("game/Ingredient/cherry_stage_5_fruit.png")
+    };
+    public static final Texture[] bananaStages = new Texture[]{
+        new Texture("game/Ingredient/banana_stage_1.png"),
+        new Texture("game/Ingredient/banana_stage_2.png"),
+        new Texture("game/Ingredient/banana_stage_3.png"),
+        new Texture("game/Ingredient/banana_stage_4.png"),
+        new Texture("game/Ingredient/banana_stage_5_fruit.png")
+    };
+    public static final Texture[] mangoStage = new Texture[]{
+        new Texture("game/Ingredient/mango_stage_1.png"),
+        new Texture("game/Ingredient/mango_stage_2.png"),
+        new Texture("game/Ingredient/mango_stage_3.png"),
+        new Texture("game/Ingredient/mango_stage_4.png"),
+        new Texture("game/Ingredient/mango_stage_5_fruit.png")
+    };
+    public static final Texture[] orangeStage = new Texture[]{
+        new Texture("game/Ingredient/orange_stage_1.png"),
+        new Texture("game/Ingredient/orange_stage_2.png"),
+        new Texture("game/Ingredient/orange_stage_3.png"),
+        new Texture("game/Ingredient/orange_stage_4.png"),
+        new Texture("game/Ingredient/orange_stage_5_fruit.png")
+    };
+    public static final Texture[] peachStage = new Texture[]{
+        new Texture("game/Ingredient/peach_stage_1.png"),
+        new Texture("game/Ingredient/peach_stage_2.png"),
+        new Texture("game/Ingredient/peach_stage_3.png"),
+        new Texture("game/Ingredient/peach_stage_4.png"),
+        new Texture("game/Ingredient/peach_stage_5_fruit.png")
+    };
+    public static final Texture[] appleStage = new Texture[]{
+        new Texture("game/Ingredient/apple_stage_1.png"),
+        new Texture("game/Ingredient/apple_stage_2.png"),
+        new Texture("game/Ingredient/apple_stage_3.png"),
+        new Texture("game/Ingredient/apple_stage_4.png"),
+        new Texture("game/Ingredient/apple_stage_5_fruit.png")
+    };
+    public static final Texture[] pomegranateStage = new Texture[]{
+        new Texture("game/Ingredient/pomegranate_stage_1.png"),
+        new Texture("game/Ingredient/pomegranate_stage_2.png"),
+        new Texture("game/Ingredient/pomegranate_stage_3.png"),
+        new Texture("game/Ingredient/pomegranate_stage_4.png"),
+        new Texture("game/Ingredient/pomegranate_stage_5_fruit.png")
+    };
+    public static final Texture[] oakStage = new Texture[]{
+        new Texture("game/Ingredient/oak_stage_1.png"),
+        new Texture("game/Ingredient/oak_stage_2.png"),
+        new Texture("game/Ingredient/oak_stage_3.png"),
+        new Texture("game/Ingredient/oak_stage_4.png")
+    };
+    public static final Texture[] mapleStage = new Texture[]{
+        new Texture("game/Ingredient/maple_stage_1.png"),
+        new Texture("game/Ingredient/maple_stage_2.png"),
+        new Texture("game/Ingredient/maple_stage_3.png"),
+        new Texture("game/Ingredient/maple_stage_4.png")
+    };
+    public static final Texture[] pineStage = new Texture[]{
+        new Texture("game/Ingredient/pine_stage_1.png"),
+        new Texture("game/Ingredient/pine_stage_2.png"),
+        new Texture("game/Ingredient/pine_stage_3.png"),
+        new Texture("game/Ingredient/pine_stage_4.png")
+    };
+    public static final Texture[] mahoganyStage = new Texture[]{
+        new Texture("game/Ingredient/mahogany_stage_1.png"),
+        new Texture("game/Ingredient/mahogany_stage_2.png"),
+        new Texture("game/Ingredient/mahogany_stage_3.png"),
+        new Texture("game/Ingredient/mahogany_stage_4.png")
+    };
+    public static final Texture[] mushroomStage = new Texture[]{
+        new Texture("game/Ingredient/mushroom_stage_1.png"),
+        new Texture("game/Ingredient/mushroom_stage_2.png"),
+        new Texture("game/Ingredient/mushroom_stage_3.png"),
+        new Texture("game/Ingredient/mushroom_stage_4.png")
+    };
+    public static final Texture[] mysticStage = new Texture[]{
+        new Texture("game/Ingredient/mystic_stage_1.png"),
+        new Texture("game/Ingredient/mystic_stage_2.png"),
+        new Texture("game/Ingredient/mystic_stage_3.png"),
+        new Texture("game/Ingredient/mystic_stage_4.png")
+    };
+
+
+
+    public static Texture getTexture(Tool tool) {
+        ToolType toolType = tool.getToolType();
+        Texture tex = null;
+        switch (toolType) {
+            case WateringCan -> tex = wateringCan;
+            case MilkingCan -> tex = milkingCan;
+            case FishingRod -> tex = FIBERGLASSROD;
+            case TrashCan -> tex = trashCan;
+            case Scissors -> tex = scissors;
+            case Pickaxe -> tex = pickaxe;
+            case Scythe -> tex = scythe;
+            case Hoe -> tex = hoe;
+            case Axe -> tex = axe;
+        }
+        return tex;
+    }
 
 
     private GameAssetManager() {
