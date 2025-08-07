@@ -14,6 +14,7 @@ public class Lwjgl3Launcher {
             try {
                 ClientApp.initFromArgs(args);
                 ClientApp.connectServer();
+                System.out.println("we are connected to server!");
             } catch (Exception e) {
                 return;
             }

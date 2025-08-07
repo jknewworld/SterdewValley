@@ -7,7 +7,6 @@ import com.P.Client.controller.StartController;
 import com.P.Server.controller.Authorization;
 import com.P.common.model.Basics.User;
 import com.P.Client.model.GameAssetManager;
-import com.P.Server.model.Repo.UserRepo;
 import com.P.common.model.Resualt;
 import com.P.common.model.enums.SecurityQuestion;
 import com.badlogic.gdx.Gdx;
@@ -341,8 +340,6 @@ public class SignupView implements Screen {
                 Resualt sQustionLabelResualt = controller.handleAnswer();
                 message.setText(messageResualt.getAnswer());
                 sQustionLabel.setText(sQustionLabelResualt.getAnswer());
-                if (messageResualt.isAccept())
-                    user = UserRepo.findUserByUsername(getUsernameForgetPassword().getText());
 
                 if (messageResualt.isAccept() && sQustionLabelResualt.isAccept()) {
                     forgetTable.clear();
@@ -372,9 +369,7 @@ public class SignupView implements Screen {
                 Resualt check = controller.handlePasswordLogic(getPassword().getText(), getPasswordConfirm().getText());
                 sQustionLabel.setText(check.getAnswer());
                 if (check.isAccept()) {
-                    user.setHashedPassword(Authorization.hashPassword(getPassword().getText()));
-                    user.setPassword(getPassword().getText());
-                    UserRepo.saveUser(user);
+                    controller.handleNewPassword();
                     Main.getMain().getScreen().dispose();
                     Main.getMain().setScreen(new SignupView(new RegisterController(), GameAssetManager.getGameAssetManager().getSkin()));
                 } else {

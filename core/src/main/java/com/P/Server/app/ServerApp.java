@@ -3,7 +3,7 @@ package com.P.Server.app;
 import java.util.ArrayList;
 
 public class ServerApp {
-    public static final int TIMEOUT_MILLIS = 500;
+    public static final int TIMEOUT_MILLIS = 10000;
     private static final ArrayList<ClientConnectionThread> connections = new ArrayList<>();
     private static boolean exitFlag = false;
     private static ListenerThread listenerThread;

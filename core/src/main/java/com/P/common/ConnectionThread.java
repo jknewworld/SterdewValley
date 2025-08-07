@@ -29,6 +29,7 @@ abstract public class ConnectionThread extends Thread {
     public synchronized void sendMessage(Message message) {
         String JSONString = JSONUtils.toJson(message);
 
+        System.out.println("writing...");
         try {
             dataOutputStream.writeUTF(JSONString);
         } catch (IOException e) {
@@ -37,11 +38,14 @@ abstract public class ConnectionThread extends Thread {
     }
 
     public Message sendAndWaitForResponse(Message message, int timeoutMilli) {
+        System.out.println("sending message...");
         sendMessage(message);
         try {
+            System.out.println("response received");
             return receivedMessagesQueue.poll(timeoutMilli, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             System.err.println("Request Timed out.");
+            System.out.println("request timed out!");
             return null;
         }
     }
@@ -50,9 +54,11 @@ abstract public class ConnectionThread extends Thread {
         while (!end.get()) {
             try {
                 String receivedStr = dataInputStream.readUTF();
+                System.out.println("message received!");
                 Message message = JSONUtils.fromJson(receivedStr);
                 boolean handled = handleMessage(message);
                 if (!handled) try {
+                    System.out.println("received message queue updated");
                     receivedMessagesQueue.put(message);
                 } catch (InterruptedException e) {}
             } catch (Exception e) {

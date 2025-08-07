@@ -14,6 +14,7 @@ public class ClientMain {
         try {
             ClientApp.initFromArgs(args);
             ClientApp.connectServer();
+            System.out.println("connected to server!");
         } catch (Exception e) {
             System.err.println("Error initializing peer: " + e.getMessage());
             return;

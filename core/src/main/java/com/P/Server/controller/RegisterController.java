@@ -19,7 +19,9 @@ public class RegisterController {
     private static User userWaitingForQuestion = null;
 
     public static Message handleCommand(Message command) {
+        System.out.println("now in controller");
         String request = command.getFromBody("request");
+        System.out.println("request found");
         Resualt resualt = null;
         if(request.equals("handleRegister")) {
             resualt = handleRegister(command);
@@ -34,6 +36,8 @@ public class RegisterController {
             resualt = handlePickQuestion(command);
         } else if (request.equals("handleForgetPassword")) {
             resualt = handleForgetPassword(command);
+        } else if (request.equals("handleNewPassword")) {
+            resualt = handleNewPassword(command);
         }
 
         HashMap<String, Object> body = new HashMap<>();
@@ -104,6 +108,7 @@ public class RegisterController {
 //    }
 
     private static Resualt handleRegister(Message command) {
+        System.out.println("in handle register");
         String username = command.getFromBody("username");
         String password = command.getFromBody("password");
         String email = command.getFromBody("email");
@@ -111,6 +116,7 @@ public class RegisterController {
         String nickname = command.getFromBody("nickname");
         String gender = command.getFromBody("gender");
 
+        System.out.println("all parts found");
         if (!Authorization.validateUsername(username)) {
             return new Resualt(false,
                 "\n^_^ Not Valid Username!");
@@ -166,6 +172,7 @@ public class RegisterController {
 //                        "Now, pick a security question — make it something you'll still remember when you're 80! \uD83D\uDC75\uD83E\uDDD3\n" +
 //                        "Command: 'pick question -q <number> -a <answer> -c <confirm answer>'\n" +
 //                        "Need ideas? Try 'list questions'\033[0m \uD83D\uDCA1");
+        System.out.println("register handled");
         return new Resualt(true, "\n^_^ Welcome " + username + "!\n" + "Now Choose your question!");
     }
 
@@ -376,6 +383,17 @@ public class RegisterController {
             "Correct answer! You've proven you're not a robot (probably).\n" +
                 "Now choose a new password you'll actually remember this time!\n" +
                 "Tip: 'password123' is not a good idea");
+    }
+
+    private static Resualt handleNewPassword(Message command) {
+        String username = command.getFromBody("username");
+        String password = command.getFromBody("password");
+
+        User user = UserRepo.findUserByUsername(username);
+        user.setHashedPassword(Authorization.hashPassword(password));
+        user.setPassword(password);
+        UserRepo.saveUser(user);
+        return new Resualt(true, "");
     }
 
     private static void resetRecoveryProcess() {
