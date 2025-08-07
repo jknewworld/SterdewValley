@@ -2,14 +2,15 @@ package com.P.Server.controller;
 
 import com.P.Client.controller.Authorization;
 import com.P.Client.model.Command;
-import com.P.Client.view.SignupView;
 import com.P.Server.model.Repo.UserRepo;
+import com.P.common.Message;
 import com.P.common.model.Basics.App;
 import com.P.common.model.Basics.User;
 import com.P.common.model.Resualt;
 import com.P.common.model.enums.Avatar;
 import com.P.common.model.enums.SecurityQuestion;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public class RegisterController {
@@ -19,21 +20,38 @@ public class RegisterController {
     public static boolean isProgramWaitingForAnswer = false;
     private static User userWaitingForQuestion = null;
 
-    private static SignupView view;
+    public static Message handleCommand(Message command) {
+        String request = command.getFromBody("request");
+        Resualt resualt = null;
+        if(request.equals("handleRegister")) {
+            resualt = handleRegister(command);
+        } else if (request.equals("handleLogin")) {
+            resualt = handleLogin(command);
+        } else if (request.equals("handleAnswer")) {
+            resualt = handleAnswer(command);
+        } else if (request.equals("handlePasswordLogic")) {
+            resualt = handlePasswordLogic(command.getFromBody("password"),
+                command.getFromBody("passwordConfirm"));
+        } else if (request.equals("handlePickQuestion")) {
+            resualt = handlePickQuestion(command);
+        } else if (request.equals("handleForgetPassword")) {
+            resualt = handleForgetPassword(command);
+        }
 
-    public void setView(SignupView view) {
-        this.view = view;
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("result", resualt);
+        return new Message(body, Message.MessageType.response);
     }
 
-    public static User getUserOfForgetPassword() {
+    private static User getUserOfForgetPassword() {
         return userOfForgetPassword;
     }
 
-    public static void setUserOfForgetPassword(User userOfForgetPassword) {
-        com.P.Client.controller.RegisterController.userOfForgetPassword = userOfForgetPassword;
+    private static void setUserOfForgetPassword(User userOfForgetPassword) {
+        userOfForgetPassword = userOfForgetPassword;
     }
 
-    public static Resualt handleAccountRecovery(Command request) {
+    private static Resualt handleAccountRecovery(Command request) {
         if (userOfForgetPassword == null) {
             return new Resualt(false, "Recovery mode: OFF (like your memory of passwords?)");
         }
@@ -87,13 +105,13 @@ public class RegisterController {
         //App.setCurrentMenu(Menus.MainMenu);
     }
 
-    public Resualt handleRegister() {
-        String username = view.getUsername().getText();
-        String password = view.getPassword().getText();
-        String email = view.getEmail().getText();
-        String passwordConfirm = view.getPasswordConfirm().getText();
-        String nickname = view.getNickname().getText();
-        String gender = view.getGenderBox().getSelected();
+    private static Resualt handleRegister(Message command) {
+        String username = command.getFromBody("username");
+        String password = command.getFromBody("password");
+        String email = command.getFromBody("email");
+        String passwordConfirm = command.getFromBody("passwordConfirm");
+        String nickname = command.getFromBody("nickname");
+        String gender = command.getFromBody("gender");
 
         if (!Authorization.validateUsername(username)) {
             return new Resualt(false,
@@ -157,7 +175,7 @@ public class RegisterController {
         return UserRepo.findUserByUsername(username) == null;
     }
 
-    public Resualt handlePasswordLogic(String password, String passwordConfirm) {
+    private static Resualt handlePasswordLogic(String password, String passwordConfirm) {
         if (password.equalsIgnoreCase("random")) {
             String newPassword = Authorization.createRandomPassword();
             return new Resualt(true, newPassword);
@@ -193,16 +211,14 @@ public class RegisterController {
         return "TEST".equals(System.getenv("APP_MODE"));
     }
 
-    public Resualt handlePickQuestion() {
+    private static Resualt handlePickQuestion(Message command) {
+        String question = command.getFromBody("question");
+        String answer = command.getFromBody("answer");
+        String answerConfirm = command.getFromBody("answerConfirm");
+
         try {
             int questionNumber;
 
-//            String answer = request.body.get("answer");
-//            String answerConfirm = request.body.get("answerConfirm");
-
-            String question = view.getsQustion().getSelected();
-            String answer = view.getAnswer().getText();
-            String answerConfirm = view.getAnswerConfirm().getText();
             if (question.equals(SecurityQuestion.FIRST_TEACHER)) {
                 questionNumber = 1;
             } else {
@@ -256,14 +272,10 @@ public class RegisterController {
         userWaitingForQuestion = null;
     }
 
-    public static Resualt handleLogin() {
-
-//        String username = request.body.getOrDefault("username", "").trim();
-//        String password = request.body.getOrDefault("password", "").trim();
-//        String loginFlag = request.body.getOrDefault("loginFlag", "false").trim();
-        String username = view.getUsername().getText();
-        String password = view.getPassword().getText();
-        boolean loginFlag = view.getStayLoggedIn().getText().equals("true");
+    private static Resualt handleLogin(Message command) {
+        String username = command.getFromBody("username");
+        String password = command.getFromBody("password");
+        boolean loginFlag = command.getFromBody("loginFlag").equals("true");
 
 
         User user = findUserWithChecks(username);
@@ -313,9 +325,8 @@ public class RegisterController {
         System.out.println("User logged in: " + user.getUsername());
     }
 
-    public Resualt handleForgetPassword() {
-//        String username = request.body.getOrDefault("username", "").trim();\
-        String username = view.getUsernameForgetPassword().getText();
+    private static Resualt handleForgetPassword(Message command) {
+        String username = command.getFromBody("username");
 
         User user = UserRepo.findUserByUsername(username);
         if (user == null) {
@@ -339,14 +350,15 @@ public class RegisterController {
         System.out.println("Password recovery initiated for: " + user.getUsername());
     }
 
-    public Resualt handleAnswer() {
+    private static Resualt handleAnswer(Message command) {
+        String userAnswer = command.getFromBody("userAnswer");
+
         if (userOfForgetPassword == null) {
             return new Resualt(false,
                 "Oops! No password recovery in progress. " +
                     "Did you get lost? Start from the beginning!");
         }
 
-        String userAnswer = view.getAnswer().getText();
         if (userAnswer.isEmpty()) {
             return new Resualt(false,
                 "You forgot to provide an answer! " +
@@ -380,7 +392,7 @@ public class RegisterController {
             userOfForgetPassword.getUsername());
     }
 
-    public static Resualt handleListQuestions(Command request) {
+    private static Resualt handleListQuestions(Command request) {
         try {
             String header = "Available Security Questions (choose wisely):\n";
 
@@ -397,11 +409,11 @@ public class RegisterController {
         }
     }
 
-    public static User getUserWaitingForQuestion() {
+    private static User getUserWaitingForQuestion() {
         return userWaitingForQuestion;
     }
 
-    public static String getUserPassword() {
+    private static String getUserPassword() {
         return userPassword;
     }
 }
