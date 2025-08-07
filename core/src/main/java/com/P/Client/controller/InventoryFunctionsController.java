@@ -1,5 +1,6 @@
 package com.P.Client.controller;
 
+import com.P.Client.model.GameAssetManager;
 import com.P.common.model.Basics.App;
 import com.P.common.model.Basics.Game;
 import com.P.common.model.Basics.Player;
@@ -14,11 +15,247 @@ import com.P.common.model.Objects.Inventory;
 import com.P.common.model.Objects.Tool;
 import com.P.common.model.Resualt;
 import com.P.common.model.enums.*;
+import com.P.common.model.game.GameModel;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.util.Map;
 
 public class InventoryFunctionsController extends ControllersController {
 
+    public static Stage inventoryStage = null;
+    public static boolean isInventoryOpen = false;
+
+    public void update() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            createInventoryMenu();
+        }
+        if (isInventoryOpen && inventoryStage != null) {
+            inventoryStage.act(Gdx.graphics.getDeltaTime());
+            Gdx.input.setInputProcessor(inventoryStage);
+            inventoryStage.draw();
+        }
+    }
+
+    public void createInventoryMenu() {
+        final Stage[] inventoryStage = {new Stage(new ScreenViewport())};
+
+        Group menuGroup = new Group();
+        Window window = new Window("Inventory Menu", GameAssetManager.SKIN);
+        window.setSize(1000, 600);
+        window.setMovable(false);
+
+        Table table = new Table();
+        table.top().pad(20).defaults().pad(10);
+
+        ImageButton exitButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(GameAssetManager.EXIT_BUTTON)));
+        exitButton.setSize(32, 32);
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                isInventoryOpen = false;
+                Gdx.input.setInputProcessor(null);
+                inventoryStage[0].dispose();
+                inventoryStage[0] = null;
+            }
+        });
+        TextButton thingsButton = new TextButton("Show Ingredients", GameAssetManager.SKIN);
+        thingsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Table things = creatThingsTable();
+
+                ScrollPane scrollPane = new ScrollPane(things, GameAssetManager.SKIN);
+                scrollPane.setFadeScrollBars(false);
+                scrollPane.setScrollingDisabled(false, false);
+                scrollPane.setForceScroll(false, true);
+
+                Dialog dialog = new Dialog("Show Inventory", GameAssetManager.SKIN);
+
+                dialog.getContentTable().add(scrollPane).width(500).height(400);
+                dialog.button("Close");
+                dialog.show(inventoryStage[0]);
+            }
+        });
+
+        TextButton skillButton = new TextButton("Show Skills", GameAssetManager.SKIN);
+        skillButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Table skills = creatSkillssTable();
+
+                Dialog dialog = new Dialog("Skills", GameAssetManager.SKIN);
+
+                dialog.getContentTable().add(skills).width(500).height(400);
+                dialog.button("Close");
+                dialog.show(inventoryStage[0]);
+            }
+        });
+
+        /*TextButton socialButton = new TextButton("Show Friends", GameAssetManager.SKIN);
+        thingsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Table things = creatThingsTable();
+
+                ScrollPane scrollPane = new ScrollPane(things, GameAssetManager.SKIN);
+                scrollPane.setFadeScrollBars(false);
+                Dialog dialog = new Dialog("Inventory", GameAssetManager.SKIN);
+
+                dialog.getContentTable().add(scrollPane).width(500).height(400);
+                dialog.button("Close");
+                dialog.show(inventoryStage[0]);
+            }
+        });*/
+
+
+        table.add(thingsButton).colspan(5).center(); table.row();
+        table.add(skillButton).colspan(5).center();
+
+        table.row();
+
+        window.setSize(1000, 600);
+        window.add(table).expand().fill();
+
+        Group group = new Group() {
+            @Override
+            public void act(float delta) {
+                window.setPosition(
+                    (GameModel.getCamera().viewportWidth - window.getWidth()) / 2f +
+                        GameModel.getCamera().position.x - GameModel.getCamera().viewportWidth / 2,
+                    (GameModel.getCamera().viewportHeight - window.getHeight()) / 2f +
+                        GameModel.getCamera().position.y - GameModel.getCamera().viewportHeight / 2
+                );
+                exitButton.setPosition(
+                    window.getX() + window.getWidth() - exitButton.getWidth() / 2f + 16,
+                    window.getY() + window.getHeight() - exitButton.getHeight() / 2f
+                );
+                exitButton.setPosition(
+                    window.getX() + window.getWidth() - exitButton.getWidth() / 2f + 16,
+                    window.getY() + window.getHeight() - exitButton.getHeight() / 2f
+                );
+                super.act(delta);
+            }
+        };
+
+        group.addActor(window);
+        group.addActor(exitButton);
+        menuGroup.addActor(group);
+        inventoryStage[0].addActor(menuGroup);
+
+        InventoryFunctionsController.inventoryStage = inventoryStage[0];
+        isInventoryOpen = true;
+
+        Gdx.app.postRunnable(() -> {
+            Gdx.input.setInputProcessor(inventoryStage[0]);
+        });
+    }
+
+    private Table creatThingsTable() {
+        Table table = new Table();
+        table.defaults().pad(5);
+
+        Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
+        Inventory inventory = player.getInventory();
+
+        Label s=new Label("Ingredients:", GameAssetManager.SKIN);
+        table.add(s).left().padRight(10); table.row();
+
+        for (Map.Entry<Ingredients, Integer> need : inventory.getIngredients().entrySet()) {
+            Texture texture = need.getKey().getTexture();
+            Image image = new Image(texture);
+            Label nameLabel = new Label(need.getKey().getName(), GameAssetManager.SKIN);
+            Label energyLabel = new Label("Quantity: " + inventory.getIngredients().get(need.getKey()), GameAssetManager.SKIN);
+            Label priceLabel = new Label("Sell Price: " + need.getKey().getPrice(), GameAssetManager.SKIN);
+
+            table.add(image).size(40, 40).left().padRight(10);
+            table.add(nameLabel).left().padRight(10);
+            table.add(energyLabel).left().padRight(10);
+            table.add(priceLabel).left();
+            table.row().padBottom(10);
+        }table.row();
+        Label t=new Label("Tools:", GameAssetManager.SKIN);
+        table.add(t).left().padRight(10);
+        table.row();
+        for (Map.Entry<Tool, Integer> need : inventory.getTools().entrySet()) {
+            Texture texture = GameAssetManager.getTexture(need.getKey());
+            Image image = new Image(texture);
+            Label nameLabel = new Label(need.getKey().getToolType().toString(), GameAssetManager.SKIN);
+            Label energyLabel = new Label("Quantity: " + inventory.getTools().get(need.getKey()), GameAssetManager.SKIN);
+            Label priceLabel = new Label("Use Cost: " + need.getKey().getUseCost(), GameAssetManager.SKIN);
+
+            table.add(image).size(40, 40).left().padRight(10);
+            table.add(nameLabel).left().padRight(10);
+            table.add(energyLabel).left().padRight(10);
+            table.add(priceLabel).left();
+            table.row().padBottom(10);
+        }
+        table.row();
+        Label r=new Label("Seeds:", GameAssetManager.SKIN);
+        table.add(r).left().padRight(10);table.row();
+        for (Map.Entry<ForAgingSeeds, Integer> need : inventory.getSeeds().entrySet()) {
+            Label nameLabel = new Label(need.getKey().getSeedName(), GameAssetManager.SKIN);
+            Label energyLabel = new Label("Quantity: " + inventory.getSeeds().get(need.getKey()), GameAssetManager.SKIN);
+            Label priceLabel = new Label("Price: " + need.getKey().getPrice(), GameAssetManager.SKIN);
+
+            table.add(nameLabel).left().padRight(10);
+            table.add(energyLabel).left().padRight(10);
+            table.add(priceLabel).left();
+            table.row().padBottom(10);
+        }
+
+        return table;
+    }
+
+    public Table creatSkillssTable() {
+        Table skills = new Table();
+        Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
+
+        Image image1 = new Image(GameAssetManager.farmSkill);
+        Label farming = new Label("Farming Skill: " + player.getFarmingSkill(), GameAssetManager.SKIN);
+        Label farmingL = new Label("Level: " + player.returnFarmingLevel(), GameAssetManager.SKIN);
+        Image image2 = new Image(GameAssetManager.forageSkill);
+        Label forag = new Label("Foraging Skill: " + player.getForagingSkill(), GameAssetManager.SKIN);
+        Label foragL = new Label("Level: " + player.returnForagingLevel(), GameAssetManager.SKIN);
+        Image image3 = new Image(GameAssetManager.fishSkill);
+        Label fishing = new Label("Fishing Skill: " + player.getFishingSkill(), GameAssetManager.SKIN);
+        Label fishL = new Label("Level: " + player.returnFishingLevel(), GameAssetManager.SKIN);
+        Image image4 = new Image(GameAssetManager.mineSkill);
+        Label mine = new Label("Mining Skill: " + player.getMiningSkill(), GameAssetManager.SKIN);
+        Label mineL = new Label("Level: " + player.returnMiningLevel(), GameAssetManager.SKIN);
+
+        skills.defaults().pad(10);
+        skills.add(image1).size(55).padRight(10);
+        skills.add(farming).left();
+        skills.add(farmingL).left();
+        skills.row();
+
+        skills.add(image2).size(55).padRight(10);
+        skills.add(forag).left();
+        skills.add(foragL).left();
+        skills.row();
+
+        skills.add(image3).size(55).padRight(10);
+        skills.add(fishing).left();
+        skills.add(fishL).left();
+        skills.row();
+
+        skills.add(image4).size(55).padRight(10);
+        skills.add(mine).left();
+        skills.add(mineL).left();
+        skills.row();
+
+        return skills;
+    }
     public static Resualt showAllInInventory() {
         Inventory inventory = App.getLoggedInUser().getCurrentGame().getCurrentPlayer().getInventory();
         StringBuilder allTools = new StringBuilder();
@@ -121,44 +358,44 @@ public class InventoryFunctionsController extends ControllersController {
     }
 
     public static Position findPositionByDirection(String direction, Position first) {
-        int x=first.getX();
-        int y=first.getY();
+        int x = first.getX();
+        int y = first.getY();
         switch (direction) {
             case "Right" -> {
                 x++;
-                return new Position(x,y);
+                return new Position(x, y);
             }
             case "Left" -> {
                 x--;
-                return new Position(x,y);
+                return new Position(x, y);
             }
             case "Up" -> {
                 y++;
-                return new Position(x,y);
+                return new Position(x, y);
             }
             case "Down" -> {
                 y--;
-                return new Position(x,y);
+                return new Position(x, y);
             }
             case "UpLeft" -> {
                 y++;
                 x--;
-                return new Position(x,y);
+                return new Position(x, y);
             }
             case "UpRight" -> {
                 x++;
                 y++;
-                return new Position(x,y);
+                return new Position(x, y);
             }
             case "DownLeft" -> {
                 x--;
                 y--;
-                return new Position(x,y);
+                return new Position(x, y);
             }
             case "DownRight" -> {
                 x++;
                 y--;
-                return new Position(x,y);
+                return new Position(x, y);
             }
         }
         return null;
@@ -324,15 +561,15 @@ public class InventoryFunctionsController extends ControllersController {
     public static Resualt useWateringCan(Position position, Tile tile) {
         Tool tool = App.getLoggedInUser().getCurrentGame().getCurrentPlayer().getInHandTool();
         //if (/*tile.getObjectOnCell().type.equals("water")*/true) {
-            switch (tool.getToolLevel()) {
-                case Cooper -> tool.setIrrigationCapacity(55);
-                case Iron -> tool.setIrrigationCapacity(70);
-                case Initial -> tool.setIrrigationCapacity(40);
-                case Gold -> tool.setIrrigationCapacity(85);
-                case Iridium -> tool.setIrrigationCapacity(100);
-            }
+        switch (tool.getToolLevel()) {
+            case Cooper -> tool.setIrrigationCapacity(55);
+            case Iron -> tool.setIrrigationCapacity(70);
+            case Initial -> tool.setIrrigationCapacity(40);
+            case Gold -> tool.setIrrigationCapacity(85);
+            case Iridium -> tool.setIrrigationCapacity(100);
+        }
 
-           // return new Resualt(true, "Now you have your watering can full of water");
+        // return new Resualt(true, "Now you have your watering can full of water");
         if (App.getLoggedInUser().getCurrentGame().getWeatherToday().equals(Weather.RAIN)) {
             return new Resualt(false, "You don't need to irrigate crops while raining");
 
@@ -412,8 +649,8 @@ public class InventoryFunctionsController extends ControllersController {
     }
 
     public static Resualt useMilkingCan(Position position, Tile tile) {
-        if(tile.getObject() instanceof Animal animal) {
-            if(animal.getType() != AnimalType.Cow)
+        if (tile.getObject() instanceof Animal animal) {
+            if (animal.getType() != AnimalType.Cow)
                 return new Resualt(false, "There is no cow.");
             Command request = new Command("collect produce -n " + animal.getName());
             request.body.put("name", animal.getName());

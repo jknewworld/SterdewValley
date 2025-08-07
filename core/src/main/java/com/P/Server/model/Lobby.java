@@ -21,6 +21,7 @@ public class Lobby {
         this.admin = admin;
         this.ID = ID;
         this.isVisible = isVisible;
+        this.peopleCounter = 0;
     }
 
     public String getName() {
