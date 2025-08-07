@@ -13,6 +13,7 @@ import com.P.common.model.Maps.Farm;
 import com.P.common.model.Maps.Tile;
 import com.P.common.model.Naturals.Crop;
 import com.P.common.model.Naturals.Tree;
+import com.P.common.model.Objects.Tool;
 import com.P.common.model.enums.*;
 import com.P.common.model.game.GameModel;
 import com.P.common.model.game.VillageModel;
@@ -874,7 +875,11 @@ public class GameView {
 
         stateTime += Gdx.graphics.getDeltaTime();
         Player o = App.loggedInUser.getCurrentGame().getCurrentPlayer();
-
+        Tool toll=o.getInHandTool();
+        Texture tool=null;
+        if (toll!=null){
+            tool=GameAssetManager.getTexture(o.getInHandTool());
+        }
         boolean isFainting = (o.getEnergy() == 0);
 
         if (isFainting) {
@@ -933,6 +938,15 @@ public class GameView {
         } else
             batch.draw(currentFrame, pos.first * Main.TILE_SIZE, pos.second * Main.TILE_SIZE, 60, 120);
 
+        if (tool != null) {
+            float playerX = pos.first * Main.TILE_SIZE;
+            float playerY = pos.second * Main.TILE_SIZE;
+
+            float toolOffsetX = 50;
+            float toolOffsetY = 20;
+
+            batch.draw(tool, playerX + toolOffsetX, playerY + toolOffsetY, 44, 44);
+        }
         if (game != null)
             renderInventory();
     }

@@ -441,6 +441,10 @@ public class Player {
         inventory1.getTools().put(new Tool(ToolType.Axe, ToolLevel.Initial), 1);
         inventory1.getTools().put(new Tool(ToolType.WateringCan, ToolLevel.Initial), 1);
         inventory1.getTools().put(new Tool(ToolType.Scythe, ToolLevel.Initial), 1);
+        inventory1.getTools().put(new Tool(ToolType.Scissors, ToolLevel.Initial), 1);
+        inventory1.getTools().put(new Tool(ToolType.FishingRod, ToolLevel.Initial), 1);
+        inventory1.getTools().put(new Tool(ToolType.MilkingCan, ToolLevel.Initial), 1);
+
         return inventory1;
     }
 

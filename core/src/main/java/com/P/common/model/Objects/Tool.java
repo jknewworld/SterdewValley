@@ -46,7 +46,7 @@ public class Tool {
             case TrashCan -> 0;
         };
 
-        return Math.min(0, useCost);
+        return  useCost;
     }
 
     public ToolType getToolType() {

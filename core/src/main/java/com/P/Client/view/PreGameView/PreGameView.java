@@ -116,6 +116,8 @@ public class PreGameView implements Screen {
         lobby.setText(LobbiesList);
         ScreenUtils.clear(0, 0, 0, 1);
         stage.act(delta);
+
+        //String LobbiesList = controllerBasic.getLobbyList().getAnswer();
         stage.draw();
 
     }
