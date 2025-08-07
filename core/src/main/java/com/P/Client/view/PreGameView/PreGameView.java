@@ -1,8 +1,10 @@
 package com.P.Client.view.PreGameView;
 
+import com.P.Client.view.LobbyView;
 import com.P.Main;
 import com.P.Client.controller.TurnController;
 import com.P.Client.model.GameAssetManager;
+import com.P.Server.controller.LobbyController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -83,7 +85,8 @@ public class PreGameView implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Main.getMain().getScreen().dispose();
-                Main.getMain().setScreen(new NewGameView(controller, GameAssetManager.getGameAssetManager().getSkin()));
+               // Main.getMain().setScreen(new NewGameView(controller, GameAssetManager.getGameAssetManager().getSkin()));
+                Main.getMain().setScreen(new LobbyView(new LobbyController(), GameAssetManager.LABI_SKIN));
             }
         });
 
