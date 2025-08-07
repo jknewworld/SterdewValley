@@ -4,7 +4,7 @@ import com.P.Client.view.LobbyView;
 import com.P.Main;
 import com.P.Client.controller.TurnController;
 import com.P.Client.model.GameAssetManager;
-import com.P.Server.controller.LobbyController;
+import com.P.Client.controller.LobbyController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;

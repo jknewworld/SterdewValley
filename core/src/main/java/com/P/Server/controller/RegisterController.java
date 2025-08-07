@@ -1,7 +1,5 @@
 package com.P.Server.controller;
 
-import com.P.Client.controller.Authorization;
-import com.P.Client.model.Command;
 import com.P.Server.model.Repo.UserRepo;
 import com.P.common.Message;
 import com.P.common.model.Basics.App;
@@ -43,67 +41,67 @@ public class RegisterController {
         return new Message(body, Message.MessageType.response);
     }
 
-    private static User getUserOfForgetPassword() {
-        return userOfForgetPassword;
-    }
+//    private static User getUserOfForgetPassword() {
+//        return userOfForgetPassword;
+//    }
+//
+//    private static void setUserOfForgetPassword(User userOfForgetPassword) {
+//        userOfForgetPassword = userOfForgetPassword;
+//    }
+//
+//    private static Resualt handleAccountRecovery(Command request) {
+//        if (userOfForgetPassword == null) {
+//            return new Resualt(false, "Recovery mode: OFF (like your memory of passwords?)");
+//        }
+//
+//        String newPassword = request.command.trim();
+//        if (isSameAsOldPassword(newPassword, userOfForgetPassword)) {
+//            return new Resualt(false, "That's your OLD password! Be more creative than a goldfish!");
+//        }
+//
+//        if (newPassword.equalsIgnoreCase("random")) {
+//            newPassword = Authorization.createRandomPassword();
+//        } else {
+//            Resualt validationResult = validateNewPassword(newPassword);
+//            if (!validationResult.isAccept()) {
+//                return validationResult;
+//            }
+//        }
+//
+//        updateUserPassword(userOfForgetPassword, newPassword);
+//
+//        completeRecoveryProcess(userOfForgetPassword);
+//
+//        return new Resualt(true, "Password updated successfully! Your new password is: " + newPassword);
+//    }
 
-    private static void setUserOfForgetPassword(User userOfForgetPassword) {
-        userOfForgetPassword = userOfForgetPassword;
-    }
-
-    private static Resualt handleAccountRecovery(Command request) {
-        if (userOfForgetPassword == null) {
-            return new Resualt(false, "Recovery mode: OFF (like your memory of passwords?)");
-        }
-
-        String newPassword = request.command.trim();
-        if (isSameAsOldPassword(newPassword, userOfForgetPassword)) {
-            return new Resualt(false, "That's your OLD password! Be more creative than a goldfish!");
-        }
-
-        if (newPassword.equalsIgnoreCase("random")) {
-            newPassword = Authorization.createRandomPassword();
-        } else {
-            Resualt validationResult = validateNewPassword(newPassword);
-            if (!validationResult.isAccept()) {
-                return validationResult;
-            }
-        }
-
-        updateUserPassword(userOfForgetPassword, newPassword);
-
-        completeRecoveryProcess(userOfForgetPassword);
-
-        return new Resualt(true, "Password updated successfully! Your new password is: " + newPassword);
-    }
-
-    private static boolean isSameAsOldPassword(String newPassword, User user) {
-        return Authorization.hashPassword(newPassword).equals(user.getHashedPassword());
-    }
-
-    private static Resualt validateNewPassword(String password) {
-        if (!Authorization.validatePasswordFormat(password)) {
-            return new Resualt(false, "Make it stronger than your coffee this morning!");
-        }
-
-        String securityCheck = Authorization.validatePasswordSecurity(password);
-        if (!"Success".equals(securityCheck)) {
-            return new Resualt(false, "Password doesn't meet security requirements: " + securityCheck);
-        }
-
-        return new Resualt(true, "");
-    }
-
-    private static void updateUserPassword(User user, String newPassword) {
-        user.setHashedPassword(Authorization.hashPassword(newPassword));
-        UserRepo.saveUser(user);
-    }
-
-    private static void completeRecoveryProcess(User user) {
-        userOfForgetPassword = null;
-        App.setLoggedInUser(user);
-        //App.setCurrentMenu(Menus.MainMenu);
-    }
+//    private static boolean isSameAsOldPassword(String newPassword, User user) {
+//        return Authorization.hashPassword(newPassword).equals(user.getHashedPassword());
+//    }
+//
+//    private static Resualt validateNewPassword(String password) {
+//        if (!Authorization.validatePasswordFormat(password)) {
+//            return new Resualt(false, "Make it stronger than your coffee this morning!");
+//        }
+//
+//        String securityCheck = Authorization.validatePasswordSecurity(password);
+//        if (!"Success".equals(securityCheck)) {
+//            return new Resualt(false, "Password doesn't meet security requirements: " + securityCheck);
+//        }
+//
+//        return new Resualt(true, "");
+//    }
+//
+//    private static void updateUserPassword(User user, String newPassword) {
+//        user.setHashedPassword(Authorization.hashPassword(newPassword));
+//        UserRepo.saveUser(user);
+//    }
+//
+//    private static void completeRecoveryProcess(User user) {
+//        userOfForgetPassword = null;
+//        App.setLoggedInUser(user);
+//        //App.setCurrentMenu(Menus.MainMenu);
+//    }
 
     private static Resualt handleRegister(Message command) {
         String username = command.getFromBody("username");
@@ -242,15 +240,15 @@ public class RegisterController {
         }
     }
 
-    private static int validateQuestionNumber(String questionNumStr) {
-        int questionNumber = Integer.parseInt(questionNumStr);
-        if (questionNumber < 1 || questionNumber > 4) {
-            throw new IllegalArgumentException(
-                "We only have 2 questions! Not " + questionNumber +
-                    "! This isn't an exam, no need to invent new ones!");
-        }
-        return questionNumber;
-    }
+//    private static int validateQuestionNumber(String questionNumStr) {
+//        int questionNumber = Integer.parseInt(questionNumStr);
+//        if (questionNumber < 1 || questionNumber > 4) {
+//            throw new IllegalArgumentException(
+//                "We only have 2 questions! Not " + questionNumber +
+//                    "! This isn't an exam, no need to invent new ones!");
+//        }
+//        return questionNumber;
+//    }
 
     private static User completeSecurityQuestionSetup(int questionNumber, String answer) {
         User user = getUserWaitingForQuestion();
@@ -315,15 +313,15 @@ public class RegisterController {
     }
 
 
-    private static void performLoginActions(User user, boolean rememberMe) {
-        if (rememberMe) {
-            UserRepo.saveStayLoggedInUser(user);
-        }
-        App.setLoggedInUser(user);
-        //   App.setCurrentMenu(Menus.MainMenu);
-
-        System.out.println("User logged in: " + user.getUsername());
-    }
+//    private static void performLoginActions(User user, boolean rememberMe) {
+//        if (rememberMe) {
+//            UserRepo.saveStayLoggedInUser(user);
+//        }
+//        App.setLoggedInUser(user);
+//        //   App.setCurrentMenu(Menus.MainMenu);
+//
+//        System.out.println("User logged in: " + user.getUsername());
+//    }
 
     private static Resualt handleForgetPassword(Message command) {
         String username = command.getFromBody("username");
@@ -392,28 +390,28 @@ public class RegisterController {
             userOfForgetPassword.getUsername());
     }
 
-    private static Resualt handleListQuestions(Command request) {
-        try {
-            String header = "Available Security Questions (choose wisely):\n";
-
-            String questions = "^_^ 1. What was the name of your first teacher?\n" +
-                "^_^ 2. What is the name of your favorite book?";
-
-            String footer = "\n\nPro Tip: Don't pick 'Mother's maiden name' if your mom is on social media!";
-
-
-            return new Resualt(true, header + questions + footer);
-
-        } catch (Exception e) {
-            return new Resualt(false, "Oops! Our questions ran away. Try again later!");
-        }
-    }
+//    private static Resualt handleListQuestions(Command request) {
+//        try {
+//            String header = "Available Security Questions (choose wisely):\n";
+//
+//            String questions = "^_^ 1. What was the name of your first teacher?\n" +
+//                "^_^ 2. What is the name of your favorite book?";
+//
+//            String footer = "\n\nPro Tip: Don't pick 'Mother's maiden name' if your mom is on social media!";
+//
+//
+//            return new Resualt(true, header + questions + footer);
+//
+//        } catch (Exception e) {
+//            return new Resualt(false, "Oops! Our questions ran away. Try again later!");
+//        }
+//    }
 
     private static User getUserWaitingForQuestion() {
         return userWaitingForQuestion;
     }
 
-    private static String getUserPassword() {
-        return userPassword;
-    }
+//    private static String getUserPassword() {
+//        return userPassword;
+//    }
 }

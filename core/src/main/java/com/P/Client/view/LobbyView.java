@@ -1,10 +1,6 @@
 package com.P.Client.view;
 
-import com.P.Client.controller.RegisterController;
-import com.P.Client.controller.StartController;
-import com.P.Client.model.GameAssetManager;
-import com.P.Main;
-import com.P.Server.controller.LobbyController;
+import com.P.Client.controller.LobbyController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -100,7 +96,7 @@ public class LobbyView implements Screen {
         creatLobbyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-               controller.creatLobby();
+               controller.createLobby();
             }
         });
 

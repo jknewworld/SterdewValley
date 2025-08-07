@@ -4,7 +4,7 @@ import com.P.Main;
 import com.P.Client.controller.MainMenuController;
 import com.P.Client.controller.RegisterController;
 import com.P.Client.controller.StartController;
-import com.P.Client.controller.Authorization;
+import com.P.Server.controller.Authorization;
 import com.P.common.model.Basics.User;
 import com.P.Client.model.GameAssetManager;
 import com.P.Server.model.Repo.UserRepo;
