@@ -75,8 +75,6 @@ public class NewGameView implements Screen {
         style2.overFontColor = Color.BLUE;
         this.startGame = new TextButton("^_^ Welcome to Stardew Valley game!", style2);
 
-
-
         this.table = new Table();
         this.mapTable = new Table();
 
@@ -91,27 +89,26 @@ public class NewGameView implements Screen {
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(backgroundImage);
 
-        table.setFillParent(true);
-        table.left();
-        table.row().pad(20, 0, 20, 0);
-        table.setPosition(200, 0);
-        table.add(player1).width(500).height(70);
-
-        table.row().pad(20, 0, 20, 0);
-        table.add(player2).width(500).height(70);
-
-        table.row().pad(20, 0, 20, 0);
-        table.add(player3).width(500).height(70);
-
-        table.row().pad(40, 0, 40, 0);
-        table.add(addPlayers).width(500).height(50);
-
-        stage.addActor(table);
+//        table.setFillParent(true);
+//        table.left();
+//        table.row().pad(20, 0, 20, 0);
+//        table.setPosition(200, 0);
+//        table.add(player1).width(500).height(70);
+//
+//        table.row().pad(20, 0, 20, 0);
+//        table.add(player2).width(500).height(70);
+//
+//        table.row().pad(20, 0, 20, 0);
+//        table.add(player3).width(500).height(70);
+//
+//        table.row().pad(40, 0, 40, 0);
+//        table.add(addPlayers).width(500).height(50);
+//
+//        stage.addActor(table);
 
         mapTable.setFillParent(true);
         mapTable.center();
         mapTable.row().pad(20, 0, 20, 0);
-        mapTable.setPosition(200, 0);
 
         mapTable.add(setMap).width(500).height(70);
         mapTable.row().pad(20, 0, 20, 0);
@@ -119,12 +116,12 @@ public class NewGameView implements Screen {
 
         stage.addActor(mapTable);
 
-        addPlayers.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                controller.handleNewGame();
-            }
-        });
+//        addPlayers.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                controller.handleNewGame();
+//            }
+//        });
 
         setMap.addListener(new ClickListener() {
             @Override

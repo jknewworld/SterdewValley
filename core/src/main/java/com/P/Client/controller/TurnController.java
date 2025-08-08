@@ -131,7 +131,7 @@ public class TurnController extends ControllersController {
     int cheakNum = 0;
     public Resualt handleMapSelection() {
         HashMap<String, Object> body = new HashMap<>();
-        String lobbyName = view.getSetLobby().getText();
+       // String lobbyName = view.getSetLobby().getText();
         body.put("controller", "TurnController");
         body.put("request", "handleMapSelection");
         body.put("username", App.getLoggedInUser().getUsername());
