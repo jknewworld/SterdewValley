@@ -123,7 +123,7 @@ public class LobbyView implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Main.getMain().getScreen().dispose();
-                Main.getMain().setScreen(new PreGameView(new TurnController(), GameAssetManager.getGameAssetManager().getSkin()));
+                Main.getMain().setScreen(new PreGameView(new TurnController(), GameAssetManager.LABI_SKIN));
             }
         });
 

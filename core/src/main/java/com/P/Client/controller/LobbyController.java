@@ -17,14 +17,19 @@ public class LobbyController {
     }
 
     public Resualt createLobby() {
-        String name= view.getNameField().getText();
-        String password= view.getPasswordField().getText();
-        boolean isVisible = view.getIsVisible().getText().equals("true");
+        String name = view.getNameField().getText();
+        String password = view.getPasswordField().getText();
+        boolean isVisible = view.getIsVisible().isChecked();
+
 
         HashMap<String, Object> body = new HashMap<>();
         body.put("name", name);
         body.put("password", password);
-        body.put("isVisible", isVisible);
+        if (isVisible) {
+            body.put("isVisible", "true");
+        } else {
+            body.put("isVisible", "false");
+        }
         body.put("controller", "LobbyController");
         body.put("request", "createLobby");
 

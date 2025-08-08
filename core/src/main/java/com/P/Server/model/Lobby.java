@@ -5,14 +5,14 @@ import com.P.common.model.Basics.User;
 import java.util.ArrayList;
 
 public class Lobby {
-    public String name;
-    public boolean isPrivate;
-    public boolean isVisible;
-    public String password;
-    public int peopleCounter;
-    public ArrayList<User> players;
-    public User admin;
-    public int ID;
+    private String name;
+    private boolean isPrivate;
+    private boolean isVisible;
+    private String password;
+    private int peopleCounter;
+    private ArrayList<User> players;
+    private User admin;
+    private int ID;
 
     public Lobby(String name, boolean isPrivate, String password, User admin, int ID,boolean isVisible) {
         this.name = name;
@@ -21,6 +21,7 @@ public class Lobby {
         this.admin = admin;
         this.ID = ID;
         this.isVisible = isVisible;
+        this.peopleCounter = 0;
     }
 
     public String getName() {

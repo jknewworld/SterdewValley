@@ -6,6 +6,7 @@ import com.P.common.model.Basics.App;
 import com.P.common.model.Resualt;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -14,7 +15,7 @@ public class LobbyController {
     public static Resualt createLobby(Message command) {
         String name = command.getFromBody("name");
         String password = command.getFromBody("password");
-        boolean isVisible = command.getFromBody("isVisible");
+        String isVisible = command.getFromBody("isVisible");
         boolean isPrivate = true;
 
         if (password.equals("0"))
@@ -23,7 +24,7 @@ public class LobbyController {
         Random random = new Random();
         int ID = 10000000 + random.nextInt(90000000);
 
-        Lobby lobby = new Lobby(name, isPrivate, password, App.getLoggedInUser(), ID, isVisible);
+        Lobby lobby = new Lobby(name, isPrivate, password, App.getLoggedInUser(), ID, (Objects.equals(isVisible, "true")));
 
         App.getLobbies().add(lobby);
 

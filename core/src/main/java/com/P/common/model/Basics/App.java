@@ -12,6 +12,7 @@ public class App {
     public static User loggedInUser = UserRepo.getStayLoggedInUser();
     private static Menus currentMenu = Menus.AvatarMenu;
     private static ArrayList<Lobby> lobbies = new ArrayList<>();
+    private static Lobby currentLobby = null;
 
     public static Menus getCurrentMenu() {
         return currentMenu;
@@ -36,5 +37,21 @@ public class App {
 
     public static void setLobbies(ArrayList<Lobby> lobbies) {
         App.lobbies = lobbies;
+    }
+
+    public ArrayList<User> getAllUsers() {
+        return allUsers;
+    }
+
+    public ArrayList<Game> getAllGames() {
+        return allGames;
+    }
+
+    public static Lobby getCurrentLobby() {
+        return currentLobby;
+    }
+
+    public static void setCurrentLobby(Lobby currentLobby) {
+        App.currentLobby = currentLobby;
     }
 }
