@@ -28,6 +28,17 @@ public class BasicsController {
 
     }
 
+    public Resualt getLobbyInformation() {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("controller", "BasicsController");
+        body.put("request", "getLobbyInformation");
+
+        Message message = new Message(body, Message.MessageType.command);
+
+        return sendCommand(message).getResualt();
+
+    }
+
     public Resualt findLobbyWithName() {
         HashMap<String, Object> body = new HashMap<>();
         String lobbyName = view.getSetLobby().getText();

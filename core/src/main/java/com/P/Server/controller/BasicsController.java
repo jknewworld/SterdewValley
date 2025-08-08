@@ -3,6 +3,7 @@ package com.P.Server.controller;
 import com.P.Server.model.Lobby;
 import com.P.common.Message;
 import com.P.common.model.Basics.App;
+import com.P.common.model.Basics.User;
 import com.P.common.model.Resualt;
 
 import java.util.HashMap;
@@ -21,6 +22,8 @@ public class BasicsController {
             resualt = isLobbyPrivate(command);
         }   else if(request.equals("isCorrectPassword")){
             resualt = isCorrectPassword(command);
+        } else if(request.equals("getLobbyInformation")){
+            resualt = getLobbyInformation();
         }
 
         HashMap<String, Object> body = new HashMap<>();
@@ -35,7 +38,26 @@ public class BasicsController {
             if (lobby.isVisible())
                 list.append(lobby.getName()).append(" ").append(lobby.getPeopleCounter()).append('\n');
 
-        System.out.println(list.toString());
+        return new Resualt(true, list.toString());
+    }
+
+    private static Resualt getLobbyInformation(){
+        StringBuilder list = new StringBuilder();
+        Lobby lobby = App.getCurrentLobby();
+        list.append("Nickname: ").append(lobby.getName()).append('\n')
+            .append("Player Counter: ").append(lobby.getPeopleCounter()).append('\n')
+            .append("is Private: ").append(lobby.isPrivate()).append('\n')
+            .append("is Visible: ").append(lobby.isVisible()).append('\n')
+            .append("Password: ").append(lobby.getPassword()).append('\n')
+            .append("Admin: ").append(lobby.getAdmin().getUsername()).append('\n')
+            .append("ID: ").append(lobby.getID()).append('\n')
+            .append("Players: ").append('\n');
+
+        for (User user : lobby.getPlayers()){
+            if(user!=null)
+                list.append(user.getNickname()).append('\n');
+        }
+
         return new Resualt(true, list.toString());
     }
 
@@ -86,6 +108,8 @@ public class BasicsController {
     private static Resualt isCorrectPassword(Message command) {
         String password = command.getFromBody("password");
         Lobby lobby = App.getCurrentLobby();
+        System.out.println(lobby.getName() + " " + lobby.getPassword());
+        System.out.println(password);
         if(password.equals(lobby.getPassword())) {
             return new Resualt(true, "Correct Password");
         } else {

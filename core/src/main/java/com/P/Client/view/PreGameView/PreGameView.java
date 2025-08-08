@@ -1,11 +1,11 @@
 package com.P.Client.view.PreGameView;
 
-import com.P.Client.controller.BasicsController;
+import com.P.Client.controller.*;
 import com.P.Client.view.LobbyView;
+import com.P.Client.view.MainView;
+import com.P.Client.view.ProfileView;
 import com.P.Main;
-import com.P.Client.controller.TurnController;
 import com.P.Client.model.GameAssetManager;
-import com.P.Client.controller.LobbyController;
 import com.P.Server.model.Lobby;
 import com.P.common.model.Basics.App;
 import com.P.common.model.Resualt;
@@ -195,7 +195,8 @@ public class PreGameView implements Screen {
                 if (resualt.isAccept()) {
                     Resualt response = controllerBasic.isLobbyPrivate();
                     if (response.isAccept()) {
-
+                        Main.getMain().getScreen().dispose();
+                        Main.getMain().setScreen(new ExactLobbyView(controllerBasic, GameAssetManager.LABI_SKIN));
                     } else {
                         Skin skin = GameAssetManager.LABI_SKIN;
 
@@ -212,8 +213,6 @@ public class PreGameView implements Screen {
                                     setPassword(password);
                                     Resualt response = controllerBasic.isCorrectPassword();
                                     if (!response.isAccept()) {
-                                        this.hide();
-
                                         Table redFlash = new Table();
                                         redFlash.setFillParent(true);
                                         redFlash.setColor(1, 0, 0, 1);
@@ -223,8 +222,10 @@ public class PreGameView implements Screen {
                                             Actions.fadeOut(1f),
                                             Actions.run(() -> redFlash.remove())
                                         ));
+                                        stage.addActor(redFlash);
                                     } else {
-
+                                        Main.getMain().getScreen().dispose();
+                                        Main.getMain().setScreen(new ExactLobbyView(controllerBasic, GameAssetManager.LABI_SKIN));
                                     }
                                 } else {
                                     this.hide();

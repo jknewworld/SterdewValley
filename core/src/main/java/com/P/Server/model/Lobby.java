@@ -14,7 +14,7 @@ public class Lobby {
     private User admin;
     private int ID;
 
-    public Lobby(String name, boolean isPrivate, String password, User admin, int ID,boolean isVisible) {
+    public Lobby(String name, boolean isPrivate, String password, User admin, int ID, boolean isVisible) {
         this.name = name;
         this.isPrivate = isPrivate;
         this.password = password;
