@@ -34,6 +34,8 @@ public class BasicsController {
             resualt = back(command);
         } else if (request.equals("add")) {
             resualt = add(command);
+        } else if (request.equals("isUserAdmin")) {
+            resualt = isUserAdmin(command);
         } else if (request.equals("letsPlay")) {
             resualt = letsPlay(command);
         }
@@ -171,6 +173,14 @@ public class BasicsController {
         getCurrentLobby().setPeopleCounter(App.getCurrentLobby().getPeopleCounter() + 1);
         return new Resualt(true, "");
 
+    }
+
+    private static Resualt isUserAdmin(Message command) {
+        String username = command.getFromBody("username");
+        if(username.equals(App.getCurrentLobby().getAdmin().getUsername())) {
+            return new Resualt(true, "You are an admin");
+        }
+        return new Resualt(false, "You are not an admin");
     }
 
     private static Resualt letsPlay(Message command) {

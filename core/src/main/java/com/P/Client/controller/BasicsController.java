@@ -111,6 +111,17 @@ public class BasicsController {
 
     }
 
+    public Resualt isUserAdmin(){
+        HashMap<String, Object> body = new HashMap<>();
+        String password = view.getPassword();
+        body.put("controller", "BasicsController");
+        body.put("request", "isUserAdmin");
+        body.put("username", App.loggedInUser.getUsername());
+
+        Message message = new Message(body, Message.MessageType.command);
+        return sendCommand(message).getResualt();
+    }
+
     public Resualt letsPlay() {
         HashMap<String, Object> body = new HashMap<>();
         body.put("controller", "BasicsController");
