@@ -170,8 +170,8 @@ public class BasicsController {
         }
         String username = command.getFromBody("username");
         User user = UserRepo.findUserByUsername(username);
-        getCurrentLobby().getPlayers().add(user);
-        getCurrentLobby().setPeopleCounter(App.getCurrentLobby().getPeopleCounter() + 1);
+        App.getCurrentLobby().getPlayers().add(user);
+        App.getCurrentLobby().setPeopleCounter(App.getCurrentLobby().getPeopleCounter() + 1);
         return new Resualt(true, "");
 
     }
@@ -188,7 +188,6 @@ public class BasicsController {
         ServerApp.getDiff().put("Lets Play!", "");
         ServerApp.setUpdateThread(new UpdateThread());
         ServerApp.letsPlay();
-        //TurnServer.handleNewGame();
         return new Resualt(true, "");
     }
 }
