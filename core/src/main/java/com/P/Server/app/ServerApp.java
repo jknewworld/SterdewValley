@@ -11,6 +11,7 @@ public class ServerApp {
     private static boolean exitFlag = false;
     private static ListenerThread listenerThread;
     private static final HashMap<String, Object> diff = new HashMap<>();
+    private static UpdateThread updateThread;
 
     public static boolean isEnded() {
         return exitFlag;
@@ -26,6 +27,22 @@ public class ServerApp {
         } else {
             throw new IllegalStateException("Listener thread is already running or not set.");
         }
+    }
+
+    public static void setUpdateThread(UpdateThread updateThread) {
+        ServerApp.updateThread = updateThread;
+    }
+
+    public static void letsPlay() {
+        if(updateThread != null && !updateThread.isAlive()) {
+            updateThread.start();
+        } else {
+            throw new IllegalStateException("Update thread is already running or not set.");
+        }
+    }
+
+    public static void endGame() {
+        updateThread.end();
     }
 
     public static void endAll() {

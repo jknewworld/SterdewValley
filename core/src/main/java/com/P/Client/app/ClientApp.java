@@ -1,6 +1,7 @@
 package com.P.Client.app;
 
 import java.net.Socket;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.Integer.parseInt;
 
@@ -9,6 +10,7 @@ public class ClientApp {
     private static String clientIp;
     private static int clientPort;
     private static ServerConnectionThread serverConnection;
+    private static AtomicBoolean startGame = new AtomicBoolean(false);
     private static boolean exitFlag = false;
 
     public static void initFromArgs(String[] args) throws Exception {
@@ -45,10 +47,25 @@ public class ClientApp {
         return exitFlag;
     }
 
+    public static void setStartGame(boolean flag) {
+        ClientApp.startGame.set(flag);
+    }
+
     public static void endAll() {
         exitFlag = true;
         if(serverConnection != null)
             serverConnection.end();
     }
 
+    public static String getClientIp() {
+        return clientIp;
+    }
+
+    public static AtomicBoolean getStartGame() {
+        return startGame;
+    }
+
+    public static boolean isExitFlag() {
+        return exitFlag;
+    }
 }

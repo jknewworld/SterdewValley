@@ -13,9 +13,9 @@ public class ClientConnectionController {
 
     public static void handleUpdate(Message message) {
         if(message.getFromBody("Lets Play!") != null) {
+            ClientApp.setStartGame(true);
             //TODO : set screen
-            Main.getMain().getScreen().dispose();
-            Main.getMain().setScreen(new NewGameView(new TurnController(), GameAssetManager.getGameAssetManager().getSkin()));
+
             return;
         }
     }

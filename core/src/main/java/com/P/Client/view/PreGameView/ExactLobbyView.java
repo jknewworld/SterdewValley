@@ -1,5 +1,6 @@
 package com.P.Client.view.PreGameView;
 
+import com.P.Client.app.ClientApp;
 import com.P.Client.controller.BasicsController;
 import com.P.Client.controller.RegisterController;
 import com.P.Client.controller.TurnController;
@@ -85,7 +86,7 @@ public class ExactLobbyView implements Screen {
 
         String forLabel = controller.getLobbyInformation().getAnswer();
         label.setText(forLabel);
-        label.setFontScale(4f);
+        label.setFontScale(3f);
         label.setPosition(100, 400);
         stage.addActor(label);
 
@@ -111,9 +112,9 @@ public class ExactLobbyView implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 controller.letsPlay();
-
             }
         });
+
     }
 
     @Override
@@ -121,6 +122,11 @@ public class ExactLobbyView implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         stage.act(delta);
         stage.draw();
+
+        if(ClientApp.getStartGame().get()) {
+            Main.getMain().getScreen().dispose();
+            Main.getMain().setScreen(new NewGameView(new TurnController(), GameAssetManager.getGameAssetManager().getSkin()));
+        }
 
     }
 

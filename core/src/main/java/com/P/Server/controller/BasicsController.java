@@ -1,6 +1,7 @@
 package com.P.Server.controller;
 
 import com.P.Server.app.ServerApp;
+import com.P.Server.app.UpdateThread;
 import com.P.Server.model.Lobby;
 import com.P.Server.model.Repo.UserRepo;
 import com.P.common.Message;
@@ -185,6 +186,8 @@ public class BasicsController {
 
     private static Resualt letsPlay(Message command) {
         ServerApp.getDiff().put("Lets Play!", "");
+        ServerApp.setUpdateThread(new UpdateThread());
+        ServerApp.letsPlay();
         return new Resualt(true, "");
     }
 }
