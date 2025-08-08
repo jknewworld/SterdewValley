@@ -1,5 +1,6 @@
 package com.P.Server.controller;
 
+import com.P.Server.app.ServerApp;
 import com.P.Server.model.Lobby;
 import com.P.Server.model.Repo.UserRepo;
 import com.P.common.Message;
@@ -33,6 +34,8 @@ public class BasicsController {
             resualt = back(command);
         } else if (request.equals("add")) {
             resualt = add(command);
+        } else if (request.equals("letsPlay")) {
+            resualt = letsPlay(command);
         }
 
         HashMap<String, Object> body = new HashMap<>();
@@ -168,5 +171,10 @@ public class BasicsController {
         getCurrentLobby().setPeopleCounter(App.getCurrentLobby().getPeopleCounter() + 1);
         return new Resualt(true, "");
 
+    }
+
+    private static Resualt letsPlay(Message command) {
+        ServerApp.getDiff().put("Lets Play!", "");
+        return new Resualt(true, "");
     }
 }

@@ -111,6 +111,15 @@ public class BasicsController {
 
     }
 
+    public Resualt letsPlay() {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("controller", "BasicsController");
+        body.put("request", "letsPlay");
+
+        Message message = new Message(body, Message.MessageType.command);
+        return sendCommand(message).getResualt();
+    }
+
     public static Message sendCommand(Message message) {
         return ClientApp.getServerConnection().sendAndWaitForResponse(message, TIMEOUT_MILLIS);
     }

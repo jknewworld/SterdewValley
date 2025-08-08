@@ -7,7 +7,10 @@ public class ClientConnectionController {
         return null;
     }
 
-//    public static void handleUpdate(Message message) {
-//
-//    }
+    public static void handleUpdate(Message message) {
+        if(message.getFromBody("Lets Play!") != null) {
+            //TODO : set screen
+            return;
+        }
+    }
 }
