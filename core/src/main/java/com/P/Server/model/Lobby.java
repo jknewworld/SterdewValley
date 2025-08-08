@@ -1,6 +1,7 @@
 package com.P.Server.model;
 
 import com.P.common.model.Basics.App;
+import com.P.common.model.Basics.Game;
 import com.P.common.model.Basics.User;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class Lobby {
     private User admin;
     private int ID;
     private final long startTime;
+    private Game game;
 
     private transient Timer emptyTimer;
     private transient boolean closingScheduled = false;
@@ -110,6 +112,14 @@ public class Lobby {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     public boolean isExpired() {
