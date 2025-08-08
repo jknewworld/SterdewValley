@@ -42,14 +42,19 @@ public class BasicsController {
     }
 
     private static Resualt getLobbyList() {
+        ArrayList<Lobby> expiredLobbies = new ArrayList<>();
         StringBuilder list = new StringBuilder();
+        for(Lobby lobby : App.getLobbies())
+            if(lobby.isExpired())
+                expiredLobbies.add(lobby);
+        for(Lobby lobby : expiredLobbies)
+            App.getLobbies().remove(lobby);
         for (Lobby lobby : App.getLobbies())
             if (lobby.isVisible())
                 list.append(lobby.getName()).append(" ").append(lobby.getPeopleCounter()).append('\n');
 
         return new Resualt(true, list.toString());
     }
-
     private static Resualt getLobbyInformation() {
         StringBuilder list = new StringBuilder();
         Lobby lobby = getCurrentLobby();

@@ -45,7 +45,6 @@ abstract public class ConnectionThread extends Thread {
             return receivedMessagesQueue.poll(timeoutMilli, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             System.err.println("Request Timed out.");
-            System.out.println("request timed out!");
             return null;
         }
     }

@@ -1,12 +1,16 @@
 package com.P.Server.app;
 
+import com.P.common.Message;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ServerApp {
-    public static final int TIMEOUT_MILLIS = 10000;
+    public static final int TIMEOUT_MILLIS = 500;
     private static final ArrayList<ClientConnectionThread> connections = new ArrayList<>();
     private static boolean exitFlag = false;
     private static ListenerThread listenerThread;
+    private static final HashMap<String, Object> diff = new HashMap<>();
 
     public static boolean isEnded() {
         return exitFlag;
@@ -32,6 +36,10 @@ public class ServerApp {
         listenerThread.end();
     }
 
+    public static ArrayList<ClientConnectionThread> getConnections() {
+        return connections;
+    }
+
     public static void removeClientConnection(ClientConnectionThread connection) {
         if (connection != null) {
             connections.remove(connection);
@@ -44,4 +52,7 @@ public class ServerApp {
             connections.add(connection);
     }
 
+    public static HashMap<String, Object> getDiff() {
+        return diff;
+    }
 }

@@ -6,4 +6,8 @@ public class ClientConnectionController {
     public static Message handleCommand(Message command) {
         return null;
     }
+
+//    public static void handleUpdate(Message message) {
+//
+//    }
 }

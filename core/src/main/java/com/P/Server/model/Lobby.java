@@ -16,6 +16,7 @@ public class Lobby {
     private ArrayList<User> players = new ArrayList<>();
     private User admin;
     private int ID;
+    private final long startTime;
 
     private transient Timer emptyTimer;
     private transient boolean closingScheduled = false;
@@ -28,6 +29,7 @@ public class Lobby {
         this.ID = ID;
         this.isVisible = isVisible;
         this.peopleCounter = 0;
+        this.startTime = System.currentTimeMillis();
     }
 
     public String getName() {
@@ -108,5 +110,9 @@ public class Lobby {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public boolean isExpired() {
+        return (peopleCounter == 0) && ((System.currentTimeMillis() - startTime) > 1 * 60 * 1000);
     }
 }
