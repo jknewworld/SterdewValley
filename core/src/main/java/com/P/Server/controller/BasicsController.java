@@ -132,10 +132,23 @@ public class BasicsController {
 
     private static Resualt back(Message command) {
         String username = command.getFromBody("username");
-        User user = UserRepo.findUserByUsername(username);
-        App.getCurrentLobby().getPlayers().remove(user);
-        App.setCurrentLobby(null);
-        return new Resualt(true, "");
+
+        Lobby lobby = App.getCurrentLobby();
+        User target = null;
+
+        for (User u : lobby.getPlayers()) {
+            if (u.getUsername().equals(username)) {
+                target = u;
+                break;
+            }
+        }
+
+        if (target != null) {
+            lobby.getPlayers().remove(target);
+            return new Resualt(true, "User removed from lobby");
+        } else {
+            return new Resualt(false, "User not found in lobby");
+        }
     }
 
     private static Resualt add(Message command) {
