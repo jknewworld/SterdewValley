@@ -14,11 +14,11 @@ public class Lobby {
     private boolean isVisible;
     private String password;
     private int peopleCounter;
-    private ArrayList<User> players = new ArrayList<>();
+    private ArrayList<User> players;
     private User admin;
     private int ID;
     private final long startTime;
-    private Game game;
+    private Game game ;
 
     private transient Timer emptyTimer;
     private transient boolean closingScheduled = false;
@@ -32,6 +32,7 @@ public class Lobby {
         this.isVisible = isVisible;
         this.peopleCounter = 0;
         this.startTime = System.currentTimeMillis();
+        this.players = new ArrayList<>();
     }
 
     public String getName() {

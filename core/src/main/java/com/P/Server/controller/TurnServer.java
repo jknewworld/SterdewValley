@@ -24,13 +24,19 @@ public class TurnServer {
     public static boolean isWaitingForChoosingMap = true;
     public static String newUser = "Shayan1";
 
-    public Resualt handleNewGame() {
+    public static Resualt handleNewGame() {
         ArrayList<Player> players = new ArrayList<>();
+        System.out.println("handlllllllllllll new game");
+        System.out.println(App.getCurrentLobby());
+        System.out.println(App.getCurrentLobby().getPlayers());
         for(User user : App.getCurrentLobby().getPlayers())
             players.add(new Player(user));
 
+        System.out.println("handlllllllllllll new game22222222222");
         Game game = new Game(players, players.get(0));
+        System.out.println("handlllllllllllll new game3333333333333333333");
         App.getCurrentLobby().setGame(game);
+        System.out.println("handlllllllllllll new game444444444444444444444444444");
         isWaitingForChoosingMap = true;
 
         return new Resualt(true, "The game has been made successfully. Awaiting each user's map choice...\n" +
@@ -38,6 +44,7 @@ public class TurnServer {
     }
 
     public static Message handleCommand(Message command) {
+        System.out.println("handle command: SERVER");
         String request = command.getFromBody("request");
         Resualt resualt = null;
         if (request.equals("handleMapSelection")) {
@@ -50,15 +57,18 @@ public class TurnServer {
     }
 
     public static Resualt handleMapSelection(Message command) {
+        System.out.println("handle map selection: SERVER");
         String username = command.getFromBody("username");
+        System.out.println("between");
         int mapNumber = command.getIntFromBody("mapNumber");
+
+        System.out.println(App.getCurrentLobby()+ " nulll?");
+
+        User user =  UserRepo.findUserByUsername(username);
 
         Game game = App.getCurrentLobby().getGame();
         Player player = game.getPlayerByName(username);
         player.setFarmNum(mapNumber);
-        if (mapNumber != 1 && mapNumber != 2) {
-            return new Resualt(false, "Invalid map number");
-        }
         Farm farm = Farm.makeFarm(mapNumber);
 
 
@@ -67,6 +77,7 @@ public class TurnServer {
         player.setGameModel(new GameModel(50, 75));
         game.setVillageModel(new VillageModel(50,75));
 
+        System.out.println("handle map selection: SERVER ENDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
         // DEBUG2
 
         BarnType barnType = BarnType.BigBarn;
@@ -88,6 +99,7 @@ public class TurnServer {
         animal.setTiles(farm.getCells());
         barn.getAnimals().add(animal);
 
+        System.out.println("handle map selection: SERVER ENDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
         return new Resualt(true, "game successfully created!");
     }
 
