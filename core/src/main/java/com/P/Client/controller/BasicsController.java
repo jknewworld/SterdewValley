@@ -5,6 +5,7 @@ import com.P.Client.view.PreGameView.NewGameView;
 import com.P.Client.view.PreGameView.PreGameView;
 import com.P.Server.model.Lobby;
 import com.P.common.Message;
+import com.P.common.model.Basics.App;
 import com.P.common.model.Resualt;
 
 import java.util.HashMap;
@@ -58,6 +59,28 @@ public class BasicsController {
         body.put("controller", "BasicsController");
         body.put("request", "findLobbyWithID");
         body.put("lobbyID", lobbyID);
+
+        Message message = new Message(body, Message.MessageType.command);
+        return sendCommand(message).getResualt();
+
+    }
+
+    public Resualt back() {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("controller", "BasicsController");
+        body.put("request", "back");
+        body.put("username", App.loggedInUser.getUsername());
+
+        Message message = new Message(body, Message.MessageType.command);
+        return sendCommand(message).getResualt();
+
+    }
+
+    public Resualt add() {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("controller", "BasicsController");
+        body.put("request", "add");
+        body.put("username", App.loggedInUser.getUsername());
 
         Message message = new Message(body, Message.MessageType.command);
         return sendCommand(message).getResualt();

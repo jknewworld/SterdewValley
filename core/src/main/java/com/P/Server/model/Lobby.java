@@ -10,7 +10,7 @@ public class Lobby {
     private boolean isVisible;
     private String password;
     private int peopleCounter;
-    private ArrayList<User> players;
+    private ArrayList<User> players = new ArrayList<>();
     private User admin;
     private int ID;
 

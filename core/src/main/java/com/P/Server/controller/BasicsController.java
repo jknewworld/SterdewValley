@@ -1,11 +1,14 @@
 package com.P.Server.controller;
 
 import com.P.Server.model.Lobby;
+import com.P.Server.model.Repo.UserRepo;
 import com.P.common.Message;
 import com.P.common.model.Basics.App;
+import com.P.common.model.Basics.Player;
 import com.P.common.model.Basics.User;
 import com.P.common.model.Resualt;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BasicsController {
@@ -18,12 +21,16 @@ public class BasicsController {
             resualt = findLobbyWithName(command);
         } else if (request.equals("findLobbyWithID")) {
             resualt = findLobbyWithID(command);
-        } else if(request.equals("isLobbyPrivate")){
+        } else if (request.equals("isLobbyPrivate")) {
             resualt = isLobbyPrivate(command);
-        }   else if(request.equals("isCorrectPassword")){
+        } else if (request.equals("isCorrectPassword")) {
             resualt = isCorrectPassword(command);
-        } else if(request.equals("getLobbyInformation")){
+        } else if (request.equals("getLobbyInformation")) {
             resualt = getLobbyInformation();
+        } else if (request.equals("back")) {
+            resualt = back(command);
+        } else if (request.equals("add")) {
+            resualt = add(command);
         }
 
         HashMap<String, Object> body = new HashMap<>();
@@ -41,7 +48,7 @@ public class BasicsController {
         return new Resualt(true, list.toString());
     }
 
-    private static Resualt getLobbyInformation(){
+    private static Resualt getLobbyInformation() {
         StringBuilder list = new StringBuilder();
         Lobby lobby = App.getCurrentLobby();
         list.append("Nickname: ").append(lobby.getName()).append('\n')
@@ -53,10 +60,14 @@ public class BasicsController {
             .append("ID: ").append(lobby.getID()).append('\n')
             .append("Players: ").append('\n');
 
-        for (User user : lobby.getPlayers()){
-            if(user!=null)
+        System.out.println(list.toString());
+
+        for (User user : lobby.getPlayers()) {
+            if (user != null)
                 list.append(user.getNickname()).append('\n');
         }
+
+        System.out.println(list.toString());
 
         return new Resualt(true, list.toString());
     }
@@ -110,12 +121,32 @@ public class BasicsController {
         Lobby lobby = App.getCurrentLobby();
         System.out.println(lobby.getName() + " " + lobby.getPassword());
         System.out.println(password);
-        if(password.equals(lobby.getPassword())) {
+        if (password.equals(lobby.getPassword())) {
             return new Resualt(true, "Correct Password");
         } else {
             App.setCurrentLobby(null);
             return new Resualt(false, "Incorrect Password");
         }
+
+    }
+
+    private static Resualt back(Message command) {
+        String username = command.getFromBody("username");
+        User user = UserRepo.findUserByUsername(username);
+        App.getCurrentLobby().getPlayers().remove(user);
+        App.setCurrentLobby(null);
+        return new Resualt(true, "");
+    }
+
+    private static Resualt add(Message command) {
+        if (App.getCurrentLobby().getPeopleCounter() == 4) {
+            return new Resualt(false, "You can't add more than 4 players");
+        }
+        String username = command.getFromBody("username");
+        User user = UserRepo.findUserByUsername(username);
+        App.getCurrentLobby().getPlayers().add(user);
+        App.getCurrentLobby().setPeopleCounter(App.getCurrentLobby().getPeopleCounter() + 1);
+        return new Resualt(true, "");
 
     }
 }

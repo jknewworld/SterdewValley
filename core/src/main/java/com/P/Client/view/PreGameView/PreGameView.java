@@ -195,6 +195,7 @@ public class PreGameView implements Screen {
                 if (resualt.isAccept()) {
                     Resualt response = controllerBasic.isLobbyPrivate();
                     if (response.isAccept()) {
+                        controllerBasic.add();
                         Main.getMain().getScreen().dispose();
                         Main.getMain().setScreen(new ExactLobbyView(controllerBasic, GameAssetManager.LABI_SKIN));
                     } else {
@@ -224,6 +225,7 @@ public class PreGameView implements Screen {
                                         ));
                                         stage.addActor(redFlash);
                                     } else {
+                                        controllerBasic.add();
                                         Main.getMain().getScreen().dispose();
                                         Main.getMain().setScreen(new ExactLobbyView(controllerBasic, GameAssetManager.LABI_SKIN));
                                     }

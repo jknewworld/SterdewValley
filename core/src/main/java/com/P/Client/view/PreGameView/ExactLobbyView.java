@@ -1,14 +1,21 @@
 package com.P.Client.view.PreGameView;
 
 import com.P.Client.controller.BasicsController;
+import com.P.Client.controller.RegisterController;
+import com.P.Client.controller.TurnController;
+import com.P.Client.model.GameAssetManager;
+import com.P.Client.view.SignupView;
+import com.P.Main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -18,6 +25,9 @@ public class ExactLobbyView implements Screen {
     private Stage stage;
     public Table table;
     public Label label;
+    public TextButton back;
+    public TextButton refresh;
+
 
     public TextButton startGame;
 
@@ -29,7 +39,7 @@ public class ExactLobbyView implements Screen {
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/stardew-valley.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 80;
+        parameter.size = 60;
         BitmapFont bigFont = generator.generateFont(parameter);
         generator.dispose();
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
@@ -37,6 +47,8 @@ public class ExactLobbyView implements Screen {
         style.fontColor = Color.VIOLET;
         style.downFontColor = Color.FOREST;
         this.startGame = new TextButton("^_^ LET'S START NEW GAME", style);
+        this.back = new TextButton("^_^ LET'S BACK", style);
+        this.refresh = new TextButton("^_^ LET'S REFRESH", style);
 
         this.label = new Label(" ", skin);
 
@@ -55,15 +67,38 @@ public class ExactLobbyView implements Screen {
 
         table.setFillParent(true);
         table.center();
-        table.row().pad(10, 0, 10, 0);
+        table.row().pad(10, 40, 10, 0);
         table.add(startGame).width(600).height(70);
+        table.row().pad(10, 0, 10, 0);
+        table.add(back).width(600).height(70);
+
+        table.row().pad(10, 0, 10, 0);
+        table.add(refresh).width(600).height(70);
 
         stage.addActor(table);
 
         String forLabel = controller.getLobbyInformation().getAnswer();
         label.setText(forLabel);
-        label.setPosition(100,100);
+        label.setPosition(100,400);
         stage.addActor(label);
+
+        back.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                controller.back();
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new PreGameView(new TurnController(), GameAssetManager.LABI_SKIN));
+
+            }
+        });
+
+        refresh.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new ExactLobbyView(controller, GameAssetManager.LABI_SKIN));
+            }
+        });
     }
 
     @Override
