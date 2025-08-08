@@ -22,7 +22,6 @@ import java.util.HashMap;
 
 public class TurnServer {
     public static Message handleCommand(Message command) {
-        System.out.println("in TurnServer, handle command");
         String request = command.getFromBody("request");
         Resualt resualt = null;
 

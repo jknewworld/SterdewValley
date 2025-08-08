@@ -285,6 +285,8 @@ public class RegisterController {
 
 
         User user = findUserWithChecks(username);
+        user.setLobby(null);
+        UserRepo.saveUser(user);
         //  user.setGameId(new ObjectId());
         if (user == null) {
             return new Resualt(false,
@@ -302,6 +304,8 @@ public class RegisterController {
 
         App.setLoggedInUser(user);
         //App.setCurrentMenu(Menus.MainMenu);
+
+        App.getAllUsers().add(user);
 
         return new Resualt(true,
             "Login successful! Welcome back, " + user.getNickname());

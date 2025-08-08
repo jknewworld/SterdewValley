@@ -1,5 +1,6 @@
 package com.P.Server.app;
 
+
 public class ServerMain {
     public static void main(String[] args) {
         if (args.length < 1) {

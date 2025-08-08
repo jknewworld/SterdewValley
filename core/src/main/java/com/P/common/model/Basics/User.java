@@ -1,5 +1,6 @@
 package com.P.common.model.Basics;
 
+import com.P.Server.model.Lobby;
 import com.P.common.model.enums.Avatar;
 import com.P.common.model.game.Clock;
 import dev.morphia.annotations.Entity;
@@ -27,6 +28,7 @@ public class User {
     private String id;
     private ObjectId gameId;
     private Avatar avatar;
+    private String lobby;
     //Game
     @Transient
     private Game currentGame;
@@ -58,6 +60,7 @@ public class User {
         this.numberOfGamesPlayed = 0;
         this.avatar = avatar;
         this.currentGame = null;
+        this.lobby = null;
     }
 
     public String getNickname() {
@@ -208,5 +211,13 @@ public class User {
 
     public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
+    }
+
+    public String getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(String lobby) {
+        this.lobby = lobby;
     }
 }
