@@ -159,6 +159,13 @@ public class Game {
         isGameOngoing = gameOngoing;
     }
 
+    public Player getPlayerByName(String username) {
+        for(Player player : players)
+            if(player.getUser().getUsername().equals(username))
+                return player;
+        return null;
+    }
+
     public Player getCurrentPlayer() {
         return currentPlayer;
     }

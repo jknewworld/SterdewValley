@@ -15,6 +15,8 @@ public class ServerConnectionController {
             return LobbyController.handleCommand(command);
         } else if (controller.equals("BasicsController")) {
             return BasicsController.handleCommand(command);
+        } else if (controller.equals("TurnController")) {
+            return TurnServer.handleCommand(command);
         }
         return null;
     }

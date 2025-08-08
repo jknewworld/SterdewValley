@@ -1,6 +1,8 @@
 package com.P.Client.controller;
 
+import com.P.Client.app.ClientApp;
 import com.P.Main;
+import com.P.common.Message;
 import com.P.common.model.Basics.App;
 import com.P.common.model.Basics.Game;
 import com.P.common.model.Basics.Player;
@@ -27,6 +29,8 @@ import com.P.Client.view.PreGameView.PreGameView;
 import com.P.Client.controller.game.GameController;
 
 import java.util.*;
+
+import static com.P.Client.app.ClientApp.TIMEOUT_MILLIS;
 
 public class TurnController extends ControllersController {
     public static boolean isWaitingForChoosingMap = true;
@@ -124,83 +128,34 @@ public class TurnController extends ControllersController {
                 "Use 'game map <map_number>' to pick map 1 or 2.");
     }
 
-    //    public static Resualt handleMapSelection(Command request) {
-//        User user = App.getLoggedInUser();
-//        Game game = user.getCurrentGame();
-//        Player player = game.getCurrentPlayer();
-//
-//        int mapNumber;
-//        try {
-//            mapNumber = Integer.parseInt(request.body.get("mapNumber"));
-//        } catch (NumberFormatException e) {
-//            return new Resualt(false, "That's not even a number! Are you trying to break the game?");
-//        }
-//
-//        if (mapNumber < 1 || mapNumber > 2) {
-//            return new Resualt(false, "Invalid map number. We're not running a farm simulator empire here!");
-//        }
-//
-//        Farm farm = Farm.makeFarm(mapNumber);
-//        game.getMap().addFarm(farm);
-//        player.setFarm(farm);
-//
-//        boolean allPlayersChose = game.cycleToNextPlayer();
-//        if (allPlayersChose) {
-//            isWaitingForChoosingMap = false;
-//        }
-//
-//        String responseString = String.format("%s has chosen Farm #%d. %s",
-//                player.getUser().getUsername(),
-//                mapNumber,
-//                mapNumber == 1 ? "The classic choice!" : "Living life on the edge!");
-//
-//        List<User> users = game.getPlayers().stream()
-//                .map(Player::getUser)
-//                .collect(Collectors.toList());
-//
-//
-//        if (allPlayersChose) {
-//            responseString += "\n\nAll farms selected! Let the agricultural warfare begin!";
-//            GameRepo.saveGame(game, (ArrayList<User>) users);
-//            game.setGameOngoing(true);
-//
-//            users.forEach(UserRepo::saveUser);
-//        }
-//
-//        return new Resualt(true, responseString);
-//    }
     int cheakNum = 0;
     public Resualt handleMapSelection() {
+        HashMap<String, Object> body = new HashMap<>();
+        String lobbyName = view.getSetLobby().getText();
+        body.put("controller", "TurnController");
+        body.put("request", "handleMapSelection");
+        body.put("username", App.getLoggedInUser().getUsername());
+        //TODO : make sure the number is valid
+        int mapNumber = Integer.parseInt(view2.getMap1().getText());
+        body.put("mapNumber", mapNumber);
+
+        Message message = new Message(body, Message.MessageType.command);
+        Resualt response = sendCommand(message).getResualt();
+        if(!message.getResualt().isAccept()) {
+            return response;
+        }
+
         User user = App.getLoggedInUser();
         Game game = user.getCurrentGame();
         Player player = game.getCurrentPlayer();
-        int mapNumber = Integer.parseInt(view2.getMap1().getText());
         player.setFarmNum(mapNumber);
-        if (mapNumber != 1 && mapNumber != 2) {
-            return new Resualt(false, "Invalid map number");
-        }
         Farm farm = Farm.makeFarm(Integer.parseInt(view2.getMap1().getText()));
-
 
         game.getMap().addFarm(farm);
         player.setFarm(farm);
         player.setGameModel(new GameModel(50, 75));
         game.setVillageModel(new VillageModel(50,75));
-        boolean check = game.cycleToNextPlayer();
-        if (check || (cheakNum==4)) {
-            isWaitingForChoosingMap = false;
-        }
-        String responseString = player.getUser().getUsername() + " has chosen their farm.";
-        if (check) {
-            ArrayList<User> users = new ArrayList<>();
-            for (Player player1 : game.getPlayers()) {
-                users.add(player1.getUser());
-            }
-            responseString += "\nAll farm selection successful! Game successfully created!";
-           // GameRepo.saveGame(game, users);
-        }
-        user.setCurrentGame(game);
-        cheakNum ++;
+
         // DEBUG2
 
         BarnType barnType = BarnType.BigBarn;
@@ -222,8 +177,10 @@ public class TurnController extends ControllersController {
         animal.setTiles(farm.getCells());
         barn.getAnimals().add(animal);
 
-        return new Resualt(true, responseString);
+        return response;
     }
+
+    ///edited
 
     public static Resualt handleLoadGame(Command request) {
         if (App.getLoggedInUser().getCurrentGame() == null) {
@@ -394,4 +351,7 @@ public class TurnController extends ControllersController {
         view2.hide();
     }
 
+    public static Message sendCommand(Message message) {
+        return ClientApp.getServerConnection().sendAndWaitForResponse(message, TIMEOUT_MILLIS);
+    }
 }
