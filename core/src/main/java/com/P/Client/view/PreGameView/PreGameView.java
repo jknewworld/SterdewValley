@@ -76,7 +76,7 @@ public class PreGameView implements Screen {
         this.setLobby = new TextField("Enter lobby name", skin);
         this.searchLobby = new TextField("Enter lobby ID", skin);
 
-        this.setLobbyLabel = new Label("If the desired lobby name is visible,\n it is listed on the right!", skin);
+        this.setLobbyLabel = new Label("If the desired lobby name is\n visible, it is listed on the right!", skin);
         this.searchLobbyLabel = new Label("If it is not visible,\n you must enter its ID!", skin);
 
         this.table = new Table();
@@ -113,25 +113,25 @@ public class PreGameView implements Screen {
         table.setFillParent(true);
         table.center();
         table.row().pad(20, 0, 20, 0);
-        table.add(setLobbyLabel).width(350).height(45);
+        table.add(setLobbyLabel).width(350).height(60);
 
         table.row().pad(20, 0, 20, 0);
-        table.add(setLobby).width(350).height(45);
+        table.add(setLobby).width(350).height(60);
 
         table.row().pad(20, 0, 20, 0);
-        table.add(setLobbyButton).width(350).height(45);
+        table.add(setLobbyButton).width(350).height(60);
 
         table.row().pad(20, 0, 20, 0);
-        table.add(searchLobbyLabel).width(350).height(45);
+        table.add(searchLobbyLabel).width(350).height(60);
 
         table.row().pad(20, 0, 20, 0);
-        table.add(searchLobby).width(350).height(45);
+        table.add(searchLobby).width(350).height(60);
 
         table.row().pad(20, 0, 20, 0);
-        table.add(searchLobbyButton).width(350).height(45);
+        table.add(searchLobbyButton).width(350).height(60);
 
         table.row().pad(20, 0, 20, 0);
-        table.add(refresh).width(350).height(45);
+        table.add(refresh).width(350).height(60);
 
 //        table.row().pad(40, 0, 40, 0);
 //        table.add(thisGame).width(350).height(45);
@@ -197,7 +197,7 @@ public class PreGameView implements Screen {
                     if (response.isAccept()) {
                         controllerBasic.add();
                         Main.getMain().getScreen().dispose();
-                        Main.getMain().setScreen(new ExactLobbyView(controllerBasic, GameAssetManager.LABI_SKIN));
+                        Main.getMain().setScreen(new ExactLobbyView(controllerBasic, GameAssetManager.LABI_SKIN,controller));
                     } else {
                         Skin skin = GameAssetManager.LABI_SKIN;
 
@@ -227,7 +227,7 @@ public class PreGameView implements Screen {
                                     } else {
                                         controllerBasic.add();
                                         Main.getMain().getScreen().dispose();
-                                        Main.getMain().setScreen(new ExactLobbyView(controllerBasic, GameAssetManager.LABI_SKIN));
+                                        Main.getMain().setScreen(new ExactLobbyView(controllerBasic, GameAssetManager.LABI_SKIN,controller));
                                     }
                                 } else {
                                     this.hide();

@@ -304,12 +304,12 @@ public class Farm {
         tiles[5][22] = TileDescriptionId.GREENHOUSE15;
         tiles[6][22] = TileDescriptionId.GREENHOUSE16;
 
-        for (int i = 60; i < 62; i++) {
-            for (int j = 40; j < 42; j++) {
+        for (int i = 22; i < 26; i++) {
+            for (int j = 10; j < 17; j++) {
                 Tile cell = getCellByCoordinate(i, j, farmCells);
                 cell.setObjectOnCell(new BuildingsForPaint(true, "Mine"));
                 mineCells.add(cell);
-                //tiles[j][i] = TileDescriptionId.SLOT;// Chang It
+                tiles[j][i] = TileDescriptionId.MINE;// Chang It
             }
         }
         //tiles[3][3] = TileDescriptionId.SLOT;

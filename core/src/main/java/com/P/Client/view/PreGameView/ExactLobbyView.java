@@ -32,8 +32,9 @@ public class ExactLobbyView implements Screen {
     public TextButton startGame;
 
     private BasicsController controller;
+    private TurnController controllerTurn;
 
-    public ExactLobbyView(BasicsController controller, Skin skin) {
+    public ExactLobbyView(BasicsController controller, Skin skin,TurnController controllerTurn) {
         this.backgroundTexture = new Texture(Gdx.files.internal("background/lobby.png"));
         this.backgroundImage = new Image(backgroundTexture);
 
@@ -54,6 +55,7 @@ public class ExactLobbyView implements Screen {
 
         this.table = new Table();
         this.controller = controller;
+        this.controllerTurn = controllerTurn;
     }
 
 
@@ -96,7 +98,15 @@ public class ExactLobbyView implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Main.getMain().getScreen().dispose();
-                Main.getMain().setScreen(new ExactLobbyView(controller, GameAssetManager.LABI_SKIN));
+                Main.getMain().setScreen(new ExactLobbyView(controller, GameAssetManager.LABI_SKIN,controllerTurn));
+            }
+        });
+
+        startGame.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new NewGameView(controllerTurn, GameAssetManager.getGameAssetManager().getSkin()));
             }
         });
     }

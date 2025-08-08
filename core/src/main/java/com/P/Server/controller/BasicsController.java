@@ -11,6 +11,8 @@ import com.P.common.model.Resualt;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.P.common.model.Basics.App.getCurrentLobby;
+
 public class BasicsController {
     public static Message handleCommand(Message command) {
         String request = command.getFromBody("request");
@@ -50,7 +52,7 @@ public class BasicsController {
 
     private static Resualt getLobbyInformation() {
         StringBuilder list = new StringBuilder();
-        Lobby lobby = App.getCurrentLobby();
+        Lobby lobby = getCurrentLobby();
         list.append("Nickname: ").append(lobby.getName()).append('\n')
             .append("Player Counter: ").append(lobby.getPeopleCounter()).append('\n')
             .append("is Private: ").append(lobby.isPrivate()).append('\n')
@@ -118,7 +120,7 @@ public class BasicsController {
 
     private static Resualt isCorrectPassword(Message command) {
         String password = command.getFromBody("password");
-        Lobby lobby = App.getCurrentLobby();
+        Lobby lobby = getCurrentLobby();
         System.out.println(lobby.getName() + " " + lobby.getPassword());
         System.out.println(password);
         if (password.equals(lobby.getPassword())) {
@@ -133,7 +135,7 @@ public class BasicsController {
     private static Resualt back(Message command) {
         String username = command.getFromBody("username");
 
-        Lobby lobby = App.getCurrentLobby();
+        Lobby lobby = getCurrentLobby();
         User target = null;
 
         for (User u : lobby.getPlayers()) {
@@ -152,13 +154,13 @@ public class BasicsController {
     }
 
     private static Resualt add(Message command) {
-        if (App.getCurrentLobby().getPeopleCounter() == 4) {
+        if (getCurrentLobby().getPeopleCounter() == 4) {
             return new Resualt(false, "You can't add more than 4 players");
         }
         String username = command.getFromBody("username");
         User user = UserRepo.findUserByUsername(username);
-        App.getCurrentLobby().getPlayers().add(user);
-        App.getCurrentLobby().setPeopleCounter(App.getCurrentLobby().getPeopleCounter() + 1);
+        getCurrentLobby().getPlayers().add(user);
+        getCurrentLobby().setPeopleCounter(App.getCurrentLobby().getPeopleCounter() + 1);
         return new Resualt(true, "");
 
     }

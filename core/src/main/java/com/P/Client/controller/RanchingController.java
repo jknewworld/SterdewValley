@@ -50,7 +50,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 
 import java.awt.*;
+
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+
 import java.util.*;
 import java.util.List;
 
@@ -59,6 +61,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 import static com.P.common.model.enums.Weather.SUNNY;
+import static java.awt.SystemColor.window;
 import static java.lang.Integer.max;
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.floor;
@@ -185,6 +188,7 @@ public class RanchingController {
     }
 
     final Resualt[] response = {null};
+
     private void createAnimalMenu(Animal animal) {
         Stage animalStage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(animalStage);
@@ -305,17 +309,15 @@ public class RanchingController {
         Group group = new Group() {
             @Override
             public void act(float delta) {
+                super.act(delta);
                 window.setPosition(
-                    (GameModel.getCamera().viewportWidth - window.getWidth()) / 2f +
-                        GameModel.getCamera().position.x - GameModel.getCamera().viewportWidth / 2,
-                    (GameModel.getCamera().viewportHeight - window.getHeight()) / 2f +
-                        GameModel.getCamera().position.y - GameModel.getCamera().viewportHeight / 2
+                    (animalStage.getViewport().getScreenWidth() - window.getWidth()) / 2f,
+                    (animalStage.getViewport().getScreenHeight() - window.getHeight()) / 2f
                 );
                 exitButton.setPosition(
                     window.getX() + window.getWidth() - exitButton.getWidth() / 2f + 16,
                     window.getY() + window.getHeight() - exitButton.getHeight() / 2f
                 );
-                super.act(delta);
             }
         };
 
@@ -530,7 +532,7 @@ public class RanchingController {
             pet.changeFriendship(15);
         }
 
-        heartEffects.add(new Effect(pet.getTiles().get(0).getCoordinate().getX()* Main.TILE_SIZE,
+        heartEffects.add(new Effect(pet.getTiles().get(0).getCoordinate().getX() * Main.TILE_SIZE,
             (pet.getTiles().get(0).getCoordinate().getY() + 1) * Main.TILE_SIZE));
         return new Resualt(true, "Done successfully!");
     }

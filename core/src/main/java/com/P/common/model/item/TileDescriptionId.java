@@ -54,6 +54,8 @@ public enum TileDescriptionId {
     stone("game/tiles/village/stone.png"),
     floor("game/tiles/village/floor.png"),
 
+    MINE("game/mine/1.png"),
+
     ;
     final String iconPath;
 

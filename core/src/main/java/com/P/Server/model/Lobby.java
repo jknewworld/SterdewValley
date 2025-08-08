@@ -1,8 +1,11 @@
 package com.P.Server.model;
 
+import com.P.common.model.Basics.App;
 import com.P.common.model.Basics.User;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Lobby {
     private String name;
@@ -13,6 +16,9 @@ public class Lobby {
     private ArrayList<User> players = new ArrayList<>();
     private User admin;
     private int ID;
+
+    private transient Timer emptyTimer;
+    private transient boolean closingScheduled = false;
 
     public Lobby(String name, boolean isPrivate, String password, User admin, int ID, boolean isVisible) {
         this.name = name;
@@ -54,6 +60,22 @@ public class Lobby {
 
     public void setPeopleCounter(int peopleCounter) {
         this.peopleCounter = peopleCounter;
+    }
+
+    public Timer getEmptyTimer() {
+        return emptyTimer;
+    }
+
+    public void setEmptyTimer(Timer emptyTimer) {
+        this.emptyTimer = emptyTimer;
+    }
+
+    public boolean isClosingScheduled() {
+        return closingScheduled;
+    }
+
+    public void setClosingScheduled(boolean closingScheduled) {
+        this.closingScheduled = closingScheduled;
     }
 
     public ArrayList<User> getPlayers() {
