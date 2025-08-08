@@ -130,19 +130,9 @@ public class TurnController extends ControllersController {
 
     int cheakNum = 0;
     public Resualt handleMapSelection() {
-        HashMap<String, Object> body = new HashMap<>();
-        String lobbyName = view.getSetLobby().getText();
-        body.put("controller", "TurnController");
-        body.put("request", "handleMapSelection");
-        body.put("username", App.getLoggedInUser().getUsername());
-        //TODO : make sure the number is valid
         int mapNumber = Integer.parseInt(view2.getMap1().getText());
-        body.put("mapNumber", mapNumber);
-
-        Message message = new Message(body, Message.MessageType.command);
-        Resualt response = sendCommand(message).getResualt();
-        if(!message.getResualt().isAccept()) {
-            return response;
+        if(mapNumber != 1 && mapNumber != 2) {
+            return new Resualt(false, "Invalid map number");
         }
 
         User user = App.getLoggedInUser();
@@ -177,7 +167,7 @@ public class TurnController extends ControllersController {
         animal.setTiles(farm.getCells());
         barn.getAnimals().add(animal);
 
-        return response;
+        return new Resualt(true, "game successfully created!");
     }
 
     ///edited

@@ -188,6 +188,7 @@ public class BasicsController {
         ServerApp.getDiff().put("Lets Play!", "");
         ServerApp.setUpdateThread(new UpdateThread());
         ServerApp.letsPlay();
+        //TurnServer.handleNewGame();
         return new Resualt(true, "");
     }
 }

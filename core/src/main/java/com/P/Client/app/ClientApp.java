@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static java.lang.Integer.parseInt;
 
 public class ClientApp {
-    public static final int TIMEOUT_MILLIS = 5000;
+    public static final int TIMEOUT_MILLIS = 10000;
     private static String clientIp;
     private static int clientPort;
     private static ServerConnectionThread serverConnection;
