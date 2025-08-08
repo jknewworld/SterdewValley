@@ -6,6 +6,7 @@ import com.P.Client.controller.TurnController;
 import com.P.Client.model.GameAssetManager;
 import com.P.Client.view.SignupView;
 import com.P.Main;
+import com.P.common.model.Resualt;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -34,7 +35,7 @@ public class ExactLobbyView implements Screen {
     private BasicsController controller;
     private TurnController controllerTurn;
 
-    public ExactLobbyView(BasicsController controller, Skin skin,TurnController controllerTurn) {
+    public ExactLobbyView(BasicsController controller, Skin skin, TurnController controllerTurn) {
         this.backgroundTexture = new Texture(Gdx.files.internal("background/lobby.png"));
         this.backgroundImage = new Image(backgroundTexture);
 
@@ -69,8 +70,11 @@ public class ExactLobbyView implements Screen {
 
         table.setFillParent(true);
         table.center();
-        table.row().pad(10, 40, 10, 0);
-        table.add(startGame).width(600).height(70);
+        Resualt resualt = controller.isUserAdmin();
+        if (resualt.isAccept()) {
+            table.row().pad(10, 40, 10, 0);
+            table.add(startGame).width(600).height(70);
+        }
         table.row().pad(10, 0, 10, 0);
         table.add(back).width(600).height(70);
 
@@ -81,7 +85,8 @@ public class ExactLobbyView implements Screen {
 
         String forLabel = controller.getLobbyInformation().getAnswer();
         label.setText(forLabel);
-        label.setPosition(100,400);
+        label.setFontScale(4f);
+        label.setPosition(100, 400);
         stage.addActor(label);
 
         back.addListener(new ClickListener() {
@@ -98,15 +103,15 @@ public class ExactLobbyView implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Main.getMain().getScreen().dispose();
-                Main.getMain().setScreen(new ExactLobbyView(controller, GameAssetManager.LABI_SKIN,controllerTurn));
+                Main.getMain().setScreen(new ExactLobbyView(controller, GameAssetManager.LABI_SKIN, controllerTurn));
             }
         });
 
         startGame.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Main.getMain().getScreen().dispose();
-                Main.getMain().setScreen(new NewGameView(controllerTurn, GameAssetManager.getGameAssetManager().getSkin()));
+                controller.letsPlay();
+
             }
         });
     }
