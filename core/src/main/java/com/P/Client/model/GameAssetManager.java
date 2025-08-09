@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.fasterxml.jackson.databind.introspect.AnnotationCollector;
 
 import java.awt.image.TileObserver;
@@ -68,6 +69,7 @@ public class GameAssetManager {
     // Storm
     public static final TextureRegion[][] STORM = TextureRegion.split(new Texture("game/tiles/storm.png"), 192, 384);
 
+
     // Faint
     // Elliott
     private final String character0_idle0 = "game/character/Elliott/faint/1.png";
@@ -83,6 +85,7 @@ public class GameAssetManager {
         new TextureRegion(character0_idle2_tex)
     );
 
+    public final Animation<Texture> plowing=new Animation<>(0.4f, new Texture("game/tiles/soil.png"),new Texture("game/tiles/soil.png"));
 
     // Haley
     private final String character1_idle0 = "game/character/Haley/faint/1.png";
@@ -412,6 +415,70 @@ public class GameAssetManager {
     public static final Texture WATER_FERTILITY = new Texture("game/Ingredient/Basic_fertilizer.png");
     public static final Texture SPEED_FERTILITY = new Texture("game/Ingredient/Basic_fertilizer.png");
 
+    public static final Texture ApricotSapling = new Texture("game/Ingredient/apricot_sapling.png");
+    public static final Texture CherrySapling = new Texture("game/Ingredient/cherry_sapling.png");
+    public static final Texture BananaSapling = new Texture("game/Ingredient/banana_sapling.png");
+    public static final Texture MangoSapling = new Texture("game/Ingredient/mango_sapling.png");
+    public static final Texture OrangeSapling = new Texture("game/Ingredient/orange_sapling.png");
+    public static final Texture PeachSapling = new Texture("game/Ingredient/peach_sapling.png");
+    public static final Texture AppleSapling = new Texture("game/Ingredient/apple_sapling.png");
+    public static final Texture PomegranateSapling = new Texture("game/Ingredient/pomegranate_sapling.png");
+    public static final Texture Acorns = new Texture("game/Ingredient/acorn.png");
+    public static final Texture MapleSeeds = new Texture("game/Ingredient/maple_seed.png");
+    public static final Texture PineCones = new Texture("game/Ingredient/pine_cone.png");
+    public static final Texture MahoganySeeds = new Texture("game/Ingredient/mahogany_seed.png");
+    public static final Texture MushroomTreeSeeds = new Texture("game/Ingredient/mushroom_tree_seed.png");
+    public static final Texture MysticTreeSeeds = new Texture("game/Ingredient/mystic_tree_seed.png");
+    public static final Texture JazzSeeds = new Texture("game/Ingredient/jazz_seeds.png");
+    public static final Texture CarrotSeeds = new Texture("game/Ingredient/carrot_seeds.png");
+    public static final Texture CauliflowerSeeds = new Texture("game/Ingredient/cauliflower_seeds.png");
+    public static final Texture CoffeeBean = new Texture("game/Ingredient/coffee_bean.png");
+    public static final Texture GarlicSeeds = new Texture("game/Ingredient/garlic_seeds.png");
+    public static final Texture BeanStarter = new Texture("game/Ingredient/bean_starter.png");
+    public static final Texture KaleSeeds = new Texture("game/Ingredient/kale_seeds.png");
+    public static final Texture ParsnipSeeds = new Texture("game/Ingredient/parsnip_seeds.png");
+    public static final Texture PotatoSeeds = new Texture("game/Ingredient/potato_seeds.png");
+    public static final Texture RhubarbSeeds = new Texture("game/Ingredient/rhubarb_seeds.png");
+    public static final Texture StrawberrySeeds = new Texture("game/Ingredient/strawberry_seeds.png");
+    public static final Texture TulipBulb = new Texture("game/Ingredient/tulip_bulb.png");
+    public static final Texture RiceShoot = new Texture("game/Ingredient/rice_shoot.png");
+
+    public static final Texture BlueberrySeeds = new Texture("game/Ingredient/blueberry_seeds.png");
+    public static final Texture CornSeeds = new Texture("game/Ingredient/corn_seeds.png");
+    public static final Texture HopsStarter = new Texture("game/Ingredient/hops_starter.png");
+    public static final Texture PepperSeeds = new Texture("game/Ingredient/pepper_seeds.png");
+    public static final Texture MelonSeeds = new Texture("game/Ingredient/melon_seeds.png");
+    public static final Texture PoppySeeds = new Texture("game/Ingredient/poppy_seeds.png");
+    public static final Texture RadishSeeds = new Texture("game/Ingredient/radish_seeds.png");
+    public static final Texture RedCabbageSeeds = new Texture("game/Ingredient/red_cabbage_seeds.png");
+    public static final Texture StarfruitSeeds = new Texture("game/Ingredient/starfruit_seeds.png");
+    public static final Texture SpangleSeeds = new Texture("game/Ingredient/spangle_seeds.png");
+    public static final Texture SummerSquashSeeds = new Texture("game/Ingredient/summer_squash_seeds.png");
+    public static final Texture SunflowerSeeds = new Texture("game/Ingredient/sunflower_seeds.png");
+    public static final Texture TomatoSeeds = new Texture("game/Ingredient/tomato_seeds.png");
+    public static final Texture WheatSeeds = new Texture("game/Ingredient/wheat_seeds.png");
+
+    public static final Texture AmaranthSeeds = new Texture("game/Ingredient/amaranth_seeds.png");
+    public static final Texture ArtichokeSeeds = new Texture("game/Ingredient/artichoke_seeds.png");
+    public static final Texture BeetSeeds = new Texture("game/Ingredient/beet_seeds.png");
+    public static final Texture BokChoySeeds = new Texture("game/Ingredient/bok_choy_seeds.png");
+    public static final Texture BroccoliSeeds = new Texture("game/Ingredient/broccoli_seeds.png");
+    public static final Texture CranberrySeeds = new Texture("game/Ingredient/cranberry_seeds.png");
+    public static final Texture EggplantSeeds = new Texture("game/Ingredient/eggplant_seeds.png");
+    public static final Texture FairySeeds = new Texture("game/Ingredient/fairy_seeds.png");
+    public static final Texture GrapeStarter = new Texture("game/Ingredient/grape_starter.png");
+    public static final Texture PumpkinSeeds = new Texture("game/Ingredient/pumpkin_seeds.png");
+    public static final Texture YamSeeds = new Texture("game/Ingredient/yam_seeds.png");
+    public static final Texture RareSeed = new Texture("game/Ingredient/rare_seed.png");
+
+    public static final Texture PowdermelonSeeds = new Texture("game/Ingredient/powdermelon_seeds.png");
+
+    public static final Texture AncientSeeds = new Texture("game/Ingredient/ancient_seeds.png");
+    public static final Texture MixedSeeds = new Texture("game/Ingredient/mixed_seeds.png");
+    public static final Texture Dark = new Texture("game/Ingredient/dark.jpg");
+
+
+
     public static final Texture axe = new Texture("game/Tools/axe.png");
     public static final Texture hoe = new Texture("game/Tools/hoe.png");
     public static final Texture wateringCan = new Texture("game/Tools/watering_can.png");
@@ -510,10 +577,10 @@ public class GameAssetManager {
         new Texture("game/Ingredient/mahogany_stage_4.png")
     };
     public static final Texture[] mushroomStage = new Texture[]{
-        new Texture("game/Ingredient/mushroomtree_stage_1.png"),
-        new Texture("game/Ingredient/mushroomtree_stage_2.png"),
-        new Texture("game/Ingredient/mushroomtree_stage_3.png"),
-        new Texture("game/Ingredient/mushroomtree_stage_4.png")
+        new Texture("game/Ingredient/mushroom_stage_1.png"),
+        new Texture("game/Ingredient/mushroom_stage_2.png"),
+        new Texture("game/Ingredient/mushroom_stage_3.png"),
+        new Texture("game/Ingredient/mushroom_stage_4.png")
     };
     public static final Texture[] mysticStage = new Texture[]{
         new Texture("game/Ingredient/mystic_stage_1.png"),
