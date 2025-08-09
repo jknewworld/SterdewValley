@@ -47,14 +47,14 @@ public enum TileDescriptionId {
     STONE("game/tiles/spring/stone.png"),
     WOOD("game/tiles/spring/wood.png"),
     GRASS("game/tiles/spring/grass.png"),
+    F("game/tiles/spring/f.png"),
+    MINE("game/mine/1.png"),
 
     // Village
     tree1("game/tiles/village/tree1.png"),
     tree2("game/tiles/village/tree2.png"),
     stone("game/tiles/village/stone.png"),
     floor("game/tiles/village/floor.png"),
-
-    MINE("game/mine/1.png"),
 
     ;
     final String iconPath;
