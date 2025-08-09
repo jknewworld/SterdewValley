@@ -1,21 +1,225 @@
 package com.P.Client.controller;
 import com.P.Client.model.Command;
+import com.P.Client.model.GameAssetManager;
+import com.P.common.model.Basics.Game;
 import com.P.common.model.Basics.Player;
 import com.P.common.model.Basics.App;
+import com.P.common.model.Maps.Building;
 import com.P.common.model.Resualt;
 import com.P.common.model.Objects.*;
-import com.P.common.model.enums.IngredientsTypes;
-import com.P.common.model.enums.ToolLevel;
-import com.P.common.model.enums.ToolType;
-import com.P.common.model.enums.Ingredients;
+import com.P.common.model.enums.*;
 import com.P.common.model.Maps.Tile;
+import com.P.common.model.game.GameModel;
+import com.P.common.model.game.VillageModel;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import javax.swing.*;
 import java.util.Random;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Math.floor;
 
 public class ShoppingController {
+    public static Stage shopStage=null;
+    public static boolean isBuildingMenuOpen=false;
+    public static boolean stock=false;
+    private Table table;
+
+    public void update(){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.H)) {
+            System.out.println("wewewew");
+            createShopMenu("BlackSmith");
+        }if (Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+            createShopMenu("JojaMart");
+        }if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
+            createShopMenu("PierreGeneralStore");
+        }if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
+            createShopMenu("CarpenterShop");
+        }if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+            createShopMenu("FishShop");
+        }if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+            createShopMenu("MarnieRanch");
+        }if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            createShopMenu("TheStardropSaloon");
+        }
+        if (isBuildingMenuOpen && shopStage != null) {
+            shopStage.act(Gdx.graphics.getDeltaTime());
+            Gdx.input.setInputProcessor(shopStage);
+            shopStage.draw();
+        }
+    }
+    public void createShopMenu(String shopName) {
+        Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
+        final Stage[] shopStage = {new Stage(new ScreenViewport())};
+
+        Group menuGroup = new Group();
+        Window window = new Window("Menu", GameAssetManager.SKIN);
+        window.setSize(1000, 600);
+        window.setMovable(false);
+
+        Table table = new Table();
+        table.top().pad(20).defaults().pad(10);
+
+        ImageButton exitButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(GameAssetManager.EXIT_BUTTON)));
+        exitButton.setSize(32, 32);
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                isBuildingMenuOpen = false;
+                Gdx.input.setInputProcessor(null);
+                shopStage[0].dispose();
+                shopStage[0] = null;
+            }
+        });
+        TextButton stock1 = new TextButton("Show Stock", GameAssetManager.SKIN);
+        stock1.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                stock=!stock;
+
+            }
+        });
+        table.add(stock1).row();
+        StringBuilder response=new StringBuilder();
+        Texture texture=null;
+        Shop shop=null;
+        VillageModel villageModel=App.getLoggedInUser().getCurrentGame().getVillageModel();
+        for ( Building building:villageModel.getFarm().getBuildings()){
+            if (building instanceof Shop shop1){
+                if (shop1.getName().toString().equals(shopName)){
+                    shop=shop1;
+                    break;
+                }
+            }
+        }
+        for (ShopItem shopItem: shop.getItems()) {
+            response=new StringBuilder();
+            if (shopItem.getDailyLimit()<=shopItem.getNumberOfSold() && !stock) continue;
+            //shopItem.increaseNumberOfSold(shopItem.getDailyLimit());
+            if(shopItem instanceof ShopIngredient item) {
+
+                response.append(item.getType().getName()).append(" ");
+                response.append(item.getType().getPrice()).append("\n");
+                texture=item.getType().getTexture();
+            }
+            else if(shopItem instanceof ShopRecipe item) {
+                response.append(item.getType().getName()).append(" "). append("Sell Price:");
+                response.append(item.getType().getSellPrice()).append("\n");
+                texture=new Texture(item.getType().getTextureName());
+            }
+            else if(shopItem instanceof ShopBarn item) {
+                response.append(item.getType().getKind()).append(" ").append("\n");
+                response.append(item.getType().getPrice());
+            }
+            else if(shopItem instanceof ShopAnimal item) {
+                response.append(item.getType().getKind()).append(" "). append("Sell Price:");
+                response.append(item.getType().getPrice()).append("\n");
+                texture=item.getType().getAssetManager();
+            }
+            else if(shopItem instanceof ShopSeed item) {
+                response.append(item.getType().getSeedName()).append(" "). append("Sell Price:");
+                response.append(item.getType().getPrice()).append("\n");
+                texture=item.getType().getTexture();
+            }
+            else if(shopItem instanceof ShopTool item) {
+                response.append(item.getType()).append(" ");
+                if(item.getType() == ToolType.FishingRod)
+                    response.append("25\n");
+                else
+                    response.append("1000\n");
+                Tool tool=new Tool(item.getType(), ToolLevel.Initial);
+                texture= GameAssetManager.getTexture(tool);
+            }
+
+            Image image=new Image(GameAssetManager.AMARANTH);
+            if (texture!= null) {
+                image = new Image(texture);
+            }
+            Label nameLabel = new Label(response.toString(), GameAssetManager.SKIN);
+            //Label priceLabel = new Label("Sell Price: " + recipe.getSellPrice(), GameAssetManager.SKIN);
+
+
+            TextButton cookButton = new TextButton("Buy", GameAssetManager.SKIN);
+            cookButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Command n = new Command("cook");
+                    // n.body.put("itemName", recipe.getName());
+                    //  Resualt response = startCraft(n);
+                    Dialog dialog = new Dialog("", GameAssetManager.SKIN);
+                    //dialog.text(response.getAnswer());
+                    dialog.button("OK");
+                    dialog.show(shopStage[0]);
+                }
+            });
+
+            Actor displayImage;
+            if (shopItem.getDailyLimit()<=shopItem.getNumberOfSold()){
+                Image darkOverlay = new Image(GameAssetManager.Dark);
+                darkOverlay.setColor(0, 0, 0, 0.5f);
+                darkOverlay.setSize(64, 64);
+                Stack stack = new Stack();
+                stack.add(image);
+                stack.add(darkOverlay);
+                stack.setSize(64, 64);
+
+                displayImage = stack;
+            } else {
+                displayImage = image;
+            }
+            table.add(displayImage).size(64, 64);
+            table.add(nameLabel).left();
+            // table.add(priceLabel);
+            table.add(cookButton).right();
+            table.row();
+        }
+
+
+        ScrollPane scrollPane = new ScrollPane(table, GameAssetManager.SKIN);
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setScrollingDisabled(true, false);
+        scrollPane.setForceScroll(false, true);
+        scrollPane.layout();
+        window.setSize(1000, 600);
+        window.add(scrollPane).expand().fill();
+
+        Group group = new Group() {
+            @Override
+            public void act(float delta) {
+                super.act(delta);
+                window.setPosition(
+                    (shopStage[0].getViewport().getScreenWidth() - window.getWidth()) / 2f,
+                    (shopStage[0].getViewport().getScreenHeight() - window.getHeight()) / 2f
+                );
+                exitButton.setPosition(
+                    window.getX() + window.getWidth() - exitButton.getWidth() / 2f + 16,
+                    window.getY() + window.getHeight() - exitButton.getHeight() / 2f
+                );
+            }
+        };
+        group.addActor(window);
+        group.addActor(exitButton);
+        menuGroup.addActor(group);
+        shopStage[0].addActor(menuGroup);
+
+        ShoppingController.shopStage = shopStage[0];
+        isBuildingMenuOpen = true;
+
+        Gdx.app.postRunnable(() -> {
+            Gdx.input.setInputProcessor(shopStage[0]);
+        });
+    }
     public static Resualt showAllProducts(Command request) {
         Player player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();
         StringBuilder response = new StringBuilder();
