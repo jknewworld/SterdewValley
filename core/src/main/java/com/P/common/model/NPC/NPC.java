@@ -18,6 +18,8 @@ public class NPC {
     private final ArrayList<NPCFriendship> friendships;
     private final ArrayList<ArrayList<Quest>> activeQuests;
     private final Position position;
+    private int movingDirection = 0;
+
 
     public NPC(String name, List<Pair> information, ArrayList<Ingredients> favorites, Position position) {
         this.name = name;
@@ -85,5 +87,13 @@ public class NPC {
                 player.getInventory().getIngredients().put(gift, amount + 1);
             }
         }
+    }
+
+    public int getMovingDirection() {
+        return movingDirection;
+    }
+
+    public void setMovingDirection(int movingDirection) {
+        this.movingDirection = movingDirection;
     }
 }

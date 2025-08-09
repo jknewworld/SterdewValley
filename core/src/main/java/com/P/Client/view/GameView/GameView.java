@@ -4,6 +4,8 @@ import com.P.Client.controller.CookingController;
 import com.P.Client.model.Command;
 //import com.P.Client.model.HitEffect;
 import com.P.Main;
+import com.P.common.model.Maps.Position;
+import com.P.common.model.NPC.NPC;
 import com.badlogic.gdx.graphics.Color;
 
 import com.P.common.model.Animals.Fish;
@@ -164,10 +166,10 @@ public class GameView {
 
         // NPCS
         AbigailAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/sprites_Abigail.atlas"));
-        HarveyAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/Haley/sprites_Harvey.atlas"));
-        LeaAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/Leah/sprites_Lea.atlas"));
-        RobinAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/Elliott/sprites_Robin.atlas"));
-        SebastianAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/Sebastian/sprites_Sebastian.atlas"));
+        HarveyAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/sprites_Harvey.atlas"));
+        LeaAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/sprites_Lea.atlas"));
+        RobinAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/sprites_Robin.atlas"));
+        SebastianAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/sprites_Sebastian.atlas"));
 
         // NPCS
         for (int i = 14; i > 9; i--) {
@@ -419,7 +421,7 @@ public class GameView {
         textures.put("F_FALL", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/fall/f.png"))));
         textures.put("F_WINTER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/winter/f.png"))));
         // FISHING
-        waterBounds = new Rectangle(12* Main.TILE_SIZE,
+        waterBounds = new Rectangle(12 * Main.TILE_SIZE,
             12 * Main.TILE_SIZE,
             3 * Main.TILE_SIZE,
             3 * Main.TILE_SIZE);
@@ -483,7 +485,6 @@ public class GameView {
         }
 
 
-
         if (game != null && game.isFlashActive()) {
             batch.end();
 
@@ -515,6 +516,12 @@ public class GameView {
             carpenterRender();
             jojaRender();
             storeRender();
+
+            renderAbigail();
+            renderHarvey();
+            renderLea();
+            renderRobin();
+            renderSebastian();
         }
 
         renderPlayer();
@@ -523,7 +530,7 @@ public class GameView {
 
     }
 
-    private void renderFish(){
+    private void renderFish() {
         for (Fish fish : fishes) {
             float camX = game.getCamera().position.x;
             float camY = game.getCamera().position.y;
@@ -533,7 +540,7 @@ public class GameView {
             float cameraLeft = camX - viewportWidth / 2;
             float cameraBottom = camY - viewportHeight / 2;
 
-            float drawX = fish.getPosition().y  - cameraLeft;
+            float drawX = fish.getPosition().y - cameraLeft;
             float drawY = fish.getPosition().x - cameraBottom;
             fish.update(Gdx.graphics.getDeltaTime(), waterBounds);
             batch.draw(fish.getFishTexture(), drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE);
@@ -985,6 +992,162 @@ public class GameView {
         batch.setColor(1f, 1f, 1f, 1f);
     }
 
+    // NPCS
+    private void renderAbigail() {
+        NPC npc = App.loggedInUser.getCurrentGame().getNpcs().get(1);
+        Position pos = npc.getPosition();
+        moveDirection = npc.getMovingDirection();
+
+        stateTime += Gdx.graphics.getDeltaTime();
+        Animation<TextureRegion> currentAnimation = null;
+        currentAnimation = AbigailAnimation.get(moveDirection);
+
+        TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+
+        int tileSize = Main.TILE_SIZE;
+
+        int houseTileX = pos.getX();
+        int houseTileY = pos.getY();
+
+        float camX = VillageModel.getCamera().position.x;
+        float camY = VillageModel.getCamera().position.y;
+        float viewportWidth = VillageModel.getCamera().viewportWidth;
+        float viewportHeight = VillageModel.getCamera().viewportHeight;
+
+        float cameraLeft = camX - viewportWidth / 2;
+        float cameraBottom = camY - viewportHeight / 2;
+
+        float drawX = houseTileX * tileSize - cameraLeft;
+        float drawY = houseTileY * tileSize - cameraBottom;
+
+
+        batch.draw(currentFrame, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE * 2);
+    }
+
+    private void renderHarvey() {
+        NPC npc = App.loggedInUser.getCurrentGame().getNpcs().get(2);
+        Position pos = npc.getPosition();
+        moveDirection = npc.getMovingDirection();
+
+        stateTime += Gdx.graphics.getDeltaTime();
+        Animation<TextureRegion> currentAnimation = null;
+        currentAnimation = HarveyAnimations.get(moveDirection);
+
+        TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+
+        int tileSize = Main.TILE_SIZE;
+
+        int houseTileX = pos.getX();
+        int houseTileY = pos.getY();
+
+        float camX = VillageModel.getCamera().position.x;
+        float camY = VillageModel.getCamera().position.y;
+        float viewportWidth = VillageModel.getCamera().viewportWidth;
+        float viewportHeight = VillageModel.getCamera().viewportHeight;
+
+        float cameraLeft = camX - viewportWidth / 2;
+        float cameraBottom = camY - viewportHeight / 2;
+
+        float drawX = houseTileX * tileSize - cameraLeft;
+        float drawY = houseTileY * tileSize - cameraBottom;
+
+
+        batch.draw(currentFrame, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE * 2);
+    }
+
+    private void renderLea() {
+        NPC npc = App.loggedInUser.getCurrentGame().getNpcs().get(3);
+        Position pos = npc.getPosition();
+        moveDirection = npc.getMovingDirection();
+
+        stateTime += Gdx.graphics.getDeltaTime();
+        Animation<TextureRegion> currentAnimation = null;
+        currentAnimation = LeaAnimations.get(moveDirection);
+
+        TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+
+        int tileSize = Main.TILE_SIZE;
+
+        int houseTileX = pos.getX();
+        int houseTileY = pos.getY();
+
+        float camX = VillageModel.getCamera().position.x;
+        float camY = VillageModel.getCamera().position.y;
+        float viewportWidth = VillageModel.getCamera().viewportWidth;
+        float viewportHeight = VillageModel.getCamera().viewportHeight;
+
+        float cameraLeft = camX - viewportWidth / 2;
+        float cameraBottom = camY - viewportHeight / 2;
+
+        float drawX = houseTileX * tileSize - cameraLeft;
+        float drawY = houseTileY * tileSize - cameraBottom;
+
+
+        batch.draw(currentFrame, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE * 2);
+    }
+
+    private void renderRobin() {
+        NPC npc = App.loggedInUser.getCurrentGame().getNpcs().get(4);
+        Position pos = npc.getPosition();
+        moveDirection = npc.getMovingDirection();
+
+        stateTime += Gdx.graphics.getDeltaTime();
+        Animation<TextureRegion> currentAnimation = null;
+        currentAnimation = RobinAnimations.get(moveDirection);
+
+        TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+
+        int tileSize = Main.TILE_SIZE;
+
+        int houseTileX = pos.getX();
+        int houseTileY = pos.getY();
+
+        float camX = VillageModel.getCamera().position.x;
+        float camY = VillageModel.getCamera().position.y;
+        float viewportWidth = VillageModel.getCamera().viewportWidth;
+        float viewportHeight = VillageModel.getCamera().viewportHeight;
+
+        float cameraLeft = camX - viewportWidth / 2;
+        float cameraBottom = camY - viewportHeight / 2;
+
+        float drawX = houseTileX * tileSize - cameraLeft;
+        float drawY = houseTileY * tileSize - cameraBottom;
+
+
+        batch.draw(currentFrame, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE * 2);
+    }
+
+    private void renderSebastian() {
+        NPC npc = App.loggedInUser.getCurrentGame().getNpcs().get(0);
+        Position pos = npc.getPosition();
+        moveDirection = npc.getMovingDirection();
+
+        stateTime += Gdx.graphics.getDeltaTime();
+        Animation<TextureRegion> currentAnimation = null;
+        currentAnimation = SebastianAnimations.get(moveDirection);
+
+        TextureRegion currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+
+        int tileSize = Main.TILE_SIZE;
+
+        int houseTileX = pos.getX();
+        int houseTileY = pos.getY();
+
+        float camX = VillageModel.getCamera().position.x;
+        float camY = VillageModel.getCamera().position.y;
+        float viewportWidth = VillageModel.getCamera().viewportWidth;
+        float viewportHeight = VillageModel.getCamera().viewportHeight;
+
+        float cameraLeft = camX - viewportWidth / 2;
+        float cameraBottom = camY - viewportHeight / 2;
+
+        float drawX = houseTileX * tileSize - cameraLeft;
+        float drawY = houseTileY * tileSize - cameraBottom;
+
+
+        batch.draw(currentFrame, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE * 2);
+    }
+
     // PLAYER
     private void renderPlayer() {
         Pair<Float, Float> pos;
@@ -1011,10 +1174,10 @@ public class GameView {
         }
 
 
-        Tool toll=o.getInHandTool();
-        Texture tool=null;
-        if (toll!=null){
-            tool=GameAssetManager.getTexture(o.getInHandTool());
+        Tool toll = o.getInHandTool();
+        Texture tool = null;
+        if (toll != null) {
+            tool = GameAssetManager.getTexture(o.getInHandTool());
         }
         Animation<TextureRegion> currentAnimation = null;
 
