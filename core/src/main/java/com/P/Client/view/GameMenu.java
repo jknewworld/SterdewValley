@@ -652,8 +652,8 @@ public class GameMenu implements AppMenu {
     private Resualt getShowFriendshipNPC(String input) {
         Resualt result;
         Command command = new Command(input);
-        result = NPCController.ShowFriendship(command);
-        return result;
+        //result = NPCController.ShowFriendship(command);
+        return null;
     }
 
     private Resualt getShowQuestsNPC(String input) {

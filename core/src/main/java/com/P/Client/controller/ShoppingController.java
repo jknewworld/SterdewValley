@@ -39,7 +39,6 @@ public class ShoppingController {
 
     public void update() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
-            System.out.println("wewewew");
             createShopMenu("BlackSmith");
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.J)) {

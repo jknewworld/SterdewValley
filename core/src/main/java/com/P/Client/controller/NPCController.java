@@ -35,7 +35,7 @@ public class NPCController extends ControllersController {
         return new Resualt(true, name + ": " + getDialogue(npc));
     }
 
-    private static String getDialogue(NPC npc) {
+    public static String getDialogue(NPC npc) {
         Game game = App.getLoggedInUser().getCurrentGame();
         Player player = game.getCurrentPlayer();
         int i = game.getPlayers().indexOf(player);
@@ -137,12 +137,12 @@ public class NPCController extends ControllersController {
         return new Resualt(true, "Gift sent successfully!");
     }
 
-    public static Resualt ShowFriendship(Command request) {
+    public static Resualt ShowFriendship(NPC npc) {
         Game game = App.getLoggedInUser().getCurrentGame();
         Player player = game.getCurrentPlayer();
         int i = game.getPlayers().indexOf(player);
         StringBuilder response = new StringBuilder();
-        for(NPC npc : game.getNpcs())
+       // for(NPC npc : game.getNpcs())
             response.append(npc.getName()).append(": ").append(npc.getFriendships().get(i).getXp())
                     .append(", level ").append(npc.getFriendships().get(i).getFriendshipLevel()).append("\n");
         return new Resualt(true, response.toString());
