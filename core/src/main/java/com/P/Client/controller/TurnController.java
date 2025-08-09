@@ -335,6 +335,7 @@ public class TurnController extends ControllersController {
 
 
     public void goToGame() {
+        System.out.println("in TurnController, go to game");
         GameController gameController = new GameController(Main.getMain(), this);
         gameController.init();
         gameController.run();

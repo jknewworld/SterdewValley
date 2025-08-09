@@ -25,9 +25,9 @@ public class GameMenu implements Screen {
     public GameModel gameModel;
 
     public GameModel gameModel1;
-    public GameModel gameModel2;
-    public GameModel gameModel3;
-    public GameModel gameModel4;
+//    public GameModel gameModel2;
+//    public GameModel gameModel3;
+//    public GameModel gameModel4;
 
     public VillageModel villageModel;
 
@@ -79,24 +79,24 @@ public class GameMenu implements Screen {
         gameModel = App.loggedInUser.getCurrentGame().getCurrentPlayer().getGameModel();
 
         gameModel1 = App.loggedInUser.getCurrentGame().getPlayers().get(0).getGameModel();
-        gameModel2 = App.loggedInUser.getCurrentGame().getPlayers().get(1).getGameModel();
-        gameModel3 = App.loggedInUser.getCurrentGame().getPlayers().get(2).getGameModel();
-        gameModel4 = App.loggedInUser.getCurrentGame().getPlayers().get(3).getGameModel();
+//        gameModel2 = App.loggedInUser.getCurrentGame().getPlayers().get(1).getGameModel();
+//        gameModel3 = App.loggedInUser.getCurrentGame().getPlayers().get(2).getGameModel();
+//        gameModel4 = App.loggedInUser.getCurrentGame().getPlayers().get(3).getGameModel();
 
         villageModel = App.loggedInUser.getCurrentGame().getVillageModel();
 
         villageView = new GameView(villageModel);
         gameView1 = new GameView(gameModel1);
-        gameView2 = new GameView(gameModel2);
-        gameView3 = new GameView(gameModel3);
-        gameView4 = new GameView(gameModel4);
+//        gameView2 = new GameView(gameModel2);
+//        gameView3 = new GameView(gameModel3);
+//        gameView4 = new GameView(gameModel4);
 
         gameView = new GameView(gameModel);
         gameMenuInputAdapter = new GameMenuInputAdapter(gameModel, gameController);
         gameMenuInputAdapter1 = new GameMenuInputAdapter(gameModel1, gameController);
-        gameMenuInputAdapter2 = new GameMenuInputAdapter(gameModel2, gameController);
-        gameMenuInputAdapter3 = new GameMenuInputAdapter(gameModel3, gameController);
-        gameMenuInputAdapter4 = new GameMenuInputAdapter(gameModel4, gameController);
+//        gameMenuInputAdapter2 = new GameMenuInputAdapter(gameModel2, gameController);
+//        gameMenuInputAdapter3 = new GameMenuInputAdapter(gameModel3, gameController);
+//        gameMenuInputAdapter4 = new GameMenuInputAdapter(gameModel4, gameController);
         villageMenuInputAdapter = new GameMenuInputAdapter(villageModel, gameController);
     }
 
@@ -118,9 +118,9 @@ public class GameMenu implements Screen {
             int h = Gdx.graphics.getHeight() / 2;
 
             renderGameView(delta,gameModel1, gameView1, 0, h, w, h);
-            renderGameView(delta, gameModel2, gameView2, w, h, w, h);
-            renderGameView(delta ,gameModel3, gameView3, 0, 0, w, h);
-            renderGameView(delta ,gameModel4, gameView4, w, 0, w, h);
+//            renderGameView(delta, gameModel2, gameView2, w, h, w, h);
+//            renderGameView(delta ,gameModel3, gameView3, 0, 0, w, h);
+//            renderGameView(delta ,gameModel4, gameView4, w, 0, w, h);
         }
         else {
 
@@ -134,30 +134,31 @@ public class GameMenu implements Screen {
             }
             else {
                 Main.getBatch().begin();
-                if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(0))) {
+                //if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(0))) {
                     Gdx.input.setInputProcessor(gameMenuInputAdapter1);
                     gameModel1.update(delta);
                     gameView1.render(delta);
                     gameMenuInputAdapter1.update(delta);
-                }
-                if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(1))) {
-                    Gdx.input.setInputProcessor(gameMenuInputAdapter2);
-                    gameModel2.update(delta);
-                    gameView2.render(delta);
-                    gameMenuInputAdapter2.update(delta);
-                }
-                if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(2))) {
-                    Gdx.input.setInputProcessor(gameMenuInputAdapter3);
-                    gameModel3.update(delta);
-                    gameView3.render(delta);
-                    gameMenuInputAdapter3.update(delta);
-                }
-                if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(3))) {
-                    Gdx.input.setInputProcessor(gameMenuInputAdapter4);
-                    gameModel4.update(delta);
-                    gameView4.render(delta);
-                    gameMenuInputAdapter4.update(delta);
-                }
+//                }
+//                if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(1))) {
+//                    Gdx.input.setInputProcessor(gameMenuInputAdapter2);
+//                    gameModel2.update(delta);
+//                    gameView2.render(delta);
+//                    gameMenuInputAdapter2.update(delta);
+//                }
+//                if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(2))) {
+//                    Gdx.input.setInputProcessor(gameMenuInputAdapter3);
+//                    gameModel3.update(delta);
+//                    gameView3.render(delta);
+//                    gameMenuInputAdapter3.update(delta);
+//                }
+//                if (App.loggedInUser.getCurrentGame().getCurrentPlayer().equals(App.loggedInUser.getCurrentGame().getPlayers().get(3))) {
+//                    Gdx.input.setInputProcessor(gameMenuInputAdapter4);
+//                    gameModel4.update(delta);
+//                    gameView4.render(delta);
+//                    gameMenuInputAdapter4.update(delta);
+//                }
+
 //        gameModel.update(delta);
 //        gameView.render();
 //        gameMenuInputAdapter.update(delta);
