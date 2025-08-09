@@ -1,13 +1,11 @@
 package com.P.Client.view.GameView;
 
 import com.P.Client.controller.CookingController;
-import com.P.Client.controller.NPCController;
 import com.P.Client.model.Command;
 //import com.P.Client.model.HitEffect;
 import com.P.Main;
 import com.P.common.model.Maps.Position;
 import com.P.common.model.NPC.NPC;
-import com.P.common.model.Resualt;
 import com.badlogic.gdx.graphics.Color;
 
 import com.P.common.model.Animals.Fish;
@@ -32,49 +30,13 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.math.Rectangle;
-import com.P.Client.model.Command;
-import com.P.Client.model.GameAssetManager;
-import com.P.common.model.Basics.Game;
-import com.P.common.model.Basics.Player;
-import com.P.common.model.Basics.App;
-import com.P.common.model.Maps.Building;
-import com.P.common.model.Resualt;
-import com.P.common.model.Objects.*;
-import com.P.common.model.enums.*;
-import com.P.common.model.Maps.Tile;
-import com.P.common.model.game.GameModel;
-import com.P.common.model.game.VillageModel;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -147,7 +109,6 @@ public class GameView {
     private final int scarecrowTileX = 2;
     private final int scarecrowTileY = 22;
 
-    private Texture iconTexture;
 
     private void loadFont() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/stardew-valley.ttf"));
@@ -176,9 +137,8 @@ public class GameView {
         Gdx.input.setInputProcessor(stage);
     }
 
-    private void loadTextures() {
-        iconTexture = new Texture(Gdx.files.internal("game/NPC.png"));
 
+    private void loadTextures() {
         textures = new HashMap<>();
 
         for (TileDescriptionId id : TileDescriptionId.values()) {
@@ -1033,16 +993,6 @@ public class GameView {
     }
 
     // NPCS
-    private Stage animalMenuStage = null;
-    private boolean isAnimalMenuOpen = false;
-
-    private float abigalIconTimer = 0;
-    private boolean showAbigailIcon = false;
-    private float abigailIconVisibleTime = 0;
-    private String currentDialogAbigail = null;
-    String dialog = " ";
-    private BitmapFont font = new BitmapFont();
-
     private void renderAbigail() {
         NPC npc = App.loggedInUser.getCurrentGame().getNpcs().get(1);
         Position pos = npc.getPosition();
@@ -1072,144 +1022,7 @@ public class GameView {
 
 
         batch.draw(currentFrame, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE * 2);
-
-        abigalIconTimer += Gdx.graphics.getDeltaTime();
-
-        if (Gdx.input.justTouched()) {
-            Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            VillageModel.getCamera().unproject(mousePos);
-
-            if (mousePos.x >= drawX && mousePos.x <= drawX + Main.TILE_SIZE &&
-                mousePos.y >= drawY && mousePos.y <= drawY + Main.TILE_SIZE * 2) {
-                    WindowNPC(npc);
-            }
-        }
-        if(isAnimalMenuOpen && animalMenuStage!=null){
-            animalMenuStage.act(Gdx.graphics.getDeltaTime());
-            Gdx.input.setInputProcessor(animalMenuStage);
-            animalMenuStage.draw();
-        }
-
-        if (abigalIconTimer >= 10f) {
-            showAbigailIcon = true;
-            abigailIconVisibleTime = 0;
-            abigalIconTimer = 0;
-            dialog = NPCController.getDialogue(npc);
-        }
-
-        if (showAbigailIcon) {
-            abigailIconVisibleTime += Gdx.graphics.getDeltaTime();
-
-
-            float iconX = drawX + Main.TILE_SIZE / 2f - 16;
-            float iconY = drawY + Main.TILE_SIZE * 2 + 10;
-
-            batch.draw(iconTexture, iconX, iconY, 32, 32);
-
-
-            if (abigailIconVisibleTime >= 5f) {
-                showAbigailIcon = false;
-            }
-
-            if (Gdx.input.justTouched()) {
-                Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-                VillageModel.getCamera().unproject(mousePos);
-
-                if (mousePos.x >= iconX && mousePos.x <= iconX + 32 &&
-                    mousePos.y >= iconY && mousePos.y <= iconY + 32) {
-
-                    currentDialogAbigail = dialog;
-                }
-            }
-        }
-
-        if (currentDialogAbigail != null) {
-            float dialogWidth = 150;
-            float dialogHeight = 50;
-            float dialogX = drawX;
-            float dialogY = drawY - dialogHeight - 5;
-
-            font.setColor(Color.WHITE);
-            font.draw(batch, dialog, dialogX + 10, dialogY + dialogHeight - 10);
-
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
-                currentDialogAbigail = null;
-            }
-        }
     }
-
-    private void WindowNPC(NPC npc){
-        Stage animalStage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(animalStage);
-
-        Group menuGroup = new Group();
-
-        Window window = new Window("NPC Menu", GameAssetManager.LABI_SKIN);
-        window.setSize(1000, 600);
-        window.setMovable(false);
-
-        Table table = new Table();
-        table.setFillParent(true);
-        table.top().pad(20).defaults().pad(10).left();
-
-        final Label responseLabel = new Label("", GameAssetManager.LABI_SKIN);
-        responseLabel.setAlignment(Align.center);
-        responseLabel.setWrap(true);
-        responseLabel.setColor(Color.DARK_GRAY);
-        responseLabel.setText(npc.getName());
-        table.add(responseLabel).colspan(2).width(600).left();
-
-        table.row().pad(10, 0, 10, 0);
-        final Label friendshipLabel = new Label("", GameAssetManager.LABI_SKIN);
-        friendshipLabel.setAlignment(Align.center);
-        friendshipLabel.setWrap(true);
-        friendshipLabel.setColor(Color.BROWN);
-        friendshipLabel.setText(NPCController.ShowFriendship(npc).getAnswer());
-        table.add(friendshipLabel).width(600);
-
-        window.add(table).expand().fill();
-
-        ImageButton exitButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(GameAssetManager.EXIT_BUTTON)));
-        exitButton.setSize(32, 32);
-        exitButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                animalStage.clear();
-                isAnimalMenuOpen = false;
-                Gdx.input.setInputProcessor(null);
-            }
-        });
-
-        Group group = new Group() {
-            @Override
-            public void act(float delta) {
-                super.act(delta);
-                window.setPosition(
-                    (animalStage.getViewport().getScreenWidth() - window.getWidth()) / 2f,
-                    (animalStage.getViewport().getScreenHeight() - window.getHeight()) / 2f
-                );
-                exitButton.setPosition(
-                    window.getX() + window.getWidth() - exitButton.getWidth() / 2f + 16,
-                    window.getY() + window.getHeight() - exitButton.getHeight() / 2f
-                );
-            }
-        };
-
-        group.addActor(window);
-        group.addActor(exitButton);
-        menuGroup.addActor(group);
-        animalStage.addActor(menuGroup);
-
-        this.animalMenuStage = animalStage;
-        this.isAnimalMenuOpen = true;
-    }
-
-    private float harveyIconTimer = 0;
-    private boolean showHarveyIcon = false;
-    private float harveyIconVisibleTime = 0;
-    private String currentDialogHarvey = null;
-    String dialogHarvey = " ";
 
     private void renderHarvey() {
         NPC npc = App.loggedInUser.getCurrentGame().getNpcs().get(2);
@@ -1240,78 +1053,7 @@ public class GameView {
 
 
         batch.draw(currentFrame, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE * 2);
-
-        if (Gdx.input.justTouched()) {
-            Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            VillageModel.getCamera().unproject(mousePos);
-
-            if (mousePos.x >= drawX && mousePos.x <= drawX + Main.TILE_SIZE &&
-                mousePos.y >= drawY && mousePos.y <= drawY + Main.TILE_SIZE * 2) {
-                WindowNPC(npc);
-            }
-        }
-        if(isAnimalMenuOpen && animalMenuStage!=null){
-            animalMenuStage.act(Gdx.graphics.getDeltaTime());
-            Gdx.input.setInputProcessor(animalMenuStage);
-            animalMenuStage.draw();
-        }
-
-
-        harveyIconTimer += Gdx.graphics.getDeltaTime();
-
-        if (harveyIconTimer >= 15f) {
-            showHarveyIcon = true;
-            harveyIconVisibleTime = 0;
-            harveyIconTimer = 0;
-            dialogHarvey = NPCController.getDialogue(npc);
-        }
-
-
-        if (showHarveyIcon) {
-            harveyIconVisibleTime += Gdx.graphics.getDeltaTime();
-
-            float iconX = drawX + Main.TILE_SIZE / 2f - 16; // آیکون 32px
-            float iconY = drawY + Main.TILE_SIZE * 2 + 10;
-
-            batch.draw(iconTexture, iconX, iconY, 32, 32);
-
-            if (harveyIconVisibleTime >= 5f) {
-                showHarveyIcon = false;
-            }
-
-            if (Gdx.input.justTouched()) {
-                Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-                VillageModel.getCamera().unproject(mousePos);
-
-                if (mousePos.x >= iconX && mousePos.x <= iconX + 32 &&
-                    mousePos.y >= iconY && mousePos.y <= iconY + 32) {
-
-                    currentDialogHarvey = dialogHarvey;
-                }
-            }
-        }
-
-        if (currentDialogHarvey != null) {
-            float dialogWidth = 150;
-            float dialogHeight = 50;
-            float dialogX = drawX;
-            float dialogY = drawY - dialogHeight - 5;
-
-            font.setColor(Color.WHITE);
-            font.draw(batch, dialogHarvey, dialogX + 10, dialogY + dialogHeight - 10);
-
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
-                currentDialogHarvey = null;
-            }
-        }
     }
-
-    private float leaIconTimer = 0;
-    private boolean showLeaIcon = false;
-    private float leaIconVisibleTime = 0;
-    private String currentDialogLea = null;
-    String dialogLea = " ";
 
     private void renderLea() {
         NPC npc = App.loggedInUser.getCurrentGame().getNpcs().get(3);
@@ -1342,78 +1084,7 @@ public class GameView {
 
 
         batch.draw(currentFrame, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE * 2);
-
-        if (Gdx.input.justTouched()) {
-            Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            VillageModel.getCamera().unproject(mousePos);
-
-            if (mousePos.x >= drawX && mousePos.x <= drawX + Main.TILE_SIZE &&
-                mousePos.y >= drawY && mousePos.y <= drawY + Main.TILE_SIZE * 2) {
-                WindowNPC(npc);
-            }
-        }
-        if(isAnimalMenuOpen && animalMenuStage!=null){
-            animalMenuStage.act(Gdx.graphics.getDeltaTime());
-            Gdx.input.setInputProcessor(animalMenuStage);
-            animalMenuStage.draw();
-        }
-
-
-        leaIconTimer += Gdx.graphics.getDeltaTime();
-
-        if (leaIconTimer >= 20f) {
-            showLeaIcon = true;
-            leaIconVisibleTime = 0;
-            leaIconTimer = 0;
-            dialogLea = NPCController.getDialogue(npc);
-        }
-
-
-        if (showLeaIcon) {
-            leaIconVisibleTime += Gdx.graphics.getDeltaTime();
-
-            float iconX = drawX + Main.TILE_SIZE / 2f - 16; // آیکون 32px
-            float iconY = drawY + Main.TILE_SIZE * 2 + 10;
-
-            batch.draw(iconTexture, iconX, iconY, 32, 32);
-
-            if (leaIconVisibleTime >= 5f) {
-                showLeaIcon = false;
-            }
-
-            if (Gdx.input.justTouched()) {
-                Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-                VillageModel.getCamera().unproject(mousePos);
-
-                if (mousePos.x >= iconX && mousePos.x <= iconX + 32 &&
-                    mousePos.y >= iconY && mousePos.y <= iconY + 32) {
-
-                    currentDialogLea = dialogLea;
-                }
-            }
-        }
-
-        if (currentDialogLea != null) {
-            float dialogWidth = 150;
-            float dialogHeight = 50;
-            float dialogX = drawX;
-            float dialogY = drawY - dialogHeight - 5;
-
-            font.setColor(Color.WHITE);
-            font.draw(batch, dialogLea, dialogX + 10, dialogY + dialogHeight - 10);
-
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
-                currentDialogLea = null;
-            }
-        }
     }
-
-    private float robinIconTimer = 0;
-    private boolean showRobinIcon = false;
-    private float robinIconVisibleTime = 0;
-    private String currentDialogRobin = null;
-    String dialogRobin = " ";
 
     private void renderRobin() {
         NPC npc = App.loggedInUser.getCurrentGame().getNpcs().get(4);
@@ -1444,78 +1115,7 @@ public class GameView {
 
 
         batch.draw(currentFrame, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE * 2);
-
-        if (Gdx.input.justTouched()) {
-            Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            VillageModel.getCamera().unproject(mousePos);
-
-            if (mousePos.x >= drawX && mousePos.x <= drawX + Main.TILE_SIZE &&
-                mousePos.y >= drawY && mousePos.y <= drawY + Main.TILE_SIZE * 2) {
-                WindowNPC(npc);
-            }
-        }
-        if(isAnimalMenuOpen && animalMenuStage!=null){
-            animalMenuStage.act(Gdx.graphics.getDeltaTime());
-            Gdx.input.setInputProcessor(animalMenuStage);
-            animalMenuStage.draw();
-        }
-
-
-        robinIconTimer += Gdx.graphics.getDeltaTime();
-
-        if (robinIconTimer >= 25f) {
-            showRobinIcon = true;
-            robinIconVisibleTime = 0;
-            leaIconTimer = 0;
-            dialogRobin = NPCController.getDialogue(npc);
-        }
-
-
-        if (showRobinIcon) {
-            leaIconVisibleTime += Gdx.graphics.getDeltaTime();
-
-            float iconX = drawX + Main.TILE_SIZE / 2f - 16; // آیکون 32px
-            float iconY = drawY + Main.TILE_SIZE * 2 + 10;
-
-            batch.draw(iconTexture, iconX, iconY, 32, 32);
-
-            if (robinIconVisibleTime >= 5f) {
-                showRobinIcon = false;
-            }
-
-            if (Gdx.input.justTouched()) {
-                Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-                VillageModel.getCamera().unproject(mousePos);
-
-                if (mousePos.x >= iconX && mousePos.x <= iconX + 32 &&
-                    mousePos.y >= iconY && mousePos.y <= iconY + 32) {
-
-                    currentDialogRobin = dialogRobin;
-                }
-            }
-        }
-
-        if (currentDialogRobin != null) {
-            float dialogWidth = 150;
-            float dialogHeight = 50;
-            float dialogX = drawX;
-            float dialogY = drawY - dialogHeight - 5;
-
-            font.setColor(Color.WHITE);
-            font.draw(batch, dialogRobin, dialogX + 10, dialogY + dialogHeight - 10);
-
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
-                currentDialogRobin = null;
-            }
-        }
     }
-
-    private float sebastianIconTimer = 0;
-    private boolean showSebastianIcon = false;
-    private float sebastianIconVisibleTime = 0;
-    private String currentDialogSebastian = null;
-    String dialogSebastian = " ";
 
     private void renderSebastian() {
         NPC npc = App.loggedInUser.getCurrentGame().getNpcs().get(0);
@@ -1546,73 +1146,7 @@ public class GameView {
 
 
         batch.draw(currentFrame, drawX, drawY, Main.TILE_SIZE, Main.TILE_SIZE * 2);
-
-        if (Gdx.input.justTouched()) {
-            Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            VillageModel.getCamera().unproject(mousePos);
-
-            if (mousePos.x >= drawX && mousePos.x <= drawX + Main.TILE_SIZE &&
-                mousePos.y >= drawY && mousePos.y <= drawY + Main.TILE_SIZE * 2) {
-                WindowNPC(npc);
-            }
-        }
-        if(isAnimalMenuOpen && animalMenuStage!=null){
-            animalMenuStage.act(Gdx.graphics.getDeltaTime());
-            Gdx.input.setInputProcessor(animalMenuStage);
-            animalMenuStage.draw();
-        }
-
-
-        sebastianIconTimer += Gdx.graphics.getDeltaTime();
-
-        if (sebastianIconTimer >= 25f) {
-            showSebastianIcon = true;
-            sebastianIconVisibleTime = 0;
-            sebastianIconTimer = 0;
-            dialogSebastian = NPCController.getDialogue(npc);
-        }
-
-
-        if (showSebastianIcon) {
-            sebastianIconVisibleTime += Gdx.graphics.getDeltaTime();
-
-            float iconX = drawX + Main.TILE_SIZE / 2f - 16; // آیکون 32px
-            float iconY = drawY + Main.TILE_SIZE * 2 + 10;
-
-            batch.draw(iconTexture, iconX, iconY, 32, 32);
-
-            if (sebastianIconVisibleTime >= 5f) {
-                showSebastianIcon = false;
-            }
-
-            if (Gdx.input.justTouched()) {
-                Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-                VillageModel.getCamera().unproject(mousePos);
-
-                if (mousePos.x >= iconX && mousePos.x <= iconX + 32 &&
-                    mousePos.y >= iconY && mousePos.y <= iconY + 32) {
-
-                    currentDialogSebastian = dialogSebastian;
-                }
-            }
-        }
-
-        if (currentDialogSebastian != null) {
-            float dialogWidth = 150;
-            float dialogHeight = 50;
-            float dialogX = drawX;
-            float dialogY = drawY - dialogHeight - 5;
-
-            font.setColor(Color.WHITE);
-            font.draw(batch, dialogSebastian, dialogX + 10, dialogY + dialogHeight - 10);
-
-
-            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
-                currentDialogSebastian = null;
-            }
-        }
     }
-
 
     // PLAYER
     private void renderPlayer() {
@@ -1621,6 +1155,7 @@ public class GameView {
             pos = game.getPlayer().getPlayerPosition();
         else
             pos = village.getPlayer().getPlayerPosition();
+
 
         if (!isVillage)
             moveDirection = game.getPlayer().getMovingDirection();
@@ -1690,9 +1225,8 @@ public class GameView {
 
         if (o.getEnergy() == 0) {
             batch.draw(currentFrame, pos.first * Main.TILE_SIZE, pos.second * Main.TILE_SIZE, 100, 100);
-        } else {
+        } else
             batch.draw(currentFrame, pos.first * Main.TILE_SIZE, pos.second * Main.TILE_SIZE, 60, 120);
-        }
 
         if (tool != null) {
             float playerX = pos.first * Main.TILE_SIZE;
