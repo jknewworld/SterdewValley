@@ -1,7 +1,11 @@
 package com.P.Client.view.GameView;
 
 import com.P.Client.controller.CookingController;
+import com.P.Client.model.Command;
+import com.P.Client.model.HitEffect;
 import com.P.Main;
+import com.badlogic.gdx.graphics.Color;
+
 import com.P.common.model.Animals.Fish;
 import com.P.common.model.Animals.FishGame;
 import com.P.common.model.Basics.App;
@@ -9,12 +13,9 @@ import com.P.common.model.Basics.Game;
 import com.P.common.model.Basics.Player;
 import com.P.Client.model.GameAssetManager;
 import com.P.Client.model.Pair;
-import com.P.common.model.Maps.Farm;
-import com.P.common.model.Maps.Tile;
-import com.P.common.model.Naturals.Crop;
-import com.P.common.model.Naturals.Tree;
 import com.P.common.model.Objects.Tool;
-import com.P.common.model.enums.*;
+import com.P.common.model.enums.Avatar;
+import com.P.common.model.enums.Season;
 import com.P.common.model.game.GameModel;
 import com.P.common.model.game.VillageModel;
 import com.P.common.model.item.CarrotStages;
@@ -29,6 +30,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -38,8 +40,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
+import static com.P.Client.controller.InventoryFunctionsController.Effects;
+import static com.P.Client.controller.InventoryFunctionsController.useTool;
 import static javax.swing.JColorChooser.showDialog;
 
 public class GameView {
@@ -308,6 +311,11 @@ public class GameView {
         textures.put("SCARECROW", new TextureRegion(new Texture(Gdx.files.internal("game/greenhouse/question.png"))));
         textures.put("SCARECROW_INFO", new TextureRegion(new Texture(Gdx.files.internal("game/greenhouse/command.png"))));
 
+        textures.put("Huge", new TextureRegion(new Texture(Gdx.files.internal("game/Large_Milk_RU.png"))));
+        textures.put("F_SPRING", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/spring/f.png"))));
+        textures.put("F_SUMMER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/summer/f.png"))));
+        textures.put("F_FALL", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/fall/f.png"))));
+        textures.put("F_WINTER", new TextureRegion(new Texture(Gdx.files.internal("game/tiles/winter/f.png"))));
         // FISHING
         waterBounds = new Rectangle(12* Main.TILE_SIZE,
             12 * Main.TILE_SIZE,
@@ -408,6 +416,7 @@ public class GameView {
         }
 
         renderPlayer();
+        Hugeproducts();
         batch.end();
 
     }
@@ -718,6 +727,7 @@ public class GameView {
 
         int tileSize = Main.TILE_SIZE;
 
+
         float cameraLeft = camX - viewportWidth / 2;
         float cameraBottom = camY - viewportHeight / 2;
 
@@ -820,6 +830,21 @@ public class GameView {
                             batch.draw(treeTexture, drawX, drawY, tileSize, tileSize); // فرض درخت 1x2 هست
                         }
                     }
+                    if (id == TileDescriptionId.F) {
+                        String treeKey = switch (App.loggedInUser.getCurrentGame().getSeason()) {
+                            case SPRING -> "F_SPRING";
+                            case SUMMER -> "F_SUMMER";
+                            case AUTUMN -> "F_FALL";
+                            case WINTER -> "F_WINTER";
+
+                        };
+
+                        TextureRegion treeTexture = textures.get(treeKey);
+                        if (treeTexture != null) {
+                            batch.setColor(1f, 1f, 1f, 1f); // ریست رنگ
+                            batch.draw(treeTexture, drawX, drawY, tileSize, tileSize); // فرض درخت 1x2 هست
+                        }
+                    }
                 }
 
 
@@ -858,7 +883,6 @@ public class GameView {
         batch.setColor(1f, 1f, 1f, 1f);
     }
 
-
     // PLAYER
     private void renderPlayer() {
         Pair<Float, Float> pos;
@@ -875,11 +899,7 @@ public class GameView {
 
         stateTime += Gdx.graphics.getDeltaTime();
         Player o = App.loggedInUser.getCurrentGame().getCurrentPlayer();
-        Tool toll=o.getInHandTool();
-        Texture tool=null;
-        if (toll!=null){
-            tool=GameAssetManager.getTexture(o.getInHandTool());
-        }
+
         boolean isFainting = (o.getEnergy() == 0);
 
         if (isFainting) {
@@ -889,6 +909,11 @@ public class GameView {
         }
 
 
+        Tool toll=o.getInHandTool();
+        Texture tool=null;
+        if (toll!=null){
+            tool=GameAssetManager.getTexture(o.getInHandTool());
+        }
         Animation<TextureRegion> currentAnimation = null;
 
 
@@ -949,7 +974,47 @@ public class GameView {
         }
         if (game != null)
             renderInventory();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Fonts/Bahu.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 24;
+        BitmapFont font = generator.generateFont(parameter);
+        generator.dispose();
+
+        int tileSize = Main.TILE_SIZE;
+
+        Matrix4 originalProjection = batch.getProjectionMatrix().cpy();
+
+        batch.setProjectionMatrix(new Matrix4().setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+
+        font.setColor(Color.BLACK);
+        font.draw(batch, "Energy: " + o.getEnergy() + " / 200", 10, Gdx.graphics.getHeight() - 10);
+
+        batch.setProjectionMatrix(originalProjection);
     }
+
+
+    private void Hugeproducts() {
+        TextureRegion houseTexture = textures.get("Huge");
+        int tileSize = Main.TILE_SIZE;
+
+        int houseTileX = 2;
+        int houseTileY = 3;
+
+        float camX = GameModel.getCamera().position.x;
+        float camY = GameModel.getCamera().position.y;
+        float viewportWidth = GameModel.getCamera().viewportWidth;
+        float viewportHeight = GameModel.getCamera().viewportHeight;
+
+        float cameraLeft = camX - viewportWidth / 2;
+        float cameraBottom = camY - viewportHeight / 2;
+
+        float drawX = houseTileX * tileSize - cameraLeft;
+        float drawY = houseTileY * tileSize - cameraBottom;
+
+        batch.draw(houseTexture, drawX, drawY, tileSize, tileSize);
+
+    }
+
 
     // INVENTORY
     private void renderInventory() {
