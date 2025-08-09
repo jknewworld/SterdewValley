@@ -645,8 +645,8 @@ public class GameMenu implements AppMenu {
         Command command = new Command(input);
         command.body.put("name", GameMenuCommands.GIFT_NPC.getGroup(input, "name"));
         command.body.put("itemName", GameMenuCommands.GIFT_NPC.getGroup(input, "itemName"));
-        result = NPCController.GiftNPC(command);
-        return result;
+       // result = NPCController.GiftNPC(command);
+        return null;
     }
 
     private Resualt getShowFriendshipNPC(String input) {

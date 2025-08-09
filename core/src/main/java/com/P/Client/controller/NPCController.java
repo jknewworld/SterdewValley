@@ -99,23 +99,19 @@ public class NPCController extends ControllersController {
         }
     }
 
-    public static Resualt GiftNPC(Command request) {
-        String name = request.body.get("name");
-        String itemName = request.body.get("itemName");
+    public static Resualt GiftNPC(NPC npc,String itemName) {
+//        String name = request.body.get("name");
+//        String itemName = request.body.get("itemName");
         Game game = App.getLoggedInUser().getCurrentGame();
         Player player = game.getCurrentPlayer();
-        NPC npc = getNPCbyName(name);
-        if (npc == null)
-            return new Resualt(false, "No NPC found.");
-        if (!player.getPosition().isNextTo(npc.getPosition()))
-            return new Resualt(false, "You are so far.");
+//        NPC npc = getNPCbyName(name);
 
         Ingredients gift = null;
         for (Ingredients ingredients : player.getInventory().getIngredients().keySet())
             if (ingredients.getName().equals(itemName))
                 gift = ingredients;
         if (gift == null)
-            return new Resualt(false, "You can't give " + itemName + " to " + name);
+            return new Resualt(false, "You can't give " + itemName + " to " + npc.getName());
 
         Integer amount = player.getInventory().getIngredients().get(gift);
         if (amount == 1)
