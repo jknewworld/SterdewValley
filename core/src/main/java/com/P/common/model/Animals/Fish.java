@@ -4,24 +4,43 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import dev.morphia.annotations.Embedded;
+import dev.morphia.annotations.Transient;
 
 import java.util.Random;
-
+@Embedded
 public class Fish {
-    private Vector2 position;
-    private Texture texture;
+    private float x;
+    private float y;
     private FishGame type;
 
-    private float elapsedTime = 0f;
-    private float moveCooldown = 0.5f; // نیم ثانیه
-    private int lastMove = 0;
-    private Texture fishTexture;
+    @Transient
+    private transient float elapsedTime = 0f;
 
-    private Random random = new Random();
+    @Transient
+    private transient float moveCooldown = 0.5f;
+
+    @Transient
+    private transient int lastMove = 0;
+
+    @Transient
+    private transient java.util.Random random = new java.util.Random();
+
+    @Transient
+    private transient com.badlogic.gdx.graphics.Texture texture;
+
+    @Transient
+    private transient com.badlogic.gdx.graphics.Texture fishTexture;
+
+    @Transient
+    private Vector2 position;
+    public Fish() {}
 
     public Fish(Texture texture, float x, float y, FishGame type, Texture fishTexture) {
         this.texture = texture;
         this.position = new Vector2(x, y);
+        this.x = position.x;
+        this.y = position.y;
         this.type = type;
         this.fishTexture = fishTexture;
     }
@@ -34,9 +53,9 @@ public class Fish {
             int move = decideMovement();
             float newY = position.y + move;
 
-            // محدود به محدوده آب
             if (newY >= waterBounds.y && newY + texture.getHeight() <= waterBounds.y + waterBounds.height) {
                 position.y = newY;
+                y = position.y;
                 lastMove = move;
             }
         }

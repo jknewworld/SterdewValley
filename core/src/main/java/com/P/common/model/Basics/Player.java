@@ -1,8 +1,5 @@
 package com.P.common.model.Basics;
 
-//import dev.morphia.annotations.Embedded;
-//import dev.morphia.annotations.Transient;
-
 import com.P.common.model.Maps.Farm;
 import com.P.common.model.Maps.Position;
 import com.P.common.model.Objects.*;

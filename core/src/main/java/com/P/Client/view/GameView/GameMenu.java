@@ -123,7 +123,7 @@ public class GameMenu implements Screen {
 //            renderGameView(delta ,gameModel4, gameView4, w, 0, w, h);
         }
         else {
-
+            Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             if(isVillage){
                 Main.getBatch().begin();
                 Gdx.input.setInputProcessor(villageMenuInputAdapter);

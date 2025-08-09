@@ -54,7 +54,6 @@ public class VillageModel {
     private void initializeTiles() {
         this.farm = Farm.makeNPCFarm();
         tiles = farm.getVillageTiles();
-
     }
 
     public void update(float deltaTime) {

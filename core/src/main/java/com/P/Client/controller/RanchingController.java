@@ -195,7 +195,7 @@ public class RanchingController {
 
         Group menuGroup = new Group();
 
-        Window window = new Window("Aniaml Menuث", GameAssetManager.SKIN);
+        Window window = new Window("Aniaml Menu", GameAssetManager.SKIN);
         window.setSize(1000, 600);
         window.setMovable(false);
 
