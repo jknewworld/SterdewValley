@@ -1131,7 +1131,6 @@ public class GameView {
 
     }
 
-
     private void WindowNPC(NPC npc) {
         Stage animalStage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(animalStage);
@@ -1345,9 +1344,9 @@ public class GameView {
 
         if(achivement){
             float iconX = drawX;
-            float iconY = drawY + Main.TILE_SIZE * 2 - 20;
+            float iconY = drawY + Main.TILE_SIZE * 2 - 60;
 
-            batch.draw(giftTexture, iconX, iconY, 32, 32);
+            batch.draw(achiveTexture, iconX, iconY, 32, 32);
         }
     }
 
@@ -1460,9 +1459,9 @@ public class GameView {
 
         if(achivement){
             float iconX = drawX;
-            float iconY = drawY + Main.TILE_SIZE * 2 - 20;
+            float iconY = drawY + Main.TILE_SIZE * 2 - 60;
 
-            batch.draw(giftTexture, iconX, iconY, 32, 32);
+            batch.draw(achiveTexture, iconX, iconY, 32, 32);
         }
     }
 
@@ -1576,9 +1575,9 @@ public class GameView {
 
         if(achivement){
             float iconX = drawX;
-            float iconY = drawY + Main.TILE_SIZE * 2 - 20;
+            float iconY = drawY + Main.TILE_SIZE * 2 - 60;
 
-            batch.draw(giftTexture, iconX, iconY, 32, 32);
+            batch.draw(achiveTexture, iconX, iconY, 32, 32);
         }
     }
 
@@ -1692,9 +1691,9 @@ public class GameView {
 
         if(achivement){
             float iconX = drawX;
-            float iconY = drawY + Main.TILE_SIZE * 2 - 20;
+            float iconY = drawY + Main.TILE_SIZE * 2 - 60;
 
-            batch.draw(giftTexture, iconX, iconY, 32, 32);
+            batch.draw(achiveTexture, iconX, iconY, 32, 32);
         }
     }
 
