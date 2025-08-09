@@ -24,6 +24,7 @@ public class GameController {
     private final RanchingController animalController = new RanchingController();
     private final CookingController cookingController=new CookingController();
     private final InventoryFunctionsController inventoryController=new InventoryFunctionsController();
+    private final ShoppingController shoppingController=new ShoppingController();
 
 
     public GameController(Main game, TurnController mainController) {
@@ -68,6 +69,7 @@ public class GameController {
         animalController.render();
         cookingController.update();
         inventoryController.update();
+        shoppingController.update();
 
         Sprite clock = App.getLoggedInUser().getCurrentGame().getClock().updateBatch(Main.getBatch());
         table.setPosition(clock.getX() + clock.getWidth() * 0.3f, clock.getY() - table.getHeight());

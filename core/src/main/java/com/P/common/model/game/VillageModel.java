@@ -2,6 +2,7 @@ package com.P.common.model.game;
 
 import com.P.Main;
 import com.P.common.model.Basics.App;
+import com.P.common.model.Basics.Game;
 import com.P.common.model.Basics.Player;
 import com.P.Client.model.GameAssetManager;
 import com.P.common.model.Maps.Farm;
@@ -26,7 +27,12 @@ public class VillageModel {
     private ArrayList<SpriteMine> rainDrops = new ArrayList<>();
     private ArrayList<SpriteMine> storms = new ArrayList<>();
     float delta = 0f;
+    private Farm farm;
 
+
+    public Farm getFarm() {
+        return farm;
+    }
 
     public VillageModel(int mapWidth, int mapHeight) {
         this.mapWidth = mapWidth;
@@ -38,13 +44,15 @@ public class VillageModel {
 
         growingCrops = new HashMap<>();
         player = App.getLoggedInUser().getCurrentGame().getCurrentPlayer();// Check It
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.position.set(player.getPlayerPosition().first, player.getPlayerPosition().second, 0);
+        //camera = new OrthographicCamera();
+        //  camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //   camera.position.set(player.getPlayerPosition().first, player.getPlayerPosition().second, 0);
+        camera= GameModel.getCamera();
+        camera.update();
     }
 
     private void initializeTiles() {
-        Farm farm = Farm.makeNPCFarm();
+        this.farm = Farm.makeNPCFarm();
         tiles = farm.getVillageTiles();
 
     }
