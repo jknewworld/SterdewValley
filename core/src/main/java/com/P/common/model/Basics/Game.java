@@ -45,7 +45,7 @@ public class Game {
     private double weather;
 
     @Transient
-    private PlayGame gameThread;
+    private transient PlayGame gameThread;
     public boolean hasTurnCycleFinished;
     private Farm farm;
 

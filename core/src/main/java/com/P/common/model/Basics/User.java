@@ -12,6 +12,7 @@ import com.P.common.model.enums.SecurityQuestion;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity("users")
 public class User {
@@ -29,6 +30,10 @@ public class User {
     private ObjectId gameId;
     private Avatar avatar;
     private String lobby;
+    private ObjectId currentGameId;        // بازی‌ای که الان کاربر در حال انجامشه
+    private ArrayList<ObjectId> savedGames = new ArrayList<>(); // همه‌ی سیوها
+
+
     //Game
     @Transient
     private Game currentGame;
@@ -220,4 +225,31 @@ public class User {
     public void setLobby(String lobby) {
         this.lobby = lobby;
     }
+
+    public void addSavedGame(ObjectId gameId) {
+        if (!savedGames.contains(gameId)) {
+            savedGames.add(gameId);
+        }
+    }
+
+    public List<ObjectId> getSavedGames() {
+        return savedGames;
+    }
+
+    public void setCurrentGameId(ObjectId gameId) {
+        this.currentGameId = gameId;
+    }
+
+    public ObjectId getCurrentGameId() {
+        return currentGameId;
+    }
+
+    public Game loadGame(ObjectId gameId) {
+        return GameRepo.findGameById(gameId.toString(), true);
+    }
+
+    public void setSavedGames(ArrayList<ObjectId> savedGames) {
+        this.savedGames = savedGames;
+    }
+
 }
