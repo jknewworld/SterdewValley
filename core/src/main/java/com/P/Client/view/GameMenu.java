@@ -660,8 +660,8 @@ public class GameMenu implements AppMenu {
         Resualt result;
         Command command = new Command(input);
         command.body.put("name", GameMenuCommands.SHOW_QUESTS.getGroup(input, "name"));
-        result = NPCController.ShowQuests(command);
-        return result;
+       // result = NPCController.ShowQuests(command);
+        return null;
     }
 
     private Resualt getFinishQuestNPC(String input) {

@@ -144,28 +144,25 @@ public class NPCController extends ControllersController {
         return new Resualt(true, response.toString());
     }
 
-    public static Resualt ShowQuests(Command request) {
-        String name = request.body.get("name");
+    public static Resualt ShowQuests(NPC npc) {
         Game game = App.getLoggedInUser().getCurrentGame();
         Player player = game.getCurrentPlayer();
-        NPC npc = getNPCbyName(name);
-        if (npc == null)
-            return new Resualt(false, "No NPC found.");
-        if (!player.getPosition().isNextTo(npc.getPosition()))
-            return new Resualt(false, "You are so far.");
         StringBuilder response = new StringBuilder();
+        boolean completed = false;
         int i = game.getPlayers().indexOf(player);
         for (int j = 0; j < npc.getActiveQuests().get(i).size(); j++) {
             Quest quest = npc.getActiveQuests().get(i).get(j);
             response.append("Quest ").append(j + 1).append(": ");
             response.append(quest.getRequirement().getIngredient().getName()).append(", ");
             response.append(quest.getRequirement().getNumber()).append(", Status: ");
-            if (quest.isCompleted())
+            if (quest.isCompleted()) {
                 response.append("completed\n");
+                completed = true;
+            }
             else
                 response.append("ongoing\n");
         }
-        return new Resualt(true, response.toString());
+        return new Resualt(completed, response.toString());
     }
 
     public static Resualt FinishQuest(Command request) {

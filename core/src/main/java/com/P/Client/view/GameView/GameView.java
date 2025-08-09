@@ -122,6 +122,8 @@ public class GameView {
 
     private Texture iconTexture;
     private Texture giftTexture;
+    private Texture achiveTexture;
+    private boolean achivement = false;
 
 
     private void loadFont() {
@@ -154,6 +156,7 @@ public class GameView {
     private void loadTextures() {
         iconTexture = new Texture(Gdx.files.internal("game/NPC.png"));
         giftTexture = new Texture(Gdx.files.internal("game/npcGift.png"));
+        achiveTexture = new Texture(Gdx.files.internal("game/NPCachivement.png"));
         textures = new HashMap<>();
 
         for (TileDescriptionId id : TileDescriptionId.values()) {
@@ -1119,6 +1122,12 @@ public class GameView {
 
             batch.draw(giftTexture, iconX, iconY, 32, 32);
         }
+        if(achivement){
+            float iconX = drawX;
+            float iconY = drawY + Main.TILE_SIZE * 2 - 60;
+
+            batch.draw(achiveTexture, iconX, iconY, 32, 32);
+        }
 
     }
 
@@ -1173,10 +1182,22 @@ public class GameView {
                 dialog.show(animalStage);
                 if (resualt.isAccept())
                     isTrueGift[0] = true;
+                isTrueGift[0] = true;
             }
         });
 
+        final com.badlogic.gdx.scenes.scene2d.ui.Label questLabel = new Label("", GameAssetManager.LABI_SKIN);
+        questLabel.setAlignment(Align.center);
+        questLabel.setWrap(true);
+        questLabel.setColor(Color.BROWN);
+        Resualt resualt = NPCController.ShowQuests(npc);
+        questLabel.setText(resualt.getAnswer());
+        table.add(questLabel).width(600);
+        table.row().pad(10, 0, 10, 0);
         window.add(table).expand().fill();
+       // achivement = resualt.isAccept();
+        achivement = true;
+
 
         ImageButton exitButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(GameAssetManager.EXIT_BUTTON)));
         exitButton.setSize(32, 32);
@@ -1321,6 +1342,13 @@ public class GameView {
 
             batch.draw(giftTexture, iconX, iconY, 32, 32);
         }
+
+        if(achivement){
+            float iconX = drawX;
+            float iconY = drawY + Main.TILE_SIZE * 2 - 20;
+
+            batch.draw(giftTexture, iconX, iconY, 32, 32);
+        }
     }
 
     private float leaIconTimer = 0;
@@ -1426,6 +1454,13 @@ public class GameView {
         if (isTrueGift[0]) {
             float iconX = drawX;
             float iconY = drawY + Main.TILE_SIZE * 2 - 10;
+
+            batch.draw(giftTexture, iconX, iconY, 32, 32);
+        }
+
+        if(achivement){
+            float iconX = drawX;
+            float iconY = drawY + Main.TILE_SIZE * 2 - 20;
 
             batch.draw(giftTexture, iconX, iconY, 32, 32);
         }
@@ -1538,6 +1573,13 @@ public class GameView {
 
             batch.draw(giftTexture, iconX, iconY, 32, 32);
         }
+
+        if(achivement){
+            float iconX = drawX;
+            float iconY = drawY + Main.TILE_SIZE * 2 - 20;
+
+            batch.draw(giftTexture, iconX, iconY, 32, 32);
+        }
     }
 
     private float sebastianIconTimer = 0;
@@ -1644,6 +1686,13 @@ public class GameView {
         if (isTrueGift[0]) {
             float iconX = drawX;
             float iconY = drawY + Main.TILE_SIZE * 2 - 10;
+
+            batch.draw(giftTexture, iconX, iconY, 32, 32);
+        }
+
+        if(achivement){
+            float iconX = drawX;
+            float iconY = drawY + Main.TILE_SIZE * 2 - 20;
 
             batch.draw(giftTexture, iconX, iconY, 32, 32);
         }
