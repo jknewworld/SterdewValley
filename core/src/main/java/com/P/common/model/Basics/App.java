@@ -7,8 +7,8 @@ import com.P.common.model.enums.Menus;
 import java.util.ArrayList;
 
 public class App {
-    public final ArrayList<User> allUsers = new ArrayList<>();
-    public final ArrayList<Game> allGames = new ArrayList<>();
+    public static ArrayList<User> allUsers = new ArrayList<>();
+    public static ArrayList<Game> allGames = new ArrayList<>();
     public static User loggedInUser = UserRepo.getStayLoggedInUser();
     private static Menus currentMenu = Menus.AvatarMenu;
     private static ArrayList<Lobby> lobbies = new ArrayList<>();
@@ -39,7 +39,7 @@ public class App {
         App.lobbies = lobbies;
     }
 
-    public ArrayList<User> getAllUsers() {
+    public static ArrayList<User> getAllUsers() {
         return allUsers;
     }
 
@@ -53,5 +53,13 @@ public class App {
 
     public static void setCurrentLobby(Lobby currentLobby) {
         App.currentLobby = currentLobby;
+    }
+
+    public static void setAllUsers(ArrayList<User> allUsers) {
+        App.allUsers = allUsers;
+    }
+
+    public static void setAllGames(ArrayList<Game> allGames) {
+        App.allGames = allGames;
     }
 }

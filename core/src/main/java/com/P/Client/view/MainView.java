@@ -1,10 +1,7 @@
 package com.P.Client.view;
 
+import com.P.Client.controller.*;
 import com.P.Main;
-import com.P.Client.controller.MainMenuController;
-import com.P.Client.controller.ProfileController;
-import com.P.Client.controller.RegisterController;
-import com.P.Client.controller.TurnController;
 import com.P.common.model.Basics.App;
 import com.P.Client.model.GameAssetManager;
 import com.P.Client.view.PreGameView.PreGameView;
@@ -32,6 +29,7 @@ public class MainView implements Screen {
     private Texture avatarTexture;
     private Image avatarImage;
     private Label nameLabel;
+    private TextButton playersList;
 
     private MainMenuController controller;
 
@@ -68,6 +66,7 @@ public class MainView implements Screen {
         this.gameButton = new TextButton("Game Menu", style);
         this.logoutButton = new TextButton("Logout", style);
         this.profileButton = new TextButton("Profile Menu", style);
+        this.playersList = new TextButton("Online Players", style);
 
         this.table = new Table();
         controller.setView(this);
@@ -99,6 +98,9 @@ public class MainView implements Screen {
         table.add(profileButton).width(500).height(50);
 
         table.row().pad(30, 0, 30, 0);
+        table.add(playersList).width(500).height(50);
+
+        table.row().pad(30, 0, 30, 0);
         table.add(gameButton).width(500).height(50);
 
         table.row().pad(30, 0, 30, 0);
@@ -128,6 +130,14 @@ public class MainView implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Main.getMain().getScreen().dispose();
                 Main.getMain().setScreen(new PreGameView(new TurnController(), GameAssetManager.LABI_SKIN));
+            }
+        });
+
+        playersList.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Main.getMain().getScreen().dispose();
+                Main.getMain().setScreen(new PlayersListView(new BasicsController(), GameAssetManager.SKIN));
             }
         });
 

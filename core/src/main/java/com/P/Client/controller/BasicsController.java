@@ -1,6 +1,7 @@
 package com.P.Client.controller;
 
 import com.P.Client.app.ClientApp;
+import com.P.Client.view.PlayersListView;
 import com.P.Client.view.PreGameView.NewGameView;
 import com.P.Client.view.PreGameView.PreGameView;
 import com.P.Server.model.Lobby;
@@ -18,6 +19,13 @@ public class BasicsController {
         this.view = view;
     }
 
+    private PlayersListView viewList;
+    public void setView(PlayersListView view) {
+        this.viewList = view;
+    }
+
+
+
     public Resualt getLobbyList() {
         HashMap<String, Object> body = new HashMap<>();
         body.put("controller", "BasicsController");
@@ -33,6 +41,17 @@ public class BasicsController {
         HashMap<String, Object> body = new HashMap<>();
         body.put("controller", "BasicsController");
         body.put("request", "getLobbyInformation");
+
+        Message message = new Message(body, Message.MessageType.command);
+
+        return sendCommand(message).getResualt();
+
+    }
+
+    public Resualt playerList() {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("controller", "BasicsController");
+        body.put("request", "playerList");
 
         Message message = new Message(body, Message.MessageType.command);
 

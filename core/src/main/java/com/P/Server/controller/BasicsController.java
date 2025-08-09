@@ -39,6 +39,8 @@ public class BasicsController {
             resualt = isUserAdmin(command);
         } else if (request.equals("letsPlay")) {
             resualt = letsPlay(command);
+        } else if (request.equals("playerList")) {
+            resualt = playerList();
         }
 
         HashMap<String, Object> body = new HashMap<>();
@@ -50,10 +52,10 @@ public class BasicsController {
     private static Resualt getLobbyList() {
         ArrayList<Lobby> expiredLobbies = new ArrayList<>();
         StringBuilder list = new StringBuilder();
-        for(Lobby lobby : App.getLobbies())
-            if(lobby.isExpired())
+        for (Lobby lobby : App.getLobbies())
+            if (lobby.isExpired())
                 expiredLobbies.add(lobby);
-        for(Lobby lobby : expiredLobbies)
+        for (Lobby lobby : expiredLobbies)
             App.getLobbies().remove(lobby);
         for (Lobby lobby : App.getLobbies())
             if (lobby.isVisible())
@@ -61,6 +63,7 @@ public class BasicsController {
 
         return new Resualt(true, list.toString());
     }
+
     private static Resualt getLobbyInformation() {
         StringBuilder list = new StringBuilder();
         Lobby lobby = getCurrentLobby();
@@ -73,15 +76,27 @@ public class BasicsController {
             .append("ID: ").append(lobby.getID()).append('\n')
             .append("Players: ").append('\n');
 
-        System.out.println(list.toString());
 
         for (User user : lobby.getPlayers()) {
             if (user != null)
                 list.append(user.getNickname()).append('\n');
         }
 
-        System.out.println(list.toString());
 
+        return new Resualt(true, list.toString());
+    }
+
+    private static Resualt playerList() {
+        StringBuilder list = new StringBuilder();
+        list.append("Online Users").append('\t').append('\t').append("Lobby").append('\n').append('\n');
+
+        for (User user : App.getAllUsers()) {
+            list.append(user.getUsername()).append('\t').append('\t').append('\t');
+            if (user.getLobby() != null) {
+                list.append(user.getLobby());
+            }
+            list.append('\n');
+        }
         return new Resualt(true, list.toString());
     }
 
@@ -170,15 +185,34 @@ public class BasicsController {
         }
         String username = command.getFromBody("username");
         User user = UserRepo.findUserByUsername(username);
+        user.setLobby(App.getCurrentLobby().getName());
+        UserRepo.saveUser(user);
         App.getCurrentLobby().getPlayers().add(user);
         App.getCurrentLobby().setPeopleCounter(App.getCurrentLobby().getPeopleCounter() + 1);
+
+        User target = null;
+
+        for (User u : App.getAllUsers()) {
+            if (u.getUsername().equals(username)) {
+                target = u;
+                break;
+            }
+        }
+
+        if (target != null)
+            App.getAllUsers().remove(target);
+
+
+        App.getAllUsers().add(user);
+
         return new Resualt(true, "");
 
     }
 
+
     private static Resualt isUserAdmin(Message command) {
         String username = command.getFromBody("username");
-        if(username.equals(App.getCurrentLobby().getAdmin().getUsername())) {
+        if (username.equals(App.getCurrentLobby().getAdmin().getUsername())) {
             return new Resualt(true, "You are an admin");
         }
         return new Resualt(false, "You are not an admin");
