@@ -35,7 +35,7 @@ public class NPCController extends ControllersController {
         return new Resualt(true, name + ": " + getDialogue(npc));
     }
 
-    private static String getDialogue(NPC npc) {
+    public static String getDialogue(NPC npc) {
         Game game = App.getLoggedInUser().getCurrentGame();
         Player player = game.getCurrentPlayer();
         int i = game.getPlayers().indexOf(player);
