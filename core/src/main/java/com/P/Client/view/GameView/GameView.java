@@ -70,6 +70,18 @@ public class GameView {
     private TextureAtlas robinAtlas;
     private final ArrayList<Animation<TextureRegion>> robinAnimations = new ArrayList<>();
 
+    // NPC
+    private TextureAtlas AbigailAtlas;
+    private final ArrayList<Animation<TextureRegion>> AbigailAnimation = new ArrayList<>();
+    private TextureAtlas HarveyAtlas;
+    private final ArrayList<Animation<TextureRegion>> HarveyAnimations = new ArrayList<>();
+    private TextureAtlas LeaAtlas;
+    private final ArrayList<Animation<TextureRegion>> LeaAnimations = new ArrayList<>();
+    private TextureAtlas RobinAtlas;
+    private final ArrayList<Animation<TextureRegion>> RobinAnimations = new ArrayList<>();
+    private TextureAtlas SebastianAtlas;
+    private final ArrayList<Animation<TextureRegion>> SebastianAnimations = new ArrayList<>();
+
     private float stateTime = 0f;
     private int moveDirection = 0;
     private Texture pixel; // Add this
@@ -150,6 +162,96 @@ public class GameView {
         robinAtlas = new TextureAtlas(Gdx.files.internal("game/character/Robin/sprites_Robin.atlas"));
 
 
+        // NPCS
+        AbigailAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/sprites_Abigail.atlas"));
+        HarveyAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/Haley/sprites_Harvey.atlas"));
+        LeaAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/Leah/sprites_Lea.atlas"));
+        RobinAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/Elliott/sprites_Robin.atlas"));
+        SebastianAtlas = new TextureAtlas(Gdx.files.internal("game/NPC/Sebastian/sprites_Sebastian.atlas"));
+
+        // NPCS
+        for (int i = 14; i > 9; i--) {
+            Array<TextureRegion> walkFrames = new Array<>();
+            if (i == 14) {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + 13 + "_" + 0;
+                    walkFrames.add(AbigailAtlas.findRegion(region));
+                }
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + i + "_" + j;
+                    walkFrames.add(AbigailAtlas.findRegion(region));
+                }
+            }
+            AbigailAnimation.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+        }
+
+        for (int i = 14; i > 9; i--) {
+            Array<TextureRegion> walkFrames = new Array<>();
+            if (i == 14) {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + 13 + "_" + 0;
+                    walkFrames.add(HarveyAtlas.findRegion(region));
+                }
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + i + "_" + j;
+                    walkFrames.add(HarveyAtlas.findRegion(region));
+                }
+            }
+            HarveyAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+        }
+
+        for (int i = 14; i > 9; i--) {
+            Array<TextureRegion> walkFrames = new Array<>();
+            if (i == 14) {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + 13 + "_" + 0;
+                    walkFrames.add(LeaAtlas.findRegion(region));
+                }
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + i + "_" + j;
+                    walkFrames.add(LeaAtlas.findRegion(region));
+                }
+            }
+            LeaAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+        }
+
+        for (int i = 14; i > 9; i--) {
+            Array<TextureRegion> walkFrames = new Array<>();
+            if (i == 14) {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + 13 + "_" + 0;
+                    walkFrames.add(RobinAtlas.findRegion(region));
+                }
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + i + "_" + j;
+                    walkFrames.add(RobinAtlas.findRegion(region));
+                }
+            }
+            RobinAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+        }
+
+        for (int i = 14; i > 9; i--) {
+            Array<TextureRegion> walkFrames = new Array<>();
+            if (i == 14) {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + 13 + "_" + 0;
+                    walkFrames.add(SebastianAtlas.findRegion(region));
+                }
+            } else {
+                for (int j = 0; j < 4; j++) {
+                    String region = "player_" + i + "_" + j;
+                    walkFrames.add(SebastianAtlas.findRegion(region));
+                }
+            }
+            SebastianAnimations.add(new Animation<>(0.15f, walkFrames, Animation.PlayMode.LOOP));
+        }
+
+
+        // Charecters
         for (int i = 14; i > 9; i--) {
             Array<TextureRegion> walkFrames = new Array<>();
             if (i == 14) {
